@@ -3,7 +3,7 @@ import SwiftUI
 struct PaletteView: View {
     @Binding var tutorialStep: Int
     @State private var selectedGenre: String? = nil
-    @State private var selectedStoryPath = "Story Path 1"
+    @State private var selectedStoryPath: String? = nil
     @State private var collapsed = false // State to track if the view is collapsed
 
     let genres = ["Fantasy", "Science Fiction", "Gothic", "Mystery"]
@@ -21,7 +21,7 @@ struct PaletteView: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: true, vertical: false)
-                    .padding(.leading, collapsed ? 0 : 16) // Remove leading padding when collapsed
+                    .padding(.leading, 8) // Consistent padding on the left side
 
                 if collapsed {
                     Spacer()
@@ -36,10 +36,10 @@ struct PaletteView: View {
                         .font(.title2)
                 }
                 .buttonStyle(PlainButtonStyle()) // Removes platter
-                .padding(.trailing, 16) // Adjusts distance from right edge
+                .padding(.trailing, 8) // Adjusted for consistent spacing on right side
             }
-            .padding(.top, collapsed ? 8 : 40) // Reduce top padding when collapsed
-            .padding(.bottom, collapsed ? 0 : 20) // Adjust bottom padding based on state
+            .padding(.top, 8) // Consistent top padding
+            .padding(.bottom, collapsed ? 0 : 20) // Adjusted bottom padding based on state
             
             if !collapsed {
                 VStack {
@@ -48,7 +48,7 @@ struct PaletteView: View {
                             Text("Genre")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
-                                .padding(.leading, 18)
+                                .padding(.leading, 40)
 
                             Picker("Select one", selection: Binding(
                                 get: { self.selectedGenre },
@@ -76,18 +76,29 @@ struct PaletteView: View {
                             Text("Story Path")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
-                                .padding(.leading, 18)
+                                .padding(.leading, 38)
                             
-                            Picker("Select Story Path", selection: $selectedStoryPath) {
+                            Picker("Select Story Path", selection: Binding(
+                                get: { self.selectedStoryPath },
+                                set: { newValue in
+                                    if newValue == "Story Path 1" {
+                                        self.selectedStoryPath = newValue
+                                        tutorialStep = 6 // Advance to the next tutorial step
+                                    } else {
+                                        self.selectedStoryPath = newValue
+                                    }
+                                }
+                            )) {
+                                Text("Select one").tag(nil as String?)
                                 ForEach(storyPaths, id: \.self) { path in
                                     Text(path)
-                                        .fixedSize(horizontal: true, vertical: false)
+                                        .tag(path as String?)
                                 }
                             }
                             .pickerStyle(MenuPickerStyle())
                             .frame(minWidth: 180)
                             .padding(.leading, 2)
-                            .disabled(true) // Disable the Story Path picker for now
+                            .disabled(tutorialStep < 5) // Enable only at step 5
                         }
                     }
                     
@@ -114,7 +125,7 @@ struct PaletteView: View {
 
 struct PaletteView_Previews: PreviewProvider {
     static var previews: some View {
-        PaletteView(tutorialStep: .constant(3))
+        PaletteView(tutorialStep: .constant(5))
             .previewLayout(.sizeThatFits)
     }
 }
