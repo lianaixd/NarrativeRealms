@@ -1,19 +1,19 @@
 import SwiftUI
 
 struct TagTutorialView: View {
-    @State private var tutorialStep = 1 // Track the current step in the tutorial
+    @Binding var tutorialStep: Int
     @State private var nextPaletteWindowID = PaletteWindowID(id: 1) // Track the next window ID
     @Environment(\.openWindow) private var openWindow // Access openWindow environment
 
     var body: some View {
         VStack {
-            Spacer() // Top spacer to keep consistent vertical position
+            Spacer()
 
             Image("tagImg")
                 .resizable()
                 .scaledToFill()
-                .frame(width: 100, height: 100) // Circle diameter
-                .clipShape(Circle()) // Clips the image into a circular shape
+                .frame(width: 100, height: 100)
+                .clipShape(Circle())
 
             Text("Tag")
                 .font(.headline)
@@ -37,6 +37,11 @@ struct TagTutorialView: View {
                     .font(.subheadline)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 16)
+            } else if tutorialStep == 4 {
+                Text("As we build our story, more and more parts of this fantasy world will come to life on it.")
+                    .font(.subheadline)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 16)
             }
 
             Divider()
@@ -46,27 +51,30 @@ struct TagTutorialView: View {
             HStack {
                 if tutorialStep > 1 {
                     Button("Back") {
-                        tutorialStep -= 1 // Move back to the previous step
+                        tutorialStep -= 1
                     }
-                    .buttonStyle(.plain) // Removes platter or background styling
+                    .buttonStyle(.plain)
                     .padding(.vertical, 8)
                 }
 
-                Spacer() // Space between Back and Next buttons
+                Spacer()
 
-                Button("Next") {
-                    if tutorialStep == 2 {
-                        // Open PaletteView as a separate window on step 3
-                        openWindow(value: nextPaletteWindowID.id)
-                        nextPaletteWindowID.id += 1
+                // Only show the "Next" button if we're not on step 3
+                if tutorialStep != 3 {
+                    Button("Next") {
+                        if tutorialStep == 2 {
+                            // Open PaletteView as a separate window on step 3
+                            openWindow(value: nextPaletteWindowID.id)
+                            nextPaletteWindowID.id += 1
+                        }
+                        tutorialStep += 1
                     }
-                    tutorialStep += 1 // Move to the next step
+                    .padding(.vertical, 8)
+                    .buttonStyle(.borderedProminent)
                 }
-                .padding(.vertical, 8)
-                .buttonStyle(.borderedProminent)
             }
 
-            Spacer() // Bottom spacer to keep content centered in the window
+            Spacer()
         }
         .padding()
     }

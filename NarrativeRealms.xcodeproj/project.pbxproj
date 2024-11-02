@@ -64,8 +64,8 @@
 			children = (
 				63EC6AE72C0CF80700EEB191 /* NarrativeRealmsApp.swift */,
 				63EC6AE92C0CF80700EEB191 /* ContentView.swift */,
-				63D2AC092CD668BC00ECB336 /* PaletteView.swift */,
 				63D2AC0B2CD6693200ECB336 /* TagTutorialView.swift */,
+				63D2AC092CD668BC00ECB336 /* PaletteView.swift */,
 				63EC6AEB2C0CF80700EEB191 /* ImmersiveView.swift */,
 				63EC6AED2C0CF80900EEB191 /* Assets.xcassets */,
 				63EC6AF22C0CF80900EEB191 /* Info.plist */,
