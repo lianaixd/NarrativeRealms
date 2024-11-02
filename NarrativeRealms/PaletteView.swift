@@ -12,33 +12,25 @@ struct PaletteView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack {
-                // Play button visible for any step after 27, without platter
                 if tutorialStep >= 27 {
                     Button(action: {
-                        // Action for play button
                         print("Play button tapped")
                     }) {
                         Image(systemName: "play.circle.fill")
                             .font(.title)
                     }
-                    .buttonStyle(PlainButtonStyle()) // Removes platter
-                    .padding(.leading, 8) // Padding to align with other items
+                    .buttonStyle(PlainButtonStyle())
                 }
 
-                if collapsed {
-                    Spacer()
-                }
+                Spacer() // Space to the left of the header
                 
                 Text("Tag's Adventure (Tutorial)")
                     .font(.title)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: true, vertical: false)
-                    .padding(.leading, collapsed ? 0 : 16) // Adjust leading padding
 
-                if collapsed {
-                    Spacer()
-                }
+                Spacer() // Space to the right of the header
 
                 Button(action: {
                     withAnimation {
@@ -48,10 +40,9 @@ struct PaletteView: View {
                     Image(systemName: "rectangle.compress.vertical")
                         .font(.title2)
                 }
-                .buttonStyle(PlainButtonStyle()) // Removes platter
-                .padding(.trailing, 8) // Consistent padding on the right
+                .buttonStyle(PlainButtonStyle())
             }
-            .padding(.top, 8) // Top padding for the header
+            .padding(.top, 8)
             .padding(.bottom, collapsed ? 0 : 20) // Adjust bottom padding based on state
             
             if !collapsed {
