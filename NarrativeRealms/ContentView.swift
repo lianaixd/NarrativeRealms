@@ -4,8 +4,7 @@ import RealityKitContent
 
 struct ContentView: View {
     @Binding var showTagTutorial: Bool // Binding to control the window size from the app level
-    @Binding var tutorialStep: Int // Binding to track the tutorial step
-   
+    @Binding var tutorialStep: Int // Binding for the tutorial step
     @State private var immersiveSpaceIsShown = false
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
@@ -13,7 +12,7 @@ struct ContentView: View {
     var body: some View {
         if showTagTutorial {
             // Display the Tag tutorial window with reduced padding
-            TagTutorialView(tutorialStep: $tutorialStep) // Pass tutorialStep binding here
+            TagTutorialView(tutorialStep: $tutorialStep) // Pass down tutorial step
                 .padding(.horizontal, 0) // Reduce horizontal padding for the tutorial view
                 .frame(maxWidth: .infinity, alignment: .center) // Center and restrict max width
         } else {
@@ -61,7 +60,6 @@ struct ContentView: View {
     }
 }
 
-// Preview with showTagTutorial and tutorialStep bindings
 #Preview(windowStyle: .automatic) {
     ContentView(showTagTutorial: .constant(false), tutorialStep: .constant(1))
 }

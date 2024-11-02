@@ -12,6 +12,7 @@ struct PaletteView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack {
+                // Play button visible for any step after 27, without platter
                 if tutorialStep >= 27 {
                     Button(action: {
                         print("Play button tapped")
@@ -40,9 +41,9 @@ struct PaletteView: View {
                     Image(systemName: "rectangle.compress.vertical")
                         .font(.title2)
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(PlainButtonStyle()) // Removes platter
             }
-            .padding(.top, 8)
+            .padding(.top, 8) // Consistent top padding
             .padding(.bottom, collapsed ? 0 : 20) // Adjust bottom padding based on state
             
             if !collapsed {

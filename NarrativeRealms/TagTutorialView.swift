@@ -17,7 +17,6 @@ struct TagTutorialView: View {
             Text("Tag")
                 .font(.headline)
                 .padding(.top, 8)
-
             // Display text based on the tutorial step
             Group {
                 if tutorialStep == 1 {
@@ -81,10 +80,10 @@ struct TagTutorialView: View {
                     Text("Nice work! You can play back the whole story anytime or save it to share with others.")
                 } else if tutorialStep == 28 {
                     Text("Once upon a time there was a curious boy named Tag...this continues as animation plays")
+                }   else if tutorialStep == 29 {
+                    Text("Restart tutorial?")
                 }
             }
-                
-            
             .font(.subheadline)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 16)
@@ -93,31 +92,31 @@ struct TagTutorialView: View {
                 .padding(.vertical, 8)
 
             // Button layout for Back and Next
-            HStack {
-                if tutorialStep > 1 {
-                    Button("Back") {
-                        tutorialStep -= 1 // Go back one step
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.vertical, 8)
-                }
+                       HStack {
+                           if tutorialStep > 1 {
+                               Button("Back") {
+                                   tutorialStep -= 1 // Go back one step
+                               }
+                               .buttonStyle(.plain)
+                               .padding(.vertical, 8)
+                           }
 
-                Spacer()
+                           Spacer()
 
-                Button("Next") {
-                    if tutorialStep == 2 {
-                        // Trigger opening of PaletteView only when progressing from step 2 to 3
-                        openWindow(value: PaletteWindowID(id: 1).id)
-                    }
-                    tutorialStep += 1 // Move to the next step
-                }
-                .padding(.vertical, 8)
-                .buttonStyle(.borderedProminent)
-                .disabled(tutorialStep == 3 || tutorialStep == 5) // Disable on steps 3 and 5
-            }
+                           Button("Next") {
+                               if tutorialStep == 2 {
+                                   // Trigger opening of PaletteView only when progressing from step 2 to 3
+                                   openWindow(value: PaletteWindowID(id: 1).id)
+                               }
+                               tutorialStep += 1 // Move to the next step
+                           }
+                           .padding(.vertical, 8)
+                           .buttonStyle(.borderedProminent)
+                           .disabled(tutorialStep == 3 || tutorialStep == 5) // Disable on steps 3 and 5
+                       }
 
-            Spacer()
-        }
-        .padding()
-    }
-}
+                       Spacer()
+                   }
+                   .padding()
+               }
+           }
