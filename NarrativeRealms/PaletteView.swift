@@ -12,6 +12,19 @@ struct PaletteView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack {
+                // Play button visible for any step after 27, without platter
+                if tutorialStep >= 27 {
+                    Button(action: {
+                        // Action for play button
+                        print("Play button tapped")
+                    }) {
+                        Image(systemName: "play.circle.fill")
+                            .font(.title)
+                    }
+                    .buttonStyle(PlainButtonStyle()) // Removes platter
+                    .padding(.leading, 8) // Padding to align with other items
+                }
+
                 if collapsed {
                     Spacer()
                 }
@@ -21,7 +34,7 @@ struct PaletteView: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: true, vertical: false)
-                    .padding(.leading, 8) // Consistent padding on the left side
+                    .padding(.leading, collapsed ? 0 : 16) // Adjust leading padding
 
                 if collapsed {
                     Spacer()
@@ -36,10 +49,10 @@ struct PaletteView: View {
                         .font(.title2)
                 }
                 .buttonStyle(PlainButtonStyle()) // Removes platter
-                .padding(.trailing, 8) // Adjusted for consistent spacing on right side
+                .padding(.trailing, 8) // Consistent padding on the right
             }
-            .padding(.top, 8) // Consistent top padding
-            .padding(.bottom, collapsed ? 0 : 20) // Adjusted bottom padding based on state
+            .padding(.top, 8) // Top padding for the header
+            .padding(.bottom, collapsed ? 0 : 20) // Adjust bottom padding based on state
             
             if !collapsed {
                 VStack {
@@ -125,7 +138,7 @@ struct PaletteView: View {
 
 struct PaletteView_Previews: PreviewProvider {
     static var previews: some View {
-        PaletteView(tutorialStep: .constant(5))
+        PaletteView(tutorialStep: .constant(27))
             .previewLayout(.sizeThatFits)
     }
 }
