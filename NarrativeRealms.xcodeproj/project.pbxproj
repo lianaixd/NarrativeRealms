@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63D2AC0A2CD668C600ECB336 /* PaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D2AC092CD668BC00ECB336 /* PaletteView.swift */; };
+		63D2AC0C2CD6693400ECB336 /* TagTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D2AC0B2CD6693200ECB336 /* TagTutorialView.swift */; };
 		63EC6AE62C0CF80700EEB191 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 63EC6AE52C0CF80700EEB191 /* RealityKitContent */; };
 		63EC6AE82C0CF80700EEB191 /* NarrativeRealmsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EC6AE72C0CF80700EEB191 /* NarrativeRealmsApp.swift */; };
 		63EC6AEA2C0CF80700EEB191 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EC6AE92C0CF80700EEB191 /* ContentView.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		63D2AC092CD668BC00ECB336 /* PaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteView.swift; sourceTree = "<group>"; };
+		63D2AC0B2CD6693200ECB336 /* TagTutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTutorialView.swift; sourceTree = "<group>"; };
 		63EC6AE02C0CF80700EEB191 /* NarrativeRealms.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NarrativeRealms.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63EC6AE42C0CF80700EEB191 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		63EC6AE72C0CF80700EEB191 /* NarrativeRealmsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NarrativeRealmsApp.swift; sourceTree = "<group>"; };
@@ -60,6 +64,8 @@
 			children = (
 				63EC6AE72C0CF80700EEB191 /* NarrativeRealmsApp.swift */,
 				63EC6AE92C0CF80700EEB191 /* ContentView.swift */,
+				63D2AC092CD668BC00ECB336 /* PaletteView.swift */,
+				63D2AC0B2CD6693200ECB336 /* TagTutorialView.swift */,
 				63EC6AEB2C0CF80700EEB191 /* ImmersiveView.swift */,
 				63EC6AED2C0CF80900EEB191 /* Assets.xcassets */,
 				63EC6AF22C0CF80900EEB191 /* Info.plist */,
@@ -159,7 +165,9 @@
 			files = (
 				63EC6AEA2C0CF80700EEB191 /* ContentView.swift in Sources */,
 				63EC6AE82C0CF80700EEB191 /* NarrativeRealmsApp.swift in Sources */,
+				63D2AC0A2CD668C600ECB336 /* PaletteView.swift in Sources */,
 				63EC6AEC2C0CF80700EEB191 /* ImmersiveView.swift in Sources */,
+				63D2AC0C2CD6693400ECB336 /* TagTutorialView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
