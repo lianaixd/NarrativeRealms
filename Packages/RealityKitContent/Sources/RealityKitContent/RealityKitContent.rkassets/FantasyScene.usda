@@ -11,7 +11,7 @@
 def Xform "Root"
 {
     def "_010_table_tex_v01" (
-        active = true
+        active = false
         customData = {
             float3 rotationEulerHint = (-1.5707964, 1.5707963, 0)
         }
@@ -31,7 +31,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.3071649, 1.2574805, -1.555745)
+        float3 xformOp:translate = (0.3583026, 1.2574805, -1.555745)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 }

@@ -1,66 +1,136 @@
 import SwiftUI
 
 struct PaletteView: View {
-    @State private var selectedGenre = "Fantasy"
-    @State private var selectedStoryPath = "Story Path 1"
+    @Binding var tutorialStep: Int
+    @State private var selectedGenre: String? = nil
+    @State private var selectedStoryPath: String? = nil
+    @State private var collapsed = false // State to track if the view is collapsed
 
     let genres = ["Fantasy", "Science Fiction", "Gothic", "Mystery"]
     let storyPaths = (1...7).map { "Story Path \($0)" }
 
     var body: some View {
         VStack(spacing: 20) {
-            // Centered Header with Larger Font
-            Text("Tag's Adventure (Tutorial)")
-                .font(.title) // Larger font size
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-                .padding(.top, 10)
-
-            // Horizontal arrangement of Pickers with headers
-            HStack(alignment: .top, spacing: 20) {
-                // Genre Picker
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Genre")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Picker("Select Genre", selection: $selectedGenre) {
-                        ForEach(genres, id: \.self) { genre in
-                            Text(genre)
-                                .disabled(genre != "Fantasy") // Disable all except "Fantasy"
-                        }
+            HStack {
+                // Play button visible for any step after 27, without platter
+                if tutorialStep >= 27 {
+                    Button(action: {
+                        print("Play button tapped")
+                    }) {
+                        Image(systemName: "play.circle.fill")
+                            .font(.title)
                     }
-                    .pickerStyle(MenuPickerStyle())
+                    .buttonStyle(PlainButtonStyle())
                 }
+
+                Spacer() // Space to the left of the header
                 
-                // Story Path Picker
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Story Path")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    Picker("Select Story Path", selection: $selectedStoryPath) {
-                        ForEach(storyPaths, id: \.self) { path in
-                            Text(path)
+                Text("Tag's Adventure (Tutorial)")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: true, vertical: false)
+
+                Spacer() // Space to the right of the header
+
+                Button(action: {
+                    withAnimation {
+                        collapsed.toggle()
+                    }
+                }) {
+                    Image(systemName: "rectangle.compress.vertical")
+                        .font(.title2)
+                }
+                .buttonStyle(PlainButtonStyle()) // Removes platter
+            }
+            .padding(.top, 8) // Consistent top padding
+            .padding(.bottom, collapsed ? 0 : 20) // Adjust bottom padding based on state
+            
+            if !collapsed {
+                VStack {
+                    HStack(alignment: .top, spacing: 20) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Genre")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .padding(.leading, 40)
+
+                            Picker("Select one", selection: Binding(
+                                get: { self.selectedGenre },
+                                set: { newValue in
+                                    if newValue == "Fantasy" {
+                                        self.selectedGenre = newValue
+                                        tutorialStep = 4 // Advance to the next tutorial step
+                                    } else {
+                                        self.selectedGenre = newValue
+                                    }
+                                }
+                            )) {
+                                Text("Select one").tag(nil as String?)
+                                ForEach(genres, id: \.self) { genre in
+                                    Text(genre)
+                                        .tag(genre as String?)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .frame(minWidth: 180)
+                            .padding(.leading, 2)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Story Path")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .padding(.leading, 38)
+                            
+                            Picker("Select Story Path", selection: Binding(
+                                get: { self.selectedStoryPath },
+                                set: { newValue in
+                                    if newValue == "Story Path 1" {
+                                        self.selectedStoryPath = newValue
+                                        tutorialStep = 6 // Advance to the next tutorial step
+                                    } else {
+                                        self.selectedStoryPath = newValue
+                                    }
+                                }
+                            )) {
+                                Text("Select one").tag(nil as String?)
+                                ForEach(storyPaths, id: \.self) { path in
+                                    Text(path)
+                                        .tag(path as String?)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .frame(minWidth: 180)
+                            .padding(.leading, 2)
+                            .disabled(tutorialStep < 5) // Enable only at step 5
                         }
                     }
-                    .pickerStyle(MenuPickerStyle())
-                }
-            }
-            
-            Spacer()
+                    
+                    Spacer()
 
-            // SharePlay Button with system SharePlay icon
-            Button(action: {
-                // Placeholder action, button is disabled
-            }) {
-                Label("SharePlay", systemImage: "shareplay")
-                    .font(.title3)
+                    Button(action: {
+                        // Placeholder action, button is disabled
+                    }) {
+                        Label("SharePlay", systemImage: "shareplay")
+                            .font(.title3)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(true)
+                    .padding(.bottom, 30)
+                    .padding(.top, 30)
+                }
+                .transition(.move(edge: .bottom)) // Elements move downward when disappearing
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(true) // Button is disabled
-            .padding(.bottom, 10)
         }
+        .frame(height: collapsed ? 80 : nil) // Set height only when collapsed
         .padding()
+    }
+}
+
+struct PaletteView_Previews: PreviewProvider {
+    static var previews: some View {
+        PaletteView(tutorialStep: .constant(27))
+            .previewLayout(.sizeThatFits)
     }
 }
