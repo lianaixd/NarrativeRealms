@@ -21,7 +21,7 @@ struct PaletteView: View {
             HStack {
                 if tutorialStep >= 27 {
                     Button(action: {
-                        print("Play button tapped")
+                        playButtonTapped()
                     }) {
                         Image(systemName: "play.circle.fill")
                             .font(.title)
@@ -120,7 +120,7 @@ struct PaletteView: View {
                     Spacer()
 
                     // SharePlay Button (Appears at Step 5)
-                    if tutorialStep >= 5 {
+                    if tutorialStep >= 3 {
                         Button(action: {
                             // Placeholder action
                         }) {
@@ -139,7 +139,15 @@ struct PaletteView: View {
         .padding()
         .frame(height: collapsed ? 80 : nil)
         .onReceive(NotificationCenter.default.publisher(for: .resetApp)) { _ in
-                    dismissWindow()
-                }
+            dismissWindow()
+        }
+    }
+
+    // New function to handle play button tap
+    private func playButtonTapped() {
+        if tutorialStep == 27 {
+            tutorialStep = 28 // Advance to the next tutorial step
+        }
+        // Add any additional actions needed when the play button is tapped
     }
 }

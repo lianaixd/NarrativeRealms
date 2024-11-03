@@ -122,6 +122,7 @@ struct TagTutorialView: View {
                                }
                                .padding(.vertical, 8)
                                .buttonStyle(.borderedProminent)
+                               .disabled(tutorialStep == 3 || tutorialStep == 5 || tutorialStep == 27)
                            }
                        }
 
