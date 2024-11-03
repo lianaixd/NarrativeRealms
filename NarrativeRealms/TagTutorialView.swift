@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TagTutorialView: View {
     @Binding var tutorialStep: Int
-    @Environment(\.openWindow) private var openWindow // Access openWindow environment
+    var onRestart: () -> Void
 
     var body: some View {
         VStack {
@@ -17,23 +17,30 @@ struct TagTutorialView: View {
             Text("Tag")
                 .font(.headline)
                 .padding(.top, 8)
+
             // Display text based on the tutorial step
             Group {
                 if tutorialStep == 1 {
-                    Text("Hi, I'm Tag! I'll be your guide. Let's write a story together!")
-                } else if tutorialStep == 2 {
-                    Text("In Narrative Realms, we get to create a world and tell a story in real-time.")
-                } else if tutorialStep == 3 {
-                    (Text("The ")
-                     + Text("Genre").bold()
-                     + Text(" button here lets us pick a storytelling style. For now, select Fantasy, and let’s see what happens!"))
-                } else if tutorialStep == 4 {
-                    Text("As we build our story, more and more parts of this fantasy world will come to life on it.")
-                } else if tutorialStep == 5 {
-                    (Text("The ‘")
-                     + Text("Story Path").bold()
-                     + Text("’ button here offers different paths for different kinds of tales. Each path has ups and downs, just like any great story!"))
-                } else if tutorialStep == 6 {
+                                    Text("Hi, I'm Tag! I'll be your guide. Let's write a story together!")
+                                } else if tutorialStep == 2 {
+                                    Text("In Narrative Realms, we get to create a world and tell a story in real-time.")
+                                } else if tutorialStep == 3 {
+                                    (Text("The ")
+                                     + Text("Genre").bold()
+                                     + Text(" button here lets us pick a storytelling style. For now, select Fantasy, and let’s see what happens!"))
+                                    .onAppear {
+                                 //       openWindow(value: PaletteWindowID(id: 1).id)
+                                    }
+                                } else if tutorialStep == 4 {
+                                    Text("As we build our story, more and more parts of this fantasy world will come to life on it.")
+                                } else if tutorialStep == 5 {
+                                    (Text("The ‘")
+                                     + Text("Story Path").bold()
+                                     + Text("’ button here offers different paths for different kinds of tales. Each path has ups and downs, just like any great story!"))
+                                    .onAppear {
+                                 //       openWindow(value: PaletteWindowID(id: 1).id)
+                                    }
+                                } else if tutorialStep == 6 {
                     Text("See how this path has high points and low points? Each part of the path represents good and bad moments in the story.")
                 } else if tutorialStep == 7 {
                     Text("The beginning is up high, and the end is also up high—looks like it might be a happy ending!")
@@ -92,10 +99,10 @@ struct TagTutorialView: View {
                 .padding(.vertical, 8)
 
             // Button layout for Back and Next
-                       HStack {
+            HStack {
                            if tutorialStep > 1 {
                                Button("Back") {
-                                   tutorialStep -= 1 // Go back one step
+                                   tutorialStep -= 1
                                }
                                .buttonStyle(.plain)
                                .padding(.vertical, 8)
@@ -103,16 +110,19 @@ struct TagTutorialView: View {
 
                            Spacer()
 
-                           Button("Next") {
-                               if tutorialStep == 2 {
-                                   // Trigger opening of PaletteView only when progressing from step 2 to 3
-                                   openWindow(value: PaletteWindowID(id: 1).id)
+                           if tutorialStep == 29 {
+                               Button("Restart") {
+                                   onRestart()
                                }
-                               tutorialStep += 1 // Move to the next step
+                               .padding(.vertical, 8)
+                               .buttonStyle(.borderedProminent)
+                           } else {
+                               Button("Next") {
+                                   tutorialStep += 1
+                               }
+                               .padding(.vertical, 8)
+                               .buttonStyle(.borderedProminent)
                            }
-                           .padding(.vertical, 8)
-                           .buttonStyle(.borderedProminent)
-                           .disabled(tutorialStep == 3 || tutorialStep == 5) // Disable on steps 3 and 5
                        }
 
                        Spacer()
