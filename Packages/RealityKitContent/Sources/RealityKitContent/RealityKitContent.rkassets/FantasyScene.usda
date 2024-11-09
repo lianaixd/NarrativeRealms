@@ -30,7 +30,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.0008805394, 1.2923247, -1.3045777)
+        float3 xformOp:translate = (0.56654334, 1.4065162, -1.81977)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "Collider"
@@ -79,7 +79,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.52514684, 1.4387866, -1.3045777)
+        float3 xformOp:translate = (-0.59879977, 1.4387866, -1.8218651)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -163,6 +163,17 @@ def Xform "Root"
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.0059894025, 0.0059894025, 0.0059894025)
         float3 xformOp:translate = (-0.23775662, 0.99980056, -1.2181262)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "TestAnimation" (
+        active = true
+        prepend references = @TestAnimation.usda@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 1.226597, -1.3263357)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 }
