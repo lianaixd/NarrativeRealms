@@ -19,7 +19,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.5, -0.5, 0.5, 0.5)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (2.3492135e-9, 1, -1.4)
+        float3 xformOp:translate = (2.3492135e-9, 0.9713565, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -30,7 +30,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.0008805394, 1.3209682, -1.4)
+        float3 xformOp:translate = (0.0008805394, 1.2923247, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "Collider"
@@ -68,7 +68,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.6830126, -0.6830128, -0.18301263, -0.18301274)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 1.0396975, -1.4)
+        float3 xformOp:translate = (0, 1.011054, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -79,18 +79,21 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.52514684, 1.4674301, -1.4)
+        float3 xformOp:translate = (0.52514684, 1.4387866, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
     def "microphone_tex_v01" (
         active = true
+        customData = {
+            float3 rotationEulerHint = (3.0102754e-8, 4.8628372e-9, 1.3282453)
+        }
         prepend references = @microphone_tex_v01.usdz@
     )
     {
-        quatf xformOp:orient = (1, 0, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.0618878, 1.1259825, -1)
+        quatf xformOp:orient = (0.7874579, 1.0353675e-8, 1.1191834e-8, 0.6163685)
+        float3 xformOp:scale = (0.8, 0.8, 0.8)
+        float3 xformOp:translate = (-0.07995159, 1.0231655, -0.90457773)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -101,7 +104,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.11769974, 1.0275363, -1.0267128)
+        float3 xformOp:translate = (0.11769974, 0.9960997, -0.9312905)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -112,21 +115,21 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.25426307, 1.0290639, -1.2124805)
+        float3 xformOp:translate = (-0.25426307, 1.0004205, -1.0436317)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
     def "treasure_tex_v01" (
         active = true
         customData = {
-            float3 rotationEulerHint = (0.006981317, 0.006981319, 0.006981317)
+            float3 rotationEulerHint = (0.006982207, 0.0069822036, 0.006982207)
         }
         prepend references = @treasure_tex_v01.usdz@
     )
     {
-        quatf xformOp:orient = (0.99998176, 0.0034784242, 0.0035027943, 0.0034784242)
-        float3 xformOp:scale = (0.5, 0.5, 0.5)
-        float3 xformOp:translate = (-0.04100378, 1.0170829, -1.2067599)
+        quatf xformOp:orient = (0.99998176, 0.0034788663, 0.0035032397, 0.0034788663)
+        float3 xformOp:scale = (0.39555463, 0.39555466, 0.39555463)
+        float3 xformOp:translate = (-0.10182794, 0.9886757, -1.2058433)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -137,7 +140,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.6, 0.6, 0.6)
-        float3 xformOp:translate = (0.31947374, 1.03, -1.5605524)
+        float3 xformOp:translate = (0.31947374, 0.9911045, -1.4651301)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -148,7 +151,18 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.0016879439, 1.0242612, -1.6506393)
+        float3 xformOp:translate = (-0.0016879439, 0.99561775, -1.555217)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "dragon_anim_v03" (
+        active = true
+        prepend references = @dragon_anim_v03.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.0059894025, 0.0059894025, 0.0059894025)
+        float3 xformOp:translate = (-0.23775662, 0.99980056, -1.2181262)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 }
