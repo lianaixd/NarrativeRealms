@@ -1,0 +1,53 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.0.16.0.3)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "dragon_anim_v03" (
+        active = true
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        prepend references = @dragon_anim_v03.usdz@
+    )
+    {
+        rel material:binding = </Root/dragon_anim_v03/mtl/pasted__dragon_tex_v01_Dragon_MTL> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        float3 xformOp:translate = (0, 1, -1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "InputTarget"
+        {
+            uniform token info:id = "RealityKit.InputTarget"
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (23.447742, 41.52608, 46.47306)
+                float height = 41.52608
+                float radius = 23.23653
+                token shapeType = "Capsule"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (-4.7683716e-7, 20.361177, -13.710693)
+                }
+            }
+        }
+    }
+}
+

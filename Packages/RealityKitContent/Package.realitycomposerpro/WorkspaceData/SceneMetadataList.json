@@ -15,7 +15,105 @@
     "objectMetadataList" : [
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "dragon_anim_v03",
+        "mtl"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "dude_org_anim_v02_1",
+        "mtl"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "dude_org_anim_v03_noBlendShapes",
+        "mtl"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "signopost_snow_tex_v01",
+        "Materials",
+        "Signpost_snow_MTL"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : true
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "Model9",
+        "Materials",
+        "Signpost_snow_MTL"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : true
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "storypath_tex_v01",
+        "Materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Model2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "dude_normal_tex_v01"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "Model10",
+        "Materials",
+        "Signpost_snow_MTL"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : true
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Model1"
       ],
       {
         "isExpanded" : true,
@@ -47,10 +145,34 @@
       }
     ]
   },
+  "2388C4B3-5436-4637-87A4-E534FA0C2767" : {
+    "objectMetadataList" : [
+      [
+        "2388C4B3-5436-4637-87A4-E534FA0C2767",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
   "66168B71-AB05-424E-8B6C-D33D6E61B08F" : {
     "objectMetadataList" : [
       [
         "66168B71-AB05-424E-8B6C-D33D6E61B08F",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "A0D2B39C-5161-45A3-B5BA-E63C73CD98C4" : {
+    "objectMetadataList" : [
+      [
+        "A0D2B39C-5161-45A3-B5BA-E63C73CD98C4",
         "Root"
       ],
       {
@@ -72,7 +194,7 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
-        "Sphere_Right"
+        "Sphere_Left"
       ],
       {
         "isExpanded" : true,
@@ -81,7 +203,7 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
-        "Sphere_Left"
+        "Sphere_Right"
       ],
       {
         "isExpanded" : true,
@@ -115,13 +237,32 @@
 
     ]
   },
+  "D5588EC1-EE1A-4737-9A34-90182F54C7FE" : {
+    "objectMetadataList" : [
+      [
+        "D5588EC1-EE1A-4737-9A34-90182F54C7FE",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D5588EC1-EE1A-4737-9A34-90182F54C7FE",
+        "Root",
+        "dragon_anim_v03"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
   "D66134B1-3681-4A8E-AFE5-29F257229F3B" : {
     "objectMetadataList" : [
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root",
-        "GridMaterial",
-        "GridMaterial"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -129,7 +270,9 @@
       },
       [
         "D66134B1-3681-4A8E-AFE5-29F257229F3B",
-        "Root"
+        "Root",
+        "GridMaterial",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,

@@ -11,7 +11,6 @@
 def Xform "Root"
 {
     def "_010_table_tex_v01" (
-        active = false
         customData = {
             float3 rotationEulerHint = (-1.5707964, 1.5707963, 0)
         }
@@ -20,7 +19,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.5, -0.5, 0.5, 0.5)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (2.3492135e-9, 1, -1.5)
+        float3 xformOp:translate = (2.3492135e-9, 1, -1.4)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -31,7 +30,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.3583026, 1.2574805, -1.555745)
+        float3 xformOp:translate = (0.0008805394, 1.3209682, -1.4)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "Collider"
@@ -57,6 +56,100 @@ def Xform "Root"
         {
             uniform token info:id = "RealityKit.InputTarget"
         }
+    }
+
+    def "storypath_tex_v01" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (-1.5707965, -0.52359873, -6.8825514e-8)
+        }
+        prepend references = @storypath_tex_v01.usdz@
+    )
+    {
+        quatf xformOp:orient = (0.6830126, -0.6830128, -0.18301263, -0.18301274)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 1.0396975, -1.4)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "lightbulb_tex_v01" (
+        active = true
+        prepend references = @lightbulb_tex_v01.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0.52514684, 1.4674301, -1.4)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "microphone_tex_v01" (
+        active = true
+        prepend references = @microphone_tex_v01.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-0.0618878, 1.1259825, -1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "signpost_forest_tex_v01" (
+        active = true
+        prepend references = @signpost-forest_tex_v01.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0.11769974, 1.0275363, -1.0267128)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "signpost_desert_tex_v01" (
+        active = true
+        prepend references = @signpost-desert_tex_v01.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-0.25426307, 1.0290639, -1.2124805)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "treasure_tex_v01" (
+        active = true
+        customData = {
+            float3 rotationEulerHint = (0.006981317, 0.006981319, 0.006981317)
+        }
+        prepend references = @treasure_tex_v01.usdz@
+    )
+    {
+        quatf xformOp:orient = (0.99998176, 0.0034784242, 0.0035027943, 0.0034784242)
+        float3 xformOp:scale = (0.5, 0.5, 0.5)
+        float3 xformOp:translate = (-0.04100378, 1.0170829, -1.2067599)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "cottage_teapot_tex_v01" (
+        active = true
+        prepend references = @cottage-teapot_tex_v01.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (0.6, 0.6, 0.6)
+        float3 xformOp:translate = (0.31947374, 1.03, -1.5605524)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def "signopost_snow_tex_v01" (
+        active = true
+        prepend references = @signopost-snow_tex_v01.usdz@
+    )
+    {
+        quatf xformOp:orient = (1, 0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-0.0016879439, 1.0242612, -1.6506393)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 }
 
