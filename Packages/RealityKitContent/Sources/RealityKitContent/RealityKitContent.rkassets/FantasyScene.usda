@@ -145,7 +145,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.25426307, 0.9660796, -1.0436317)
+        float3 xformOp:translate = (-0.25426307, 0.9615891, -1.0436317)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -211,9 +211,9 @@ def Xform "Root"
 
             def RealityKitClipDefinition "Clip_default_subtree_animation"
             {
-                uniform string[] clipNames = ["Clip", "disappear"]
+                uniform string[] clipNames = ["Appear", "Breathe", "disappear"]
                 uniform string sourceAnimationName = "default subtree animation"
-                uniform double[] startTimes = [0, 4.099166666666667]
+                uniform double[] startTimes = [0, 1.5631596648858652, 4.099166666666667]
             }
         }
     }
@@ -236,11 +236,11 @@ def Xform "Root"
             def RealityKitAction "Animation"
             {
                 string actionKind = "animation"
-                string animation = "Clip"
+                string animation = "Breathe"
                 int blendLayer = 500
-                double duration = 4.099166666666667
+                double duration = 2.536007001780802
                 uniform token info:id = "C58348A6-4193-418C-AF6E-48AFEBFC1152"
-                double loopCount = 6
+                double loopCount = 0
                 bool separateAnimatedValue = 1
                 double startTime = 0
                 rel target = </Root/dragon_anim_v03>
