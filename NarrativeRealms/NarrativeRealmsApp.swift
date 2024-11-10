@@ -36,6 +36,14 @@ struct NarrativeRealmsApp: App {
             handleTutorialStepChange(newStep: newStep)
         }
 
+        // TagTutorialView WindowGroup
+        WindowGroup("Tag Tutorial") {
+            TagTutorialView(tutorialStep: $tutorialStep, onRestart: resetToNewStory)
+                .frame(width:300, height:400)
+        }
+        .defaultSize(width: 300, height: 400) // Adjusted to fit TagTutorialView content better
+        .windowResizability(.contentSize) // Allows the window to resize based on content
+
         // PaletteView WindowGroup
         WindowGroup("Palette Window", for: PaletteWindowID.self) { id in
             PaletteView(tutorialStep: $tutorialStep)

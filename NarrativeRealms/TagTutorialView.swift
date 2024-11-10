@@ -3,20 +3,23 @@ import SwiftUI
 struct TagTutorialView: View {
     @Binding var tutorialStep: Int
     var onRestart: () -> Void
+    private let textWidth: CGFloat = 280 // Fixed width for text wrapping
 
     var body: some View {
         VStack {
             Spacer()
 
-            Image("tagImg")
+            Image(tutorialStep == 28 ? "lianaImg" : "tagImg")
                 .resizable()
                 .scaledToFill()
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
 
-            Text("Tag")
+            // Conditionally change the header text based on the tutorial step
+            Text(tutorialStep == 28 ? "Tag's Adventure" : "Tag")
                 .font(.headline)
                 .padding(.top, 8)
+
 
             // Display text based on the tutorial step
             Group {
@@ -34,9 +37,9 @@ struct TagTutorialView: View {
                 } else if tutorialStep == 4 {
                     Text("As we build our story, more and more parts of this fantasy world will come to life on it.")
                 } else if tutorialStep == 5 {
-                    (Text("The ‘")
+                    (Text("The ")
                      + Text("Story Path").bold()
-                     + Text("’ button here offers different paths for different kinds of tales. Each path has ups and downs, just like any great story!"))
+                     + Text(" button here offers different paths for different kinds of tales. Each path has ups and downs, just like any great story!"))
                     .onAppear {
                  //       openWindow(value: PaletteWindowID(id: 1).id)
                     }
@@ -86,48 +89,50 @@ struct TagTutorialView: View {
                 } else if tutorialStep == 27 {
                     Text("Nice work! You can play back the whole story anytime or save it to share with others.")
                 } else if tutorialStep == 28 {
-                    Text("Once upon a time there was a curious boy named Tag...this continues as animation plays")
+                    Text("Whispers filled the village of a hidden treasure guarded by ancient magic. Tag had often dreamed of discovering it. A treasure only the truly brave could hope to find. And now, with a heart full of courage and curiosity, his time had come to seek it out.")
                 } else if tutorialStep == 29 {
                     Text("Restart tutorial?")
                 }
             }
             .font(.subheadline)
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 16)
+                        .multilineTextAlignment(.center)
+                        .frame(width: textWidth) // Set a fixed width for text wrapping
+                        .padding(.horizontal, 8)
 
             Divider()
                 .padding(.vertical, 8)
 
             // Button layout for Back and Next
             HStack {
-                if tutorialStep > 1 {
-                    Button("Back") {
-                        tutorialStep -= 1
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.vertical, 8)
-                }
+                          if tutorialStep > 1 {
+                              Button("Back") {
+                                  tutorialStep -= 1
+                              }
+                              .buttonStyle(.plain)
+                              .padding(.vertical, 8)
+                          }
 
-                Spacer()
+                          Spacer()
 
-                if tutorialStep == 29 {
-                    Button("Restart") {
-                        onRestart()
-                    }
-                    .padding(.vertical, 8)
-                    .buttonStyle(.borderedProminent)
-                } else {
-                    Button("Next") {
-                        tutorialStep += 1
-                    }
-                    .padding(.vertical, 8)
-                    .buttonStyle(.borderedProminent)
-                    .disabled(tutorialStep == 3 || tutorialStep == 5 || tutorialStep == 27)
-                }
-            }
+                          if tutorialStep == 29 {
+                              Button("Restart") {
+                                  onRestart()
+                              }
+                              .padding(.vertical, 8)
+                              .buttonStyle(.borderedProminent)
+                          } else {
+                              Button("Next") {
+                                  tutorialStep += 1
+                              }
+                              .padding(.vertical, 8)
+                              .buttonStyle(.borderedProminent)
+                              .disabled(tutorialStep == 3 || tutorialStep == 5 || tutorialStep == 27)
+                          }
+                      }
 
-            Spacer()
-        }
+                      Spacer()
+                  }
         .padding()
-    }
-}
+               .fixedSize(horizontal: true, vertical: false) // Ensure window fits content width
+              }
+          }

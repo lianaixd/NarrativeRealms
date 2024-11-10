@@ -13,7 +13,7 @@ struct PaletteView: View {
     @Environment(\.dismissWindow) private var dismissWindow
 
     let genres = ["Fantasy", "Science Fiction", "Gothic", "Mystery"]
-    let storyShapes = ["Story Shape 1", "Story Shape 2", "Story Shape 3", "Story Shape 4", "Story Shape 5", "Story Shape 6", "Story Shape 7"]
+    let storyShapes = ["Story Path 1", "Story Path 2", "Story Path 3", "Story Path 4", "Story Path 5", "Story Path 6", "Story Path 7"]
 
     var body: some View {
         VStack(spacing: 20) {
@@ -87,14 +87,14 @@ struct PaletteView: View {
 
                         // Story Shape Picker (Enabled on or after Step 5)
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Story Shape")
+                            Text("Story Path")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
 
                             Picker("Select one", selection: Binding(
                                 get: { self.selectedStoryShape },
                                 set: { newValue in
-                                    if newValue == "Story Shape 1" {
+                                    if newValue == "Story Path 1" {
                                         self.selectedStoryShape = newValue
                                         if tutorialStep == 5 {
                                             tutorialStep = 6 // Advance to the next tutorial step
