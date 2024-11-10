@@ -14,17 +14,17 @@ def Xform "Root"
         customData = {
             float3 rotationEulerHint = (-1.5707964, 1.5707963, 0)
         }
-        prepend references = @010_table_tex_v01.usdz@
+        references = @010_table_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (0.5, -0.5, 0.5, 0.5)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (2.3492135e-9, 0.9713565, -1.3045777)
+        float3 xformOp:translate = (2.3492135e-9, 0.93701565, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
     def "dude_normal_tex_v01" (
-        active = true
+        active = false
         prepend references = @dude-normal_tex_v01.usdz@
     )
     {
@@ -63,24 +63,54 @@ def Xform "Root"
         customData = {
             float3 rotationEulerHint = (-1.5707965, -0.52359873, -6.8825514e-8)
         }
-        prepend references = @storypath_tex_v01.usdz@
+        references = @storypath_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (0.6830126, -0.6830128, -0.18301263, -0.18301274)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 1.011054, -1.3045777)
+        float3 xformOp:translate = (0, 0.9767132, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
     def "lightbulb_tex_v01" (
         active = true
-        prepend references = @lightbulb_tex_v01.usdz@
+        references = @lightbulb_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.59879977, 1.4387866, -1.8218651)
+        float3 xformOp:translate = (-0.59879977, 1.4044458, -1.8218651)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "RCP_BehaviorsContainer"
+        {
+            rel behaviors = </Root/lightbulb_tex_v01/OnTap>
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
+
+        def Preliminary_Behavior "OnTap"
+        {
+            rel actions = </Root/lightbulb_tex_v01/OnTap/Action>
+            uniform bool exclusive
+            rel triggers = </Root/lightbulb_tex_v01/OnTap/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/lightbulb_tex_v01>
+                token info:id = "TapGesture"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/Dragon>
+                rel animationLibraryKeyOverrideKey = </Root/lightbulb_tex_v01/OnTap/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
     }
 
     def "microphone_tex_v01" (
@@ -88,34 +118,34 @@ def Xform "Root"
         customData = {
             float3 rotationEulerHint = (3.0102754e-8, 4.8628372e-9, 1.3282453)
         }
-        prepend references = @microphone_tex_v01.usdz@
+        references = @microphone_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (0.7874579, 1.0353675e-8, 1.1191834e-8, 0.6163685)
         float3 xformOp:scale = (0.8, 0.8, 0.8)
-        float3 xformOp:translate = (-0.07995159, 1.0231655, -0.90457773)
+        float3 xformOp:translate = (-0.07995159, 0.9888246, -0.90457773)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
     def "signpost_forest_tex_v01" (
         active = true
-        prepend references = @signpost-forest_tex_v01.usdz@
+        references = @signpost-forest_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.11769974, 0.9960997, -0.9312905)
+        float3 xformOp:translate = (0.11769974, 0.96175885, -0.9312905)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
     def "signpost_desert_tex_v01" (
         active = true
-        prepend references = @signpost-desert_tex_v01.usdz@
+        references = @signpost-desert_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.25426307, 1.0004205, -1.0436317)
+        float3 xformOp:translate = (-0.25426307, 0.9660796, -1.0436317)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -124,57 +154,102 @@ def Xform "Root"
         customData = {
             float3 rotationEulerHint = (0.006982207, 0.0069822036, 0.006982207)
         }
-        prepend references = @treasure_tex_v01.usdz@
+        references = @treasure_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (0.99998176, 0.0034788663, 0.0035032397, 0.0034788663)
         float3 xformOp:scale = (0.39555463, 0.39555466, 0.39555463)
-        float3 xformOp:translate = (-0.10182794, 0.9886757, -1.2058433)
+        float3 xformOp:translate = (-0.10184945, 0.9571943, -1.2058274)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
     def "cottage_teapot_tex_v01" (
         active = true
-        prepend references = @cottage-teapot_tex_v01.usdz@
+        references = @cottage-teapot_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.6, 0.6, 0.6)
-        float3 xformOp:translate = (0.31947374, 0.9911045, -1.4651301)
+        float3 xformOp:translate = (0.31947374, 0.9567636, -1.4651301)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
     def "signopost_snow_tex_v01" (
         active = true
-        prepend references = @signopost-snow_tex_v01.usdz@
+        references = @signopost-snow_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.0016879439, 0.99561775, -1.555217)
+        float3 xformOp:translate = (-0.0016879439, 0.9612769, -1.555217)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
     def "dragon_anim_v03" (
         active = true
-        prepend references = @dragon_anim_v03.usdz@
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        references = @dragon_anim_v03.usdz@
     )
     {
+        rel material:binding = </Root/dragon_anim_v03/mtl/pasted__dragon_tex_v01_Dragon_MTL> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.0059894025, 0.0059894025, 0.0059894025)
-        float3 xformOp:translate = (-0.23775662, 0.99980056, -1.2181262)
+        float3 xformOp:translate = (-0.23775662, 0.9654597, -1.2181262)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AnimationLibrary"
+        {
+            token info:id = "RealityKit.AnimationLibrary"
+
+            def RealityKitAnimationFile "default_subtree_animation"
+            {
+                uniform bool looping = 1
+                uniform string name = "default subtree animation"
+            }
+
+            def RealityKitClipDefinition "Clip_default_subtree_animation"
+            {
+                uniform string[] clipNames = ["Clip", "disappear"]
+                uniform string sourceAnimationName = "default subtree animation"
+                uniform double[] startTimes = [0, 4.099166666666667]
+            }
+        }
     }
 
     def "TestAnimation" (
         active = true
-        prepend references = @TestAnimation.usda@
+        references = @TestAnimation.usda@
     )
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 1.226597, -1.3263357)
+        float3 xformOp:translate = (0, 1.1922561, -1.3263357)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def RealityKitTimeline "Dragon"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "Clip"
+                int blendLayer = 500
+                double duration = 4.099166666666667
+                uniform token info:id = "C58348A6-4193-418C-AF6E-48AFEBFC1152"
+                double loopCount = 6
+                bool separateAnimatedValue = 1
+                double startTime = 0
+                rel target = </Root/dragon_anim_v03>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
     }
 }
 
