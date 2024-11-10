@@ -10,15 +10,59 @@
 
 def Xform "Root"
 {
-    def "dude_warrior_tex_v01" (
+    def "dude_org_anim_v02" (
         active = true
-        prepend references = @dude-warrior_tex_v01.usdz@
+        prepend apiSchemas = ["MaterialBindingAPI"]
+        references = @dude-org_anim_v02.usdz@
     )
     {
-        quatf xformOp:orient = (1, 0, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0, 0)
+        rel material:binding = </Root/dude_org_anim_v02/mtl/dude_MTLSG> (
+            bindMaterialAs = "weakerThanDescendants"
+        )
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        float3 xformOp:translate = (0, 1.1, -1.3)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AnimationLibrary"
+        {
+            token info:id = "RealityKit.AnimationLibrary"
+
+            def RealityKitAnimationFile "default_subtree_animation"
+            {
+                uniform bool looping = 1
+                uniform string name = "default subtree animation"
+            }
+        }
+
+        def RealityKitComponent "RCP_BehaviorsContainer"
+        {
+            rel behaviors = </Root/dude_org_anim_v02/OnTap>
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
+
+        def Preliminary_Behavior "OnTap"
+        {
+            rel actions = </Root/dude_org_anim_v02/OnTap/Action>
+            uniform bool exclusive
+            rel triggers = </Root/dude_org_anim_v02/OnTap/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/dude_org_anim_v02>
+                token info:id = "TapGesture"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/TagTest>
+                rel animationLibraryKeyOverrideKey = </Root/dude_org_anim_v02/OnTap/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
     }
 }
 

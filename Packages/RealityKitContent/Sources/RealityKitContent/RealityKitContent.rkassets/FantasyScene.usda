@@ -116,14 +116,14 @@ def Xform "Root"
     def "microphone_tex_v01" (
         active = true
         customData = {
-            float3 rotationEulerHint = (3.0102754e-8, 4.8628372e-9, 1.3282453)
+            float3 rotationEulerHint = (-0.33301514, -0.0794983, -0.2256791)
         }
         references = @microphone_tex_v01.usdz@
     )
     {
-        quatf xformOp:orient = (0.7874579, 1.0353675e-8, 1.1191834e-8, 0.6163685)
+        quatf xformOp:orient = (0.9783823, -0.1689678, -0.020292314, -0.1174996)
         float3 xformOp:scale = (0.8, 0.8, 0.8)
-        float3 xformOp:translate = (-0.07995159, 0.9888246, -0.90457773)
+        float3 xformOp:translate = (0.11879301, 0.9248144, -0.6968537)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -225,14 +225,105 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 1.1922561, -1.3263357)
+        float3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AnimationLibrary"
+        {
+            uniform token info:id = "RealityKit.AnimationLibrary"
+
+            def RealityKitClipDefinition "Clip_default_subtree_animation"
+            {
+                uniform string[] clipNames = ["Appear", "Idle", "IdleToRight", "rightToIdle", "IdleToLeft", "LeftToIdle", "DefaultToArmour", "ArmourIdle", "ArmourToRight", "RightToArmour", "ArmourToLeft", "LeftToArmour", "ArmourDisappear"]
+                uniform string sourceAnimationName = "default subtree animation"
+                uniform double[] startTimes = [0, 1.2177512764750378, 2.688025954992436, 3.724204009433962, 4.487815120545073, 5.269592898322851, 5.864259564989518, 7.098310571473553, 8.62200389641058, 9.557648453878407, 10.285648453878407, 11.245648453878406, 11.837981787211739]
+            }
+        }
+
+        over "dude_org_anim_v02"
+        {
+            over "AnimationLibrary"
+            {
+                over "default_subtree_animation"
+                {
+                    uniform bool looping = 1
+                    uniform string name = "default subtree animation"
+                }
+            }
+
+            over "OnTap"
+            {
+                over "Action"
+                {
+                    rel affectedObjects = None
+                    rel animationLibraryKey = None
+                }
+            }
+        }
+
+        def RealityKitComponent "RCP_BehaviorsContainer"
+        {
+            rel behaviors = [
+                </Root/TestAnimation/OnAddedToScene>,
+                </Root/TestAnimation/OnTap>,
+            ]
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
+
+        def Preliminary_Behavior "OnAddedToScene"
+        {
+            rel actions = </Root/TestAnimation/OnAddedToScene/Action>
+            uniform bool exclusive
+            rel triggers = </Root/TestAnimation/OnAddedToScene/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/TestAnimation>
+                token info:id = "SceneTransition"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/Tag>
+                rel animationLibraryKeyOverrideKey = </Root/TestAnimation/OnAddedToScene/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
+
+        def Preliminary_Behavior "OnTap"
+        {
+            rel actions = </Root/TestAnimation/OnTap/Action>
+            uniform bool exclusive
+            rel triggers = </Root/TestAnimation/OnTap/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/TestAnimation>
+                token info:id = "TapGesture"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/Armour>
+                rel animationLibraryKeyOverrideKey = </Root/TestAnimation/OnTap/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
     }
 
     def RealityKitTimeline "Dragon"
     {
         def RealityKitTrack "Track"
         {
+            reorder nameChildren = ["Animation", "DragonAppear"]
             def RealityKitAction "Animation"
             {
                 string actionKind = "animation"
@@ -242,8 +333,86 @@ def Xform "Root"
                 uniform token info:id = "C58348A6-4193-418C-AF6E-48AFEBFC1152"
                 double loopCount = 0
                 bool separateAnimatedValue = 1
+                double startTime = 1.5631596649858657
+                rel target = </Root/dragon_anim_v03>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+
+            def RealityKitAction "DragonAppear"
+            {
+                string actionKind = "animation"
+                string animation = "Appear"
+                int blendLayer = 500
+                double duration = 1.5631596648858652
+                uniform token info:id = "E07E0D35-C706-4A7B-979A-1F187CE81BA5"
+                bool separateAnimatedValue = 1
                 double startTime = 0
                 rel target = </Root/dragon_anim_v03>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "Tag"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "Idle"
+                int blendLayer = 500
+                double duration = 1.4702746785173981
+                uniform token info:id = "0A5E467B-4DF8-42CC-8679-6AF54D065EE2"
+                double loopCount = 0
+                bool separateAnimatedValue = 1
+                double startTime = 0
+                rel target = </Root/TestAnimation>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "Armour"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Animation"
+            {
+                string actionKind = "animation"
+                string animation = "DefaultToArmour"
+                int blendLayer = 500
+                double duration = 1.2340510064840347
+                uniform token info:id = "279AC070-EE07-4D6A-A3E3-D6997922946C"
+                bool separateAnimatedValue = 1
+                double startTime = 0
+                rel target = </Root/TestAnimation>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+
+            def RealityKitAction "Animation2"
+            {
+                string actionKind = "animation"
+                string animation = "ArmourIdle"
+                int blendLayer = 500
+                double duration = 1.5236933249370281
+                uniform token info:id = "E6E22940-91B6-4C4F-93E3-970AC197A085"
+                double loopCount = 0
+                bool separateAnimatedValue = 1
+                double startTime = 1.153666666766667
+                rel target = </Root/TestAnimation>
 
                 def RealityKitStruct "handoffType"
                 {
