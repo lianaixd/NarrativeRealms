@@ -8,7 +8,6 @@ struct ContentView: View {
     @State private var immersiveSpaceIsShown = false
 
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
-    @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
 
     var onRestart: () -> Void
 
@@ -24,19 +23,27 @@ struct ContentView: View {
             } else {
                 // Main content view
                 VStack {
-                    Model3D(named: "Scene", bundle: realityKitContentBundle)
-                        .padding(.bottom, 30)
+                    Model3D(named: "logo_animation", bundle: realityKitContentBundle) { model in
+                        model
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(width: 300, height: 300)
 
                     Text("Build a story together")
                         .font(.title)
+                        .padding(.bottom, 10)
 
                     HStack {
                         Button("New Story") {
                             Task {
-                                switch await openImmersiveSpace(id: "ImmersiveSpace") {
+                                switch await openImmersiveSpace(id: "FantasyScene") {
                                 case .opened:
                                     immersiveSpaceIsShown = true
                                     showTagTutorial = true
+                                    tutorialStep = 1
                                 case .error, .userCancelled:
                                     fallthrough
                                 @unknown default:
@@ -58,8 +65,9 @@ struct ContentView: View {
                             .frame(minWidth: 120)
                     }
                     .padding(.horizontal, 10)
+                    .padding(.vertical, 40)
                 }
-                .padding(.vertical, 20)
+                .padding(.vertical, 40)
                 .frame(maxWidth: .infinity, alignment: .center)
             }
         }

@@ -24,33 +24,36 @@ struct NarrativeRealmsApp: App {
             )
             .frame(
                 width: showTagTutorial ? 300 : 640,
-                height: showTagTutorial ? 500 : 360
+                height: showTagTutorial ? 500 : 520
             )
         }
         .windowStyle(DefaultWindowStyle())
         .defaultSize(
             width: showTagTutorial ? 300 : 640,
-            height: showTagTutorial ? 500 : 360
+            height: showTagTutorial ? 500 : 460
         )
         .onChange(of: tutorialStep) { newStep in
             handleTutorialStepChange(newStep: newStep)
         }
 
+        // TagTutorialView WindowGroup
+        WindowGroup("Tag Tutorial") {
+            TagTutorialView(tutorialStep: $tutorialStep, onRestart: resetToNewStory)
+                .frame(width:300, height:400)
+        }
+        .defaultSize(width: 300, height: 400) // Adjusted to fit TagTutorialView content better
+        .windowResizability(.contentSize) // Allows the window to resize based on content
+
         // PaletteView WindowGroup
         WindowGroup("Palette Window", for: PaletteWindowID.self) { id in
             PaletteView(tutorialStep: $tutorialStep)
         }
-        .defaultSize(width: 640, height: 300)
+        .defaultSize(width: 640, height: 400)
         .windowResizability(.contentSize)
 
-        // Immersive Spaces
-        ImmersiveSpace(id: "ImmersiveSpace") {
-            ImmersiveView()
-        }
-        .defaultSize(width: 800, height: 600)
-
+        // Immersive Space
         ImmersiveSpace(id: "FantasyScene") {
-            ImmersiveView()
+            ImmersiveView(tutorialStep: $tutorialStep)
         }
         .defaultSize(width: 1000, height: 700)
     }
@@ -69,7 +72,6 @@ struct NarrativeRealmsApp: App {
             showTagTutorial = false
             tutorialStep = 1
             paletteWindowOpened = false
-            // Note: We cannot close the window programmatically, but resetting the state ensures it won't reopen unintentionally.
             NotificationCenter.default.post(name: .resetApp, object: nil)
         }
     }
