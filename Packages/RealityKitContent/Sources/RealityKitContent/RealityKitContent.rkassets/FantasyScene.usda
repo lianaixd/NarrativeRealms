@@ -68,8 +68,43 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.6830126, -0.6830128, -0.18301263, -0.18301274)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0.9767132, -1.3045777)
+        float3 xformOp:translate = (-2.0954758e-8, 0.910171, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "HierarchicalFade"
+        {
+            uniform token info:id = "RealityKit.HierarchicalFade"
+            float opacity = 0
+        }
+
+        def RealityKitComponent "RCP_BehaviorsContainer"
+        {
+            rel behaviors = </Root/storypath_tex_v01/OnNotification>
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
+
+        def Preliminary_Behavior "OnNotification"
+        {
+            rel actions = </Root/storypath_tex_v01/OnNotification/Action>
+            uniform bool exclusive
+            rel triggers = </Root/storypath_tex_v01/OnNotification/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/storypath_tex_v01>
+                token info:id = "Notification"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = None
+                rel animationLibraryKeyOverrideKey = </Root/storypath_tex_v01/OnNotification/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
     }
 
     def "lightbulb_tex_v01" (
@@ -170,7 +205,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.6, 0.6, 0.6)
-        float3 xformOp:translate = (0.31947374, 0.9567636, -1.4651301)
+        float3 xformOp:translate = (0.33180845, 0.9567636, -1.3784133)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -415,6 +450,26 @@ def Xform "Root"
                 rel target = </Root/TestAnimation>
 
                 def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "Appear"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Show"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 5.044498305722891
+                uniform token info:id = "7BF781CA-D7CA-4699-A3DC-376B1B731022"
+                double startTime = 0
+                rel target = </Root/storypath_tex_v01>
+
+                def RealityKitStruct "timingFunction"
                 {
                 }
             }
