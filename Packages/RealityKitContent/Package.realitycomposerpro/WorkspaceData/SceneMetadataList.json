@@ -83,6 +83,16 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
+        "Dragon",
+        "Track2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
         "Tag"
       ],
       {
@@ -93,6 +103,15 @@
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
         "TestAnimation"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "DragonInvisible"
       ],
       {
         "isExpanded" : true,
@@ -180,6 +199,16 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "DragonInvisible",
+        "Track"
       ],
       {
         "isExpanded" : true,

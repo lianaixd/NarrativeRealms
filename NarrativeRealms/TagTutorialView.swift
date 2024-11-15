@@ -52,7 +52,7 @@ struct TagTutorialView: View {
                 } else if tutorialStep == 9 {
                     Text("I’m feeling great up here at the start of our story! I think this adventure will start on a high note.")
                 } else if tutorialStep == 10 {
-                    Text("See this microphone? When you pick it up, and it’ll capture whatever you say to add to the story.")
+                    Text("See this microphone? When you pick it up, it’ll capture whatever you say to add to the story.")
                 } else if tutorialStep == 11 {
                     Text("Why not start with something classic? Try saying, ‘Once upon a time there was a curious villager named Tag’.")
                 } else if tutorialStep == 12 {
