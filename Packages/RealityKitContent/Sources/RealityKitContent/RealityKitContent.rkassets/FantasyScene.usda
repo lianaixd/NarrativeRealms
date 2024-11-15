@@ -10,6 +10,7 @@
 
 def Xform "Root"
 {
+    reorder nameChildren = ["Armour", "DragonInvisible"]
     def "_010_table_tex_v01" (
         customData = {
             float3 rotationEulerHint = (-1.5707964, 1.5707963, 0)
@@ -25,12 +26,15 @@ def Xform "Root"
 
     def "dude_normal_tex_v01" (
         active = false
+        customData = {
+            float3 rotationEulerHint = (0, 0, 0)
+        }
         prepend references = @dude-normal_tex_v01.usdz@
     )
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.56654334, 1.4065162, -1.81977)
+        float3 xformOp:translate = (1.624922, 1.4065162, -1.383944)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "Collider"
@@ -68,7 +72,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.6830126, -0.6830128, -0.18301263, -0.18301274)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0.9767132, -1.3045777)
+        float3 xformOp:translate = (-2.1187589e-8, 0.88906485, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -150,7 +154,6 @@ def Xform "Root"
     }
 
     def "treasure_tex_v01" (
-        active = true
         customData = {
             float3 rotationEulerHint = (0.006982207, 0.0069822036, 0.006982207)
         }
@@ -164,7 +167,6 @@ def Xform "Root"
     }
 
     def "cottage_teapot_tex_v01" (
-        active = true
         references = @cottage-teapot_tex_v01.usdz@
     )
     {
@@ -186,7 +188,6 @@ def Xform "Root"
     }
 
     def "dragon_anim_v03" (
-        active = true
         prepend apiSchemas = ["MaterialBindingAPI"]
         references = @dragon_anim_v03.usdz@
     )
@@ -216,6 +217,41 @@ def Xform "Root"
                 uniform double[] startTimes = [0, 1.5631596648858652, 4.099166666666667]
             }
         }
+
+        def RealityKitComponent "RCP_BehaviorsContainer"
+        {
+            rel behaviors = </Root/dragon_anim_v03/OnAddedToScene>
+            uniform token info:id = "RCP.BehaviorsContainer"
+        }
+
+        def Preliminary_Behavior "OnAddedToScene"
+        {
+            rel actions = </Root/dragon_anim_v03/OnAddedToScene/Action>
+            uniform bool exclusive
+            rel triggers = </Root/dragon_anim_v03/OnAddedToScene/Trigger>
+
+            def Preliminary_Trigger "Trigger"
+            {
+                rel affectedObjects = </Root/dragon_anim_v03>
+                token info:id = "SceneTransition"
+            }
+
+            def Preliminary_Action "Action"
+            {
+                rel affectedObjects = None
+                rel animationLibraryKeyOverrideKey = </Root/dragon_anim_v03/OnAddedToScene/Trigger>
+                token info:id = "PlayTimeline"
+                int loops = 0
+                int performCount = 1
+                token type = "serial"
+            }
+        }
+
+        def RealityKitComponent "HierarchicalFade"
+        {
+            uniform token info:id = "RealityKit.HierarchicalFade"
+            float opacity = 0
+        }
     }
 
     def "TestAnimation" (
@@ -225,7 +261,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0, 0)
+        float3 xformOp:translate = (-0.32, 0.2, -0.2)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "AnimationLibrary"
@@ -321,9 +357,10 @@ def Xform "Root"
 
     def RealityKitTimeline "Dragon"
     {
+        reorder nameChildren = ["Track", "Track2"]
         def RealityKitTrack "Track"
         {
-            reorder nameChildren = ["Animation", "DragonAppear"]
+            reorder nameChildren = ["Animation", "DragonAppear", "Show"]
             def RealityKitAction "Animation"
             {
                 string actionKind = "animation"
@@ -333,7 +370,7 @@ def Xform "Root"
                 uniform token info:id = "C58348A6-4193-418C-AF6E-48AFEBFC1152"
                 double loopCount = 0
                 bool separateAnimatedValue = 1
-                double startTime = 1.5631596649858657
+                double startTime = 1.5631596649858646
                 rel target = </Root/dragon_anim_v03>
 
                 def RealityKitStruct "handoffType"
@@ -353,6 +390,23 @@ def Xform "Root"
                 rel target = </Root/dragon_anim_v03>
 
                 def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+
+        def RealityKitTrack "Track2"
+        {
+            def RealityKitAction "Show"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 0.27073423901873483
+                uniform token info:id = "43ECF17C-E432-4F80-8481-6AE7E7877CE2"
+                double startTime = 0
+                rel target = </Root/dragon_anim_v03>
+
+                def RealityKitStruct "timingFunction"
                 {
                 }
             }
@@ -415,6 +469,42 @@ def Xform "Root"
                 rel target = </Root/TestAnimation>
 
                 def RealityKitStruct "handoffType"
+                {
+                }
+            }
+        }
+    }
+
+    def Xform "DirectionalLight"
+    {
+        float3 xformOp:translate = (1.6128147, 1.6, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "DirectionalLight"
+        {
+            token info:id = "RealityKit.DirectionalLight"
+            float intensity = 1145.708
+
+            def RealityKitStruct "Shadow"
+            {
+            }
+        }
+    }
+
+    def RealityKitTimeline "DragonInvisible"
+    {
+        def RealityKitTrack "Track"
+        {
+            def RealityKitAction "Hide"
+            {
+                string actionKind = "hide"
+                int blendLayer = 300
+                double duration = 1
+                uniform token info:id = "7AB8EDAB-DB0A-4BD1-9592-1CD90FC9774E"
+                double startTime = 0
+                rel target = </Root/dragon_anim_v03>
+
+                def RealityKitStruct "timingFunction"
                 {
                 }
             }
