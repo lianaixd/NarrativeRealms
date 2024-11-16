@@ -106,7 +106,8 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "TestAnimation"
+        "microphone_tex_v01",
+        "Materials"
       ],
       {
         "isExpanded" : true,
@@ -144,6 +145,15 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Model2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "microphone_tex_v01"
       ],
       {
         "isExpanded" : true,
