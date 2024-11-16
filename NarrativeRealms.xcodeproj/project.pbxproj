@@ -8,11 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3602C45B2CE68A5E00354D08 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 63BC49FE2CDEA78600D1E56E /* RealityKitContent */; };
-		3602C4632CE6938600354D08 /* dude-normal_tex_v01 2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 3602C4622CE6938600354D08 /* dude-normal_tex_v01 2.usdz */; };
 		63BB90412CD96CA600A7A885 /* logo_animation.scn in Resources */ = {isa = PBXBuildFile; fileRef = 63BB90402CD96CA600A7A885 /* logo_animation.scn */; };
 		63D2AC0A2CD668C600ECB336 /* PaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D2AC092CD668BC00ECB336 /* PaletteView.swift */; };
 		63D2AC0C2CD6693400ECB336 /* TagTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D2AC0B2CD6693200ECB336 /* TagTutorialView.swift */; };
-		63E5C98A2CDFAFBE00216356 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 63EC6AE52C0CF80700EEB191 /* RealityKitContent */; settings = {ATTRIBUTES = (Required, ); }; };
 		63EC6AE82C0CF80700EEB191 /* NarrativeRealmsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EC6AE72C0CF80700EEB191 /* NarrativeRealmsApp.swift */; };
 		63EC6AEA2C0CF80700EEB191 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EC6AE92C0CF80700EEB191 /* ContentView.swift */; };
 		63EC6AEC2C0CF80700EEB191 /* ImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EC6AEB2C0CF80700EEB191 /* ImmersiveView.swift */; };
@@ -21,7 +19,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3602C4622CE6938600354D08 /* dude-normal_tex_v01 2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dude-normal_tex_v01 2.usdz"; sourceTree = "<group>"; };
 		63BB90402CD96CA600A7A885 /* logo_animation.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = logo_animation.scn; path = Packages/RealityKitContent/logo_animation.scn; sourceTree = "<group>"; };
 		63D2AC092CD668BC00ECB336 /* PaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteView.swift; sourceTree = "<group>"; };
 		63D2AC0B2CD6693200ECB336 /* TagTutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTutorialView.swift; sourceTree = "<group>"; };
@@ -46,7 +43,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3602C45B2CE68A5E00354D08 /* RealityKitContent in Frameworks */,
-				63E5C98A2CDFAFBE00216356 /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,7 +52,6 @@
 		63EC6AD72C0CF80700EEB191 = {
 			isa = PBXGroup;
 			children = (
-				3602C4622CE6938600354D08 /* dude-normal_tex_v01 2.usdz */,
 				63BB90402CD96CA600A7A885 /* logo_animation.scn */,
 				63EC6AE22C0CF80700EEB191 /* NarrativeRealms */,
 				63EC6AE32C0CF80700EEB191 /* Packages */,
@@ -176,7 +171,6 @@
 			files = (
 				63EC6AF12C0CF80900EEB191 /* Preview Assets.xcassets in Resources */,
 				63EC6AEE2C0CF80900EEB191 /* Assets.xcassets in Resources */,
-				3602C4632CE6938600354D08 /* dude-normal_tex_v01 2.usdz in Resources */,
 				63BB90412CD96CA600A7A885 /* logo_animation.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
