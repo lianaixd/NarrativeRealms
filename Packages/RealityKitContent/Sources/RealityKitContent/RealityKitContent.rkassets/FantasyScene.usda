@@ -129,6 +129,20 @@ def Xform "Root"
         float3 xformOp:scale = (0.8, 0.8, 0.8)
         float3 xformOp:translate = (0.11879301, 0.9248144, -0.6968537)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Materials"
+        {
+            over "Microphone_MTL"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "PreviewSurface"
+                {
+                    delete float inputs:opacity.connect = </Root/microphone_tex_v01/Materials/Microphone_MTL/baseColorTextureShader.outputs:a>
+                }
+            }
+        }
     }
 
     def "signpost_forest_tex_v01" (
@@ -238,7 +252,8 @@ def Xform "Root"
 
             def Preliminary_Action "Action"
             {
-                rel affectedObjects = None
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/Dragon>
                 rel animationLibraryKeyOverrideKey = </Root/dragon_anim_v03/OnAddedToScene/Trigger>
                 token info:id = "PlayTimeline"
                 int loops = 0
