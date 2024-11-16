@@ -56,13 +56,13 @@ struct TagTutorialView: View {
                 } else if tutorialStep == 11 {
                     Text("Why not start with something classic? Try saying, ‘Once upon a time there was a curious villager named Tag’.")
                 } else if tutorialStep == 12 {
-                    Text("*Record speech into new window* (remove this later)")
+                    Text("*Recording*")
                 } else if tutorialStep == 13 {
                     Text("Nice! Look at that—a bit of our story is written, and some of the fantasy world is coming to life on the table!")
                 } else if tutorialStep == 14 {
                     Text("Now, let’s move to the middle of the story, where things get a little… dicey. Put me over there, right in the middle.")
                 } else if tutorialStep == 15 {
-                    Text("Yikes, I’m feeling uneasy here! This is where bad things usually happen…")
+                    Text("Yikes, I’m feeling uneasy here! This is where bad things usually happen, the lowest point of the story.")
                 } else if tutorialStep == 16 {
                     Text("Tag explored a cave and found a dragon! He ran out as fast as he could!")
                         .italic()
@@ -71,7 +71,7 @@ struct TagTutorialView: View {
                 } else if tutorialStep == 18 {
                     Text("A happy ending! How about we finish with something like, ‘And they all lived happily ever after’?")
                 } else if tutorialStep == 19 {
-                    Text("*Record speech into new window* (remove this later)")
+                    Text("*Recording*")
                 } else if tutorialStep == 20 {
                     Text("See? The world fills up as the story grows. We have a beginning, middle, and end!")
                 } else if tutorialStep == 21 {
@@ -79,7 +79,7 @@ struct TagTutorialView: View {
                 } else if tutorialStep == 22 {
                     Text("Here’s a trick! Tap the lightbulb for a little inspiration.")
                 } else if tutorialStep == 23 {
-                    Text("Aha! A treasure chest appeared. I heard a legend of a treasure only the truly brave can find. Let’s add that!")
+                    Text("Aha! Treasure appeared. I heard a legend of a treasure only the truly brave can find. Let’s add that!")
                 } else if tutorialStep == 24 {
                     Text("Let’s jump to a spot between the dragon scene and the ending. Place me there, and let’s wrap up our story with a twist!")
                 } else if tutorialStep == 25 {
@@ -87,7 +87,7 @@ struct TagTutorialView: View {
                 } else if tutorialStep == 26 {
                     Text("This is awesome! Now, you tell the next part of the story.")
                 } else if tutorialStep == 27 {
-                    Text("Nice work! You can play back the whole story anytime or save it to share with others.")
+                    Text("Nice work! Hit the Play button to play back the whole story anytime or save it to share with others.")
                 } else if tutorialStep == 28 {
                     Text("Whispers filled the village of a hidden treasure guarded by ancient magic. Tag had often dreamed of discovering it. A treasure only the truly brave could hope to find. And now, with a heart full of courage and curiosity, his time had come to seek it out.")
                 } else if tutorialStep == 29 {

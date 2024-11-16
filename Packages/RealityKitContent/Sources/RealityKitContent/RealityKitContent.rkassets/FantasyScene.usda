@@ -138,7 +138,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.11769974, 0.96175885, -0.9312905)
+        float3 xformOp:translate = (-0.14536753, 0.96175885, -1.6192367)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -172,7 +172,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.6, 0.6, 0.6)
-        float3 xformOp:translate = (0.31947374, 0.9567636, -1.4651301)
+        float3 xformOp:translate = (0.31137964, 0.9567636, -1.3672968)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -183,7 +183,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.0016879439, 0.9612769, -1.555217)
+        float3 xformOp:translate = (-0.0016879439, 0.9612769, -0.9232943)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
