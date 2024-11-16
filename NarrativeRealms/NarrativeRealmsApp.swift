@@ -10,11 +10,19 @@ struct NarrativeRealmsApp: App {
     @State private var showTagTutorial = false
     @State private var tutorialStep = 1
     @State private var paletteWindowOpened = false
-
+    @State private var transcriptionWindows: Set<TranscriptionWindowID> = []
+    @State private var nextTranscriptionID = 0
+    
     @Environment(\.openWindow) var openWindow
     @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+    
+    init() {
+            setupNotifications()  // Initialize notification observer when app starts
+        }
 
     var body: some Scene {
+    
+        
         // Main Content WindowGroup
         WindowGroup {
             ContentView(
@@ -56,6 +64,16 @@ struct NarrativeRealmsApp: App {
             ImmersiveView(tutorialStep: $tutorialStep)
         }
         .defaultSize(width: 1000, height: 700)
+        
+        // Speech to Text transcription window group
+        WindowGroup(for: TranscriptionWindowID.self) { $windowID in
+                    if let id = windowID {
+                        TranscriptionView(text: id.text)
+                    }
+                }
+                .defaultSize(width: 400, height: 300)
+                .windowStyle(.automatic)
+                .windowResizability(.contentSize)
     }
 
     // Handle tutorial step changes
@@ -75,4 +93,29 @@ struct NarrativeRealmsApp: App {
             NotificationCenter.default.post(name: .resetApp, object: nil)
         }
     }
+    
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            forName: .createTranscriptionWindow,
+            object: nil,
+            queue: .main
+        ) { notification in
+            if let text = notification.userInfo?["text"] as? String {
+                createNewTranscriptionWindow(withText: text)
+            }
+        }
+    }
+    
+    func createNewTranscriptionWindow(withText text: String) {
+           let windowID = TranscriptionWindowID(id: nextTranscriptionID, text: text)
+           transcriptionWindows.insert(windowID)
+           nextTranscriptionID += 1
+           openWindow(value: windowID)
+       }
+    
+    private func getTranscriptionText(for windowID: TranscriptionWindowID) -> String {
+        // In a real app, you'd want to store and retrieve the text for each window ID
+        return "Transcription \(windowID.id)"
+    }
+    
 }

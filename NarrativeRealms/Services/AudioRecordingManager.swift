@@ -9,8 +9,14 @@ import SwiftUI
 import Speech
 import AVFoundation
 
+// Notification name for when recording completes
+extension Notification.Name {
+    static let recordingDidComplete = Notification.Name("recordingDidComplete")
+}
+
 enum RecordingError: Error {
     case recognitionRequestFailed
+    case audioSessionSetupFailed
 }
 
 class AudioRecordingManager: NSObject, ObservableObject {
@@ -51,56 +57,98 @@ class AudioRecordingManager: NSObject, ObservableObject {
     }
     
     func startRecording() throws {
-        // Reset any existing task
-        recognitionTask?.cancel()
-        recognitionTask = nil
-        
-        // Configure the audio session
-        let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
-        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-        
-        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-        
-        guard let recognitionRequest = recognitionRequest else {
-            throw RecordingError.recognitionRequestFailed
-        }
-        
-        recognitionRequest.shouldReportPartialResults = true
-        
-        // Create and configure the input node
-        let inputNode = audioEngine.inputNode
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
-        
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
-            self?.recognitionRequest?.append(buffer)
-        }
-        
-        audioEngine.prepare()
-        try audioEngine.start()
-        
-        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
-            var isFinal = false
+            // Ensure we're not already recording
+            guard !isRecording else { return }
             
-            if let result = result {
-                self?.transcribedText = result.bestTranscription.formattedString
-                isFinal = result.isFinal
+            // Reset any existing task and request
+            cleanupRecognitionTask()
+            
+            // Configure the audio session
+            do {
+                let audioSession = AVAudioSession.sharedInstance()
+                try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+                try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            } catch {
+                throw RecordingError.audioSessionSetupFailed
             }
             
-            if error != nil || isFinal {
-                self?.stopRecording()
+            recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+            
+            guard let recognitionRequest = recognitionRequest else {
+                throw RecordingError.recognitionRequestFailed
             }
+            
+            recognitionRequest.shouldReportPartialResults = true
+            
+            // Create and configure the input node
+            let inputNode = audioEngine.inputNode
+            let recordingFormat = inputNode.outputFormat(forBus: 0)
+            
+            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
+                self?.recognitionRequest?.append(buffer)
+            }
+            
+            audioEngine.prepare()
+            try audioEngine.start()
+            
+            recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { [weak self] result, error in
+                guard let self = self else { return }
+                
+                if let result = result {
+                    self.transcribedText = result.bestTranscription.formattedString
+                    
+                    if result.isFinal {
+                        self.handleFinalResult()
+                    }
+                }
+                
+                if error != nil {
+                    self.stopRecording()
+                }
+            }
+            
+            isRecording = true
         }
-        
-        isRecording = true
-    }
+    
+    private func handleFinalResult() {
+           let finalText = self.transcribedText
+           DispatchQueue.main.async {
+               // Post notification with the final transcribed text
+               NotificationCenter.default.post(
+                   name: .recordingDidComplete,
+                   object: nil,
+                   userInfo: ["transcribedText": finalText]
+               )
+           }
+           self.stopRecording()
+       }
+    
+    private func cleanupRecognitionTask() {
+            recognitionTask?.cancel()
+            recognitionTask = nil
+            recognitionRequest?.endAudio()
+            recognitionRequest = nil
+        }
     
     func stopRecording() {
-        audioEngine.stop()
-        audioEngine.inputNode.removeTap(onBus: 0)
-        recognitionRequest?.endAudio()
-        recognitionTask?.cancel()
+            guard isRecording else { return }
+            
+            // Stop the audio engine and remove the tap
+            if audioEngine.isRunning {
+                audioEngine.stop()
+                audioEngine.inputNode.removeTap(onBus: 0)
+            }
+            
+            // Cleanup recognition task
+            cleanupRecognitionTask()
+            
+            // Deactivate audio session
+            try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+            
+            isRecording = false
+        }
         
-        isRecording = false
-    }
+        deinit {
+            stopRecording()
+        }
 }
