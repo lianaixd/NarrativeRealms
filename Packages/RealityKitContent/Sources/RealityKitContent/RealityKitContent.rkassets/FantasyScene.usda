@@ -10,6 +10,7 @@
 
 def Xform "Root"
 {
+    reorder nameChildren = ["_010_table_tex_v01", "dude_normal_tex_v01", "storypath_tex_v01", "lightbulb_tex_v01", "microphone_tex_v01", "signpost_forest_tex_v01", "signpost_desert_tex_v01", "treasure_tex_v01", "cottage_teapot_tex_v01", "signopost_snow_tex_v01", "dragon_anim_v03", "TestAnimation", "Dragon", "Tag", "Armour", "ObjectAppear"]
     def "_010_table_tex_v01" (
         customData = {
             float3 rotationEulerHint = (-1.5707964, 1.5707963, 0)
@@ -74,31 +75,32 @@ def Xform "Root"
         def RealityKitComponent "HierarchicalFade"
         {
             uniform token info:id = "RealityKit.HierarchicalFade"
-            float opacity = 0
+            float opacity = 1
         }
 
         def RealityKitComponent "RCP_BehaviorsContainer"
         {
-            rel behaviors = </Root/storypath_tex_v01/OnNotification>
+            rel behaviors = </Root/storypath_tex_v01/OnAddedToScene>
             uniform token info:id = "RCP.BehaviorsContainer"
         }
 
-        def Preliminary_Behavior "OnNotification"
+        def Preliminary_Behavior "OnAddedToScene"
         {
-            rel actions = </Root/storypath_tex_v01/OnNotification/Action>
+            rel actions = </Root/storypath_tex_v01/OnAddedToScene/Action>
             uniform bool exclusive
-            rel triggers = </Root/storypath_tex_v01/OnNotification/Trigger>
+            rel triggers = </Root/storypath_tex_v01/OnAddedToScene/Trigger>
 
             def Preliminary_Trigger "Trigger"
             {
                 rel affectedObjects = </Root/storypath_tex_v01>
-                token info:id = "Notification"
+                token info:id = "SceneTransition"
             }
 
             def Preliminary_Action "Action"
             {
-                rel affectedObjects = None
-                rel animationLibraryKeyOverrideKey = </Root/storypath_tex_v01/OnNotification/Trigger>
+                rel affectedObjects = </Root>
+                rel animationLibraryKey = </Root/ObjectAppear>
+                rel animationLibraryKeyOverrideKey = </Root/storypath_tex_v01/OnAddedToScene/Trigger>
                 token info:id = "PlayTimeline"
                 int loops = 0
                 int performCount = 1
@@ -456,22 +458,17 @@ def Xform "Root"
         }
     }
 
-    def RealityKitTimeline "Appear"
+    def RealityKitTimeline "ObjectAppear"
     {
         def RealityKitTrack "Track"
         {
-            def RealityKitAction "Show"
+            def RealityKitAction "Enable_Entity"
             {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 5.044498305722891
-                uniform token info:id = "7BF781CA-D7CA-4699-A3DC-376B1B731022"
+                string actionKind = "enable"
+                double duration = 0
+                uniform token info:id = "44E86638-C8A3-40E6-9A7F-E8BE8F2C5ECF"
                 double startTime = 0
                 rel target = </Root/storypath_tex_v01>
-
-                def RealityKitStruct "timingFunction"
-                {
-                }
             }
         }
     }

@@ -17,7 +17,10 @@ let package = Package(
     targets: [
         .target(
             name: "RealityKitContent",
-            dependencies: []
+            dependencies: [],
+            path: "Sources", // Ensure the correct path points to your source files
+            exclude: ["README.md"], // Exclude any non-code files if necessary
+            resources: [] // Remove any resources if none exist
         ),
     ]
 )

@@ -16,8 +16,78 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
+        "Model10",
+        "Materials",
+        "Signpost_snow_MTL"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : true
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "Model9",
+        "Materials",
+        "Signpost_snow_MTL"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : true
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "signopost_snow_tex_v01",
+        "Materials",
+        "Signpost_snow_MTL"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : true
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
         "Armour",
         "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "storypath_tex_v01",
+        "Materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "dude_org_anim_v02_1",
+        "mtl"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "Tag"
       ],
       {
         "isExpanded" : true,
@@ -35,7 +105,9 @@
       },
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Model1"
+        "Root",
+        "DragonInvisible",
+        "Track"
       ],
       {
         "isExpanded" : true,
@@ -44,13 +116,58 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "Model10",
-        "Materials",
-        "Signpost_snow_MTL"
+        "ObjectAppear",
+        "Track"
       ],
       {
-        "isExpanded" : false,
-        "isLocked" : true
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "ObjectAppear"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "dragon_anim_v03",
+        "mtl"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "Timeline",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "Dragon"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Model1"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       },
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
@@ -63,14 +180,20 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "SpatialAudio"
+        "Armour"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "dude_normal_tex_v01"
       ],
       {
         "isExpanded" : false,
-        "isLocked" : false,
-        "selectedAudioFilePrim" : {
-          "string" : "\/Root\/pop_8_mp3"
-        }
+        "isLocked" : false
       },
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
@@ -94,114 +217,7 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "microphone_tex_v01"
-      ],
-      {
-        "isExpanded" : false,
-        "isLocked" : false,
-        "selectedAudioFilePrim" : {
-          "string" : "\/Root\/pop_8_mp3"
-        }
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
         "Dragon",
-        "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "dude_normal_tex_v01"
-      ],
-      {
-        "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Tag"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "dragon_anim_v03",
-        "mtl"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "dude_org_anim_v02_1",
-        "mtl"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "DragonInvisible",
-        "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Armour"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "signopost_snow_tex_v01",
-        "Materials",
-        "Signpost_snow_MTL"
-      ],
-      {
-        "isExpanded" : false,
-        "isLocked" : true
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Dragon"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "OpacityUp",
         "Track"
       ],
       {
@@ -213,66 +229,6 @@
         "Root",
         "dude_org_anim_v03_noBlendShapes",
         "mtl"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "storypath_tex_v01",
-        "Materials"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Timeline",
-        "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Model9",
-        "Materials",
-        "Signpost_snow_MTL"
-      ],
-      {
-        "isExpanded" : false,
-        "isLocked" : true
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Appear"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Appear",
-        "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Show",
-        "Track"
       ],
       {
         "isExpanded" : true,
@@ -345,6 +301,15 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
+        "Sphere_Right"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
         "Sphere_Left"
       ],
       {
@@ -354,15 +319,6 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AF09ED6F-1707-48FD-8720-65B998362C09",
-        "Root",
-        "Sphere_Right"
       ],
       {
         "isExpanded" : true,
