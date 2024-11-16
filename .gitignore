@@ -7,6 +7,9 @@ xcuserdata/
 **/xcuserdata/
 *.xcuserdata
 *.xcuserstate
+**/*.xcuserdatad/
+**/*.xcuserstate
+.swiftpm/xcode/xcuserdata/
 
 ## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
 *.xcscmblueprint
