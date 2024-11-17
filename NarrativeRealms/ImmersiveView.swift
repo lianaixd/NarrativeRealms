@@ -72,6 +72,31 @@ extension ImmersiveView {
                            }
             }
         }
+    
+    private func exploreScene() {
+            guard let scene = sceneEntity else { return }
+            
+            print("🔍 Scene Hierarchy:")
+            printEntityDetails(scene, depth: 0)
+        }
+        
+        private func printEntityDetails(_ entity: Entity, depth: Int) {
+            let indent = String(repeating: "  ", count: depth)
+            print("\(indent)📦 Entity: \(entity.name)")
+            
+            // Print component information
+            if let modelEntity = entity as? ModelEntity {
+                print("\(indent)   - Type: ModelEntity")
+                print("\(indent)   - Is Enabled: \(modelEntity.isEnabled)")
+                print("\(indent)   - Has Collision: \(modelEntity.collision != nil)")
+                print("\(indent)   - Position: \(modelEntity.position)")
+            }
+            
+            // Recursively print children
+            for child in entity.children {
+                printEntityDetails(child, depth: depth + 1)
+            }
+        }
 }
 
 struct ImmersiveView: View {
@@ -92,12 +117,24 @@ struct ImmersiveView: View {
                                   print("❌ Microphone group not found")
                               }
                               content.add(scene)
+                  
+                  // Update visibility based on tutorial step
+                  updateSceneForTutorialStep(scene: scene, step: tutorialStep)
                           }
           }
           .edgesIgnoringSafeArea(.all)
           .onAppear {
               loadFantasyScene()
+              DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                     exploreScene() // Give the scene time to load
+                 }
           }
+          .onChange(of: tutorialStep) { oldValue, newValue in
+                      // Update scene when tutorial step changes
+                      if let scene = sceneEntity {
+                          updateSceneForTutorialStep(scene: scene, step: newValue)
+                      }
+                  }
           .gesture(
                      TapGesture()
                          .targetedToAnyEntity()
@@ -106,6 +143,72 @@ struct ImmersiveView: View {
                          }
                  )
       }
+    
+    private func updateSceneForTutorialStep(scene: Entity, step: Int) {
+            // Helper function to recursively find entities by name
+        print("updateSceneForTutorialStep")
+            func findEntity(named: String, in entity: Entity) -> Entity? {
+                if entity.name == named {
+                    return entity
+                }
+                for child in entity.children {
+                    if let found = findEntity(named: named, in: child) {
+                        return found
+                    }
+                }
+                return nil
+            }
+            
+            // Example: Show/hide entities based on tutorial step
+            switch step {
+            case 1:
+                print("updateSceneForTutorialStep: step 0")
+                findEntity(named: "_010_table_tex_v01", in: scene)?.isEnabled = false
+                findEntity(named: "storypath_tex_v01", in: scene)?.isEnabled = false
+                findEntity(named: "signpost_forest_tex_v01", in: scene)?.isEnabled = false
+                findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = false
+                findEntity(named: "lightbulb_tex_v01", in: scene)?.isEnabled = false
+                findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = false
+                findEntity(named: "signopost_snow_tex_v01", in: scene)?.isEnabled = false
+                findEntity(named: "dragon_anim_v03", in: scene)?.isEnabled = false
+                findEntity(named: "signpost_desert_tex_v01", in: scene)?.isEnabled = false
+                findEntity(named: "microphone_tex_v01", in: scene)?.isEnabled = false
+                break;
+            case 4:
+                findEntity(named: "_010_table_tex_v01", in: scene)?.isEnabled = true
+                break;
+            case 6:
+                findEntity(named: "storypath_tex_v01", in: scene)?.isEnabled = true
+                break;
+            case 10:
+                findEntity(named: "microphone_tex_v01", in: scene)?.isEnabled = true
+                break;
+            case 13:
+                findEntity(named: "signpost_forest_tex_v01", in: scene)?.isEnabled = true
+                break;
+            case 17:
+                findEntity(named: "dragon_anim_v03", in: scene)?.isEnabled = true
+                break;
+            case 20:
+                findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = true
+                break;
+            case 22:
+                findEntity(named: "lightbulb_tex_v01", in: scene)?.isEnabled = true
+                break;
+            case 23:
+                findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = true
+                break;
+            case 24:
+                findEntity(named: "signopost_snow_tex_v01", in: scene)?.isEnabled = true
+                break;
+            case 27:
+                findEntity(named: "signpost_desert_tex_v01", in: scene)?.isEnabled = true
+                break;
+            default:
+                // Final state or reset state
+                break
+            }
+        }
     
     private func makeAllMicrophonePartsInteractive(_ groupEntity: Entity) {
         print("🎯 Setting up microphone interaction. Entity type: \(type(of: groupEntity))")
@@ -158,24 +261,6 @@ struct ImmersiveView: View {
         ])
         entity.collision = CollisionComponent(shapes: [boxShape])
         entity.components.set(InputTargetComponent())
-    }
-    
-    // Helper function to print detailed entity information
-    private func printEntityDetails(_ entity: Entity, depth: Int) {
-        let indent = String(repeating: "  ", count: depth)
-        print("\(indent)Entity: \(entity.name), Type: \(type(of: entity))")
-        
-        // Print components if it's a ModelEntity
-        if let modelEntity = entity as? ModelEntity {
-            print("\(indent)  - Has Model Component: \(modelEntity.model != nil)")
-            print("\(indent)  - Has Collision: \(modelEntity.collision != nil)")
-            print("\(indent)  - Has Input Target: \(modelEntity.components[InputTargetComponent.self] != nil)")
-        }
-        
-        // Recursively print children
-        for child in entity.children {
-            printEntityDetails(child, depth: depth + 1)
-        }
     }
 
     private func handleEntityTap(_ entity: Entity) {
@@ -259,7 +344,6 @@ struct ImmersiveView: View {
                 let scene = try await Entity.load(named: "FantasyScene", in: realityKitContentBundle)
                 sceneEntity = scene
                 print("✅ FantasyScene loaded successfully.")
-
             } catch {
                 print("❌ Error loading FantasyScene: \(error.localizedDescription)")
             }
