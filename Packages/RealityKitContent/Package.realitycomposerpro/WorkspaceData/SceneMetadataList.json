@@ -65,6 +65,16 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
+        "BulbTapped",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
         "dude_org_anim_v03_noBlendShapes",
         "mtl"
       ],
@@ -98,15 +108,6 @@
         "Root",
         "ObjectAppear",
         "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "TestAnimation"
       ],
       {
         "isExpanded" : true,
@@ -171,6 +172,15 @@
       },
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "BulbTapped"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root"
       ],
       {
@@ -210,16 +220,6 @@
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
         "Dragon"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Timeline",
-        "Track"
       ],
       {
         "isExpanded" : true,
