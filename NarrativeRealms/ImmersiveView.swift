@@ -335,22 +335,46 @@ struct ImmersiveView: View {
     }
     
     private func loadFantasyScene() {
-        Task {
-            do {
-                let scene = try await Entity.load(named: "FantasyScene", in: realityKitContentBundle)
-                sceneEntity = scene
-                
-                // Find and setup the draggable entity
-                if let draggableEntity = findEntity(named: "TestAnimation", in: scene) {
-                    print("✅ Found Tag!")
-                    setupGestures(for: draggableEntity)
+            Task {
+                do {
+                    let scene = try await Entity.load(named: "FantasyScene", in: realityKitContentBundle)
+                    sceneEntity = scene
+                    
+                    // Find and setup the draggable entity
+                    if let draggableEntity = findEntity(named: "TestAnimation", in: scene) {
+                        setupGestures(for: draggableEntity)
+                    }
+                    
+                    // Find and setup all indicators
+                    let indicatorNames = ["Indicator8", "Indicator14", "Indicator17", "Indicator21", "Indicator24"]
+                    for name in indicatorNames {
+                        if let indicator = findEntity(named: name, in: scene) {
+                            GestureStateComponent.shared.indicators.append(indicator)
+                            setupIndicator(indicator)
+                        }
+                    }
+                    
+                    print("✅ FantasyScene loaded successfully.")
+                } catch {
+                    print("❌ Error loading FantasyScene: \(error.localizedDescription)")
                 }
-                print("✅ FantasyScene loaded successfully.")
-            } catch {
-                print("❌ Error loading FantasyScene: \(error.localizedDescription)")
             }
         }
-    }
+    
+    private func setupIndicator(_ entity: Entity) {
+            // Add collision component for detection
+            if entity.components[CollisionComponent.self] == nil {
+                let bounds = entity.visualBounds(recursive: true, relativeTo: nil)
+                let size = SIMD3<Float>(
+                    bounds.max.x - bounds.min.x,
+                    bounds.max.y - bounds.min.y,
+                    bounds.max.z - bounds.min.z
+                )
+                entity.components[CollisionComponent.self] = CollisionComponent(
+                    shapes: [.generateBox(size: size)]
+                )
+            }
+        }
     
     private func setupGestures(for entity: Entity) {
         // Add gesture component
@@ -378,39 +402,87 @@ struct ImmersiveView: View {
     }
     
     private func handleDrag(value: EntityTargetValue<DragGesture.Value>) {
-        let entity = value.entity
-        guard let gestureComponent = entity.components[GestureComponent.self],
-              gestureComponent.canDrag else { return }
-            
-        let state = GestureStateComponent.shared
-            
-        // First time initialization
-        if state.targetedEntity == nil {
-            state.targetedEntity = entity
-            state.dragStartPosition = entity.position
-            state.isDragging = true
-            state.initialOrientation = entity.orientation(relativeTo: nil)
-        }
-            
-        guard state.isDragging else { return }
-            
-        // Calculate new position
-        let translation = value.gestureValue.translation3D
-        let newPosition = state.dragStartPosition + SIMD3<Float>(
-            Float(translation.x) * 0.001, // Dampening factor
-            -Float(translation.y) * 0.001, // Inverted Y
-            Float(translation.z) * 0.001
-        )
-            
-        entity.position = newPosition
-    }
+           let entity = value.entity
+           guard let gestureComponent = entity.components[GestureComponent.self],
+                 gestureComponent.canDrag else { return }
+           
+           let state = GestureStateComponent.shared
+           
+           // First time initialization
+           if state.targetedEntity == nil {
+               state.targetedEntity = entity
+               state.dragStartPosition = entity.position
+               state.isDragging = true
+               state.initialOrientation = entity.orientation(relativeTo: nil)
+           }
+           
+           guard state.isDragging else { return }
+           
+           // Calculate new position
+           let translation = value.gestureValue.translation3D
+           let newPosition = state.dragStartPosition + SIMD3<Float>(
+               Float(translation.x) * 0.01,
+               -Float(translation.y) * 0.01,
+               Float(translation.z) * 0.01
+           )
+           
+           // Check for snapping
+           if let (shouldSnap, snapPosition, indicator) = checkForSnapping(entity: entity, currentPosition: newPosition) {
+               if shouldSnap {
+                   entity.position = snapPosition
+                   state.currentSnappedIndicator = indicator
+                   if var gestureComp = entity.components[GestureComponent.self] {
+                       gestureComp.isSnapped = true
+                       entity.components[GestureComponent.self] = gestureComp
+                   }
+                   return
+               }
+           }
+           
+           // If we're not snapping, update position normally
+           entity.position = newPosition
+           state.currentSnappedIndicator = nil
+           if var gestureComp = entity.components[GestureComponent.self] {
+               gestureComp.isSnapped = false
+               entity.components[GestureComponent.self] = gestureComp
+           }
+       }
         
     private func handleDragEnd(value: EntityTargetValue<DragGesture.Value>) {
+            let state = GestureStateComponent.shared
+            
+            // If we ended on a snap point, make sure we're exactly on it
+            if let snapIndicator = state.currentSnappedIndicator,
+               let entity = state.targetedEntity {
+                entity.position = snapIndicator.position
+            }
+            
+            state.targetedEntity = nil
+            state.isDragging = false
+            state.initialOrientation = nil
+        }
+    
+    private func checkForSnapping(entity: Entity, currentPosition: SIMD3<Float>) -> (shouldSnap: Bool, position: SIMD3<Float>, indicator: Entity)? {
+        guard let gestureComponent = entity.components[GestureComponent.self],
+              gestureComponent.isSnappable else { return nil }
+        
         let state = GestureStateComponent.shared
-        state.targetedEntity = nil
-        state.isDragging = false
-        state.initialOrientation = nil
+        
+        for indicator in state.indicators {
+            let indicatorPosition = indicator.position
+            
+            // Calculate distance between entity and indicator
+            let distance = length(currentPosition - indicatorPosition)
+            
+            // If within snap radius, snap to indicator position
+            if distance < gestureComponent.snapRadius {
+                return (true, indicatorPosition, indicator)
+            }
+        }
+        
+        return nil
     }
+    
 }
 
 // Add notification name
