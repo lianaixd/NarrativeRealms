@@ -11,6 +11,7 @@
 		63BB90412CD96CA600A7A885 /* logo_animation.scn in Resources */ = {isa = PBXBuildFile; fileRef = 63BB90402CD96CA600A7A885 /* logo_animation.scn */; };
 		63D2AC0A2CD668C600ECB336 /* PaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D2AC092CD668BC00ECB336 /* PaletteView.swift */; };
 		63D2AC0C2CD6693400ECB336 /* TagTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D2AC0B2CD6693200ECB336 /* TagTutorialView.swift */; };
+		63E1CE9F2CEA9A8C00376F67 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 63E1CE9E2CEA9A8C00376F67 /* RealityKitContent */; };
 		63EC6AE82C0CF80700EEB191 /* NarrativeRealmsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EC6AE72C0CF80700EEB191 /* NarrativeRealmsApp.swift */; };
 		63EC6AEA2C0CF80700EEB191 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EC6AE92C0CF80700EEB191 /* ContentView.swift */; };
 		63EC6AEC2C0CF80700EEB191 /* ImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EC6AEB2C0CF80700EEB191 /* ImmersiveView.swift */; };
@@ -42,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63E1CE9F2CEA9A8C00376F67 /* RealityKitContent in Frameworks */,
 				367600972CE934AB00D290B2 /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -122,6 +124,7 @@
 			name = NarrativeRealms;
 			packageProductDependencies = (
 				63EC6AE52C0CF80700EEB191 /* RealityKitContent */,
+				63E1CE9E2CEA9A8C00376F67 /* RealityKitContent */,
 			);
 			productName = NarrativeRealms;
 			productReference = 63EC6AE02C0CF80700EEB191 /* NarrativeRealms.app */;
@@ -151,6 +154,9 @@
 				Base,
 			);
 			mainGroup = 63EC6AD72C0CF80700EEB191;
+			packageReferences = (
+				63E1CE9D2CEA9A8C00376F67 /* XCLocalSwiftPackageReference "Packages/RealityKitContent" */,
+			);
 			productRefGroup = 63EC6AE12C0CF80700EEB191 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -385,7 +391,18 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		63E1CE9D2CEA9A8C00376F67 /* XCLocalSwiftPackageReference "Packages/RealityKitContent" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/RealityKitContent;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		63E1CE9E2CEA9A8C00376F67 /* RealityKitContent */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RealityKitContent;
+		};
 		63EC6AE52C0CF80700EEB191 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
