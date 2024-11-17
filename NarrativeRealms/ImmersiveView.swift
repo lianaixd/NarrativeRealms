@@ -1,7 +1,7 @@
-import SwiftUI
+import Combine
 import RealityKit
 import RealityKitContent
-import Combine
+import SwiftUI
 
 struct TranscriptionPanel: Component {
     var text: String
@@ -37,66 +37,66 @@ extension ImmersiveView {
     }
     
     private func startNewPanel() {
-           guard let scene = sceneEntity else { return }
+        guard let scene = sceneEntity else { return }
            
-           let panel = createTextPanel(withText: "")
-           panel.position = SIMD3<Float>(0.3, 1.5, -1.0) // Fixed position for live panel
+        let panel = createTextPanel(withText: "")
+        panel.position = SIMD3<Float>(0.3, 1.5, -1.0) // Fixed position for live panel
            
-           scene.addChild(panel)
-           currentPanel = panel
+        scene.addChild(panel)
+        currentPanel = panel
            
-           cancellable = recordingManager.$transcribedText
-               .receive(on: RunLoop.main)
-               .sink { text in
-                   if let panel = currentPanel {
-                       updateTextInPanel(panel: panel, text: text)
-                   }
-               }
+        cancellable = recordingManager.$transcribedText
+            .receive(on: RunLoop.main)
+            .sink { text in
+                if let panel = currentPanel {
+                    updateTextInPanel(panel: panel, text: text)
+                }
+            }
     }
     
     private func finalizePanel() {
-            cancellable?.cancel()
-            if let panel = currentPanel {
-                // Remove the 3D panel
-                panel.removeFromParent()
-                currentPanel = nil
+        cancellable?.cancel()
+        if let panel = currentPanel {
+            // Remove the 3D panel
+            panel.removeFromParent()
+            currentPanel = nil
                 
-                // Create a window with the final text
-                           DispatchQueue.main.async {
-                               NotificationCenter.default.post(
-                                   name: .createTranscriptionWindow,
-                                   object: nil,
-                                   userInfo: ["text": recordingManager.transcribedText]
-                               )
-                               print("📨 Posted transcription notification")
-                           }
+            // Create a window with the final text
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .createTranscriptionWindow,
+                    object: nil,
+                    userInfo: ["text": recordingManager.transcribedText]
+                )
+                print("📨 Posted transcription notification")
             }
         }
+    }
     
     private func exploreScene() {
-            guard let scene = sceneEntity else { return }
+        guard let scene = sceneEntity else { return }
             
-            print("🔍 Scene Hierarchy:")
-            printEntityDetails(scene, depth: 0)
-        }
+        print("🔍 Scene Hierarchy:")
+        printEntityDetails(scene, depth: 0)
+    }
         
-        private func printEntityDetails(_ entity: Entity, depth: Int) {
-            let indent = String(repeating: "  ", count: depth)
-            print("\(indent)📦 Entity: \(entity.name)")
+    private func printEntityDetails(_ entity: Entity, depth: Int) {
+        let indent = String(repeating: "  ", count: depth)
+        print("\(indent)📦 Entity: \(entity.name)")
             
-            // Print component information
-            if let modelEntity = entity as? ModelEntity {
-                print("\(indent)   - Type: ModelEntity")
-                print("\(indent)   - Is Enabled: \(modelEntity.isEnabled)")
-                print("\(indent)   - Has Collision: \(modelEntity.collision != nil)")
-                print("\(indent)   - Position: \(modelEntity.position)")
-            }
-            
-            // Recursively print children
-            for child in entity.children {
-                printEntityDetails(child, depth: depth + 1)
-            }
+        // Print component information
+        if let modelEntity = entity as? ModelEntity {
+            print("\(indent)   - Type: ModelEntity")
+            print("\(indent)   - Is Enabled: \(modelEntity.isEnabled)")
+            print("\(indent)   - Has Collision: \(modelEntity.collision != nil)")
+            print("\(indent)   - Position: \(modelEntity.position)")
         }
+            
+        // Recursively print children
+        for child in entity.children {
+            printEntityDetails(child, depth: depth + 1)
+        }
+    }
 }
 
 struct ImmersiveView: View {
@@ -108,107 +108,96 @@ struct ImmersiveView: View {
     @StateObject private var recordingManager = AudioRecordingManager()
     
     var body: some View {
-          RealityView { content in
-              if let scene = sceneEntity {
-                              if let microphoneGroup = findMicrophoneGroup(in: scene) {
-                                  print("🎤 Found microphone group: \(microphoneGroup.name)")
-                                  makeAllMicrophonePartsInteractive(microphoneGroup)
-                              } else {
-                                  print("❌ Microphone group not found")
-                              }
-                              content.add(scene)
+        RealityView { content in
+            if let scene = sceneEntity {
+                if let microphoneGroup = findMicrophoneGroup(in: scene) {
+                    print("🎤 Found microphone group: \(microphoneGroup.name)")
+                    makeAllMicrophonePartsInteractive(microphoneGroup)
+                } else {
+                    print("❌ Microphone group not found")
+                }
+                content.add(scene)
                   
-                  // Update visibility based on tutorial step
-                  updateSceneForTutorialStep(scene: scene, step: tutorialStep)
-                          }
-          }
-          .edgesIgnoringSafeArea(.all)
-          .onAppear {
-              loadFantasyScene()
-              DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                     exploreScene() // Give the scene time to load
-                 }
-          }
-          .onChange(of: tutorialStep) { oldValue, newValue in
-                      // Update scene when tutorial step changes
-                      if let scene = sceneEntity {
-                          updateSceneForTutorialStep(scene: scene, step: newValue)
-                      }
-                  }
-          .gesture(
-                     TapGesture()
-                         .targetedToAnyEntity()
-                         .onEnded { value in
-                             handleEntityTap(value.entity)
-                         }
-                 )
-      }
-    
-    private func updateSceneForTutorialStep(scene: Entity, step: Int) {
-            // Helper function to recursively find entities by name
-        print("updateSceneForTutorialStep")
-            func findEntity(named: String, in entity: Entity) -> Entity? {
-                if entity.name == named {
-                    return entity
-                }
-                for child in entity.children {
-                    if let found = findEntity(named: named, in: child) {
-                        return found
-                    }
-                }
-                return nil
-            }
-            
-            // Example: Show/hide entities based on tutorial step
-            switch step {
-            case 1:
-                print("updateSceneForTutorialStep: step 0")
-                findEntity(named: "_010_table_tex_v01", in: scene)?.isEnabled = false
-                findEntity(named: "storypath_tex_v01", in: scene)?.isEnabled = false
-                findEntity(named: "signpost_forest_tex_v01", in: scene)?.isEnabled = false
-                findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = false
-                findEntity(named: "lightbulb_tex_v01", in: scene)?.isEnabled = false
-                findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = false
-                findEntity(named: "signopost_snow_tex_v01", in: scene)?.isEnabled = false
-                findEntity(named: "dragon_anim_v03", in: scene)?.isEnabled = false
-                findEntity(named: "signpost_desert_tex_v01", in: scene)?.isEnabled = false
-                findEntity(named: "microphone_tex_v01", in: scene)?.isEnabled = false
-                break;
-            case 4:
-                findEntity(named: "_010_table_tex_v01", in: scene)?.isEnabled = true
-                break;
-            case 6:
-                findEntity(named: "storypath_tex_v01", in: scene)?.isEnabled = true
-                break;
-            case 10:
-                findEntity(named: "microphone_tex_v01", in: scene)?.isEnabled = true
-                break;
-            case 13:
-                findEntity(named: "signpost_forest_tex_v01", in: scene)?.isEnabled = true
-                break;
-            case 17:
-                findEntity(named: "dragon_anim_v03", in: scene)?.isEnabled = true
-                break;
-            case 20:
-                findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = true
-                break;
-            case 22:
-                findEntity(named: "lightbulb_tex_v01", in: scene)?.isEnabled = true
-                break;
-            case 23:
-                findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = true
-                break;
-            case 24:
-                findEntity(named: "signopost_snow_tex_v01", in: scene)?.isEnabled = true
-                break;
-            case 27:
-                findEntity(named: "signpost_desert_tex_v01", in: scene)?.isEnabled = true
-                break;
-            default:
-                // Final state or reset state
-                break
+                // Update visibility based on tutorial step
+                updateSceneForTutorialStep(scene: scene, step: tutorialStep)
             }
         }
+        .edgesIgnoringSafeArea(.all)
+        .onAppear {
+            loadFantasyScene()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                exploreScene() // Give the scene time to load
+            }
+        }
+        .onChange(of: tutorialStep) { _, newValue in
+            // Update scene when tutorial step changes
+            if let scene = sceneEntity {
+                updateSceneForTutorialStep(scene: scene, step: newValue)
+            }
+        }
+        .gesture(
+            TapGesture()
+                .targetedToAnyEntity()
+                .onEnded { value in
+                    handleEntityTap(value.entity)
+                }
+        )
+    }
+    
+    private func updateSceneForTutorialStep(scene: Entity, step: Int) {
+        // Helper function to recursively find entities by name
+        print("updateSceneForTutorialStep")
+        func findEntity(named: String, in entity: Entity) -> Entity? {
+            if entity.name == named {
+                return entity
+            }
+            for child in entity.children {
+                if let found = findEntity(named: named, in: child) {
+                    return found
+                }
+            }
+            return nil
+        }
+            
+        // Example: Show/hide entities based on tutorial step
+        switch step {
+        case 1:
+            print("updateSceneForTutorialStep: step 0")
+            findEntity(named: "_010_table_tex_v01", in: scene)?.isEnabled = false
+            findEntity(named: "storypath_tex_v01", in: scene)?.isEnabled = false
+            findEntity(named: "signpost_forest_tex_v01", in: scene)?.isEnabled = false
+            findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = false
+            findEntity(named: "lightbulb_tex_v01", in: scene)?.isEnabled = false
+            findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = false
+            findEntity(named: "signopost_snow_tex_v01", in: scene)?.isEnabled = false
+            findEntity(named: "dragon_anim_v03", in: scene)?.isEnabled = false
+            findEntity(named: "signpost_desert_tex_v01", in: scene)?.isEnabled = false
+            findEntity(named: "microphone_tex_v01", in: scene)?.isEnabled = false
+        case 4:
+            findEntity(named: "_010_table_tex_v01", in: scene)?.isEnabled = true
+        case 6:
+            findEntity(named: "storypath_tex_v01", in: scene)?.isEnabled = true
+        case 10:
+            findEntity(named: "microphone_tex_v01", in: scene)?.isEnabled = true
+        case 13:
+            findEntity(named: "signpost_forest_tex_v01", in: scene)?.isEnabled = true
+        case 17:
+            findEntity(named: "dragon_anim_v03", in: scene)?.isEnabled = true
+        case 20:
+            findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = true
+        case 22:
+            findEntity(named: "lightbulb_tex_v01", in: scene)?.isEnabled = true
+        case 23:
+            findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = true
+        case 24:
+            findEntity(named: "signopost_snow_tex_v01", in: scene)?.isEnabled = true
+        case 27:
+            findEntity(named: "signpost_desert_tex_v01", in: scene)?.isEnabled = true
+        default:
+            // Final state or reset state
+            break
+        }
+    }
     
     private func makeAllMicrophonePartsInteractive(_ groupEntity: Entity) {
         print("🎯 Setting up microphone interaction. Entity type: \(type(of: groupEntity))")
@@ -217,7 +206,7 @@ struct ImmersiveView: View {
         let bounds = groupEntity.visualBounds(relativeTo: groupEntity)
         
         // Create a slightly larger invisible collision box
-        let padding: Float = 0.05  // Adjust this value to make the hit box bigger
+        let padding: Float = 0.05 // Adjust this value to make the hit box bigger
         let hitBoxSize = SIMD3<Float>(
             bounds.max.x - bounds.min.x + padding * 2,
             bounds.max.y - bounds.min.y + padding * 2,
@@ -255,7 +244,7 @@ struct ImmersiveView: View {
         print("📦 Making entity interactive: \(entity.name)")
         let bounds = entity.visualBounds(relativeTo: entity)
         let boxShape = ShapeResource.generateBox(size: [
-            max(0.001, bounds.max.x - bounds.min.x),  // Ensure non-zero size
+            max(0.001, bounds.max.x - bounds.min.x), // Ensure non-zero size
             max(0.001, bounds.max.y - bounds.min.y),
             max(0.001, bounds.max.z - bounds.min.z)
         ])
@@ -265,7 +254,7 @@ struct ImmersiveView: View {
 
     private func handleEntityTap(_ entity: Entity) {
         print("🔹 Tap detected on entity: \(entity.name)")
-        printEntityDetails(entity, depth: 0)  // Print details of tapped entity
+        printEntityDetails(entity, depth: 0) // Print details of tapped entity
         
         // Check if this entity or any of its parents is the microphone group
         var currentEntity: Entity? = entity
@@ -285,58 +274,56 @@ struct ImmersiveView: View {
     }
     
     private func findMicrophoneGroup(in entity: Entity) -> Entity? {
-           if entity.name == "microphone_tex_v01" {
-               return entity
-           }
+        if entity.name == "microphone_tex_v01" {
+            return entity
+        }
            
-           for child in entity.children {
-               if let found = findMicrophoneGroup(in: child) {
-                   return found
-               }
-           }
-           
-           return nil
-       }
-    
-
-    
-    private func toggleRecording() {
-            isRecording.toggle()
-            print("🎤 \(isRecording ? "Started" : "Stopped") recording")
-            
-            if isRecording {
-                try? recordingManager.startRecording()
-            } else {
-                recordingManager.stopRecording()
+        for child in entity.children {
+            if let found = findMicrophoneGroup(in: child) {
+                return found
             }
         }
+           
+        return nil
+    }
+    
+    private func toggleRecording() {
+        isRecording.toggle()
+        print("🎤 \(isRecording ? "Started" : "Stopped") recording")
+            
+        if isRecording {
+            try? recordingManager.startRecording()
+        } else {
+            recordingManager.stopRecording()
+        }
+    }
     
     private func updateMicrophoneVisuals(_ groupEntity: Entity, isRecording: Bool) {
-           // Update all microphone parts
-           for child in groupEntity.children {
-               for modelPart in child.children {
-                   if let modelEntity = modelPart as? ModelEntity {
-                       var material = SimpleMaterial()
+        // Update all microphone parts
+        for child in groupEntity.children {
+            for modelPart in child.children {
+                if let modelEntity = modelPart as? ModelEntity {
+                    var material = SimpleMaterial()
                        
-                       if isRecording {
-                           // Bright red with emissive glow
-                           material.color = SimpleMaterial.BaseColor(tint: .red)
-                           material.roughness = 0.0
-                           material.metallic = 1.0
-                           modelEntity.components.set(EmissiveMaterialComponent())
-                       } else {
-                           // Reset to normal appearance
-                           material.color = SimpleMaterial.BaseColor(tint: .white)
-                           material.roughness = 0.5
-                           material.metallic = 0.0
-                           modelEntity.components.remove(EmissiveMaterialComponent.self)
-                       }
+                    if isRecording {
+                        // Bright red with emissive glow
+                        material.color = SimpleMaterial.BaseColor(tint: .red)
+                        material.roughness = 0.0
+                        material.metallic = 1.0
+                        modelEntity.components.set(EmissiveMaterialComponent())
+                    } else {
+                        // Reset to normal appearance
+                        material.color = SimpleMaterial.BaseColor(tint: .white)
+                        material.roughness = 0.5
+                        material.metallic = 0.0
+                        modelEntity.components.remove(EmissiveMaterialComponent.self)
+                    }
                        
-                       modelEntity.model?.materials = [material]
-                   }
-               }
-           }
-       }
+                    modelEntity.model?.materials = [material]
+                }
+            }
+        }
+    }
     
     private func loadFantasyScene() {
         Task {
@@ -360,7 +347,7 @@ extension Notification.Name {
 extension Entity {
     func printEntityHierarchy(depth: Int = 0) {
         let indent = String(repeating: "  ", count: depth)
-        print("\(indent)📦 Entity: \(self.name)")
+        print("\(indent)📦 Entity: \(name)")
         for child in children {
             child.printEntityHierarchy(depth: depth + 1)
         }

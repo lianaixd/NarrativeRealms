@@ -1,6 +1,6 @@
-import SwiftUI
 import RealityKit
 import RealityKitContent
+import SwiftUI
 
 struct ContentView: View {
     @Binding var showTagTutorial: Bool
