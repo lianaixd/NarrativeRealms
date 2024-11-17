@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["_010_table_tex_v01", "dude_normal_tex_v01", "storypath_tex_v01", "lightbulb_tex_v01", "microphone_tex_v01", "signpost_forest_tex_v01", "signpost_desert_tex_v01", "treasure_tex_v01", "cottage_teapot_tex_v01", "signopost_snow_tex_v01", "dragon_anim_v03", "TestAnimation", "Dragon", "Tag", "Armour", "DirectionalLight", "DragonInvisible", "Indicator8", "Indicator14", "Indicator17", "Indicator21", "Indicator24"]
+    reorder nameChildren = ["_010_table_tex_v01", "dude_normal_tex_v01", "storypath_tex_v01", "lightbulb_tex_v01", "microphone_tex_v01", "signpost_forest_tex_v01", "signpost_desert_tex_v01", "treasure_tex_v01", "cottage_teapot_tex_v01", "signopost_snow_tex_v01", "dragon_anim_v03", "TestAnimation", "Dragon", "Tag", "Armour", "DirectionalLight", "DragonInvisible", "Indicator8", "Indicator14", "Indicator17", "Indicator21", "Indicator24", "BulbTapped", "ObjectAppear"]
     def "_010_table_tex_v01" (
         customData = {
             float3 rotationEulerHint = (-1.5707964, 1.5707963, 0)
@@ -20,7 +20,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.5, -0.5, 0.5, 0.5)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (2.3492135e-9, 0.93701565, -1.3045777)
+        float3 xformOp:translate = (2.3492135e-9, 0.885286, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -72,7 +72,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.6830126, -0.6830128, -0.18301263, -0.18301274)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-2.1187589e-8, 0.88906485, -1.3045777)
+        float3 xformOp:translate = (-2.1187589e-8, 0.83733517, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -83,32 +83,32 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.59879977, 1.4044458, -1.8218651)
+        float3 xformOp:translate = (-0.59879977, 1.3527161, -1.8218651)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "RCP_BehaviorsContainer"
         {
-            rel behaviors = </Root/lightbulb_tex_v01/OnTap>
+            rel behaviors = </Root/lightbulb_tex_v01/OnAddedToScene>
             uniform token info:id = "RCP.BehaviorsContainer"
         }
 
-        def Preliminary_Behavior "OnTap"
+        def Preliminary_Behavior "OnAddedToScene"
         {
-            rel actions = </Root/lightbulb_tex_v01/OnTap/Action>
+            rel actions = </Root/lightbulb_tex_v01/OnAddedToScene/Action>
             uniform bool exclusive
-            rel triggers = </Root/lightbulb_tex_v01/OnTap/Trigger>
+            rel triggers = </Root/lightbulb_tex_v01/OnAddedToScene/Trigger>
 
             def Preliminary_Trigger "Trigger"
             {
                 rel affectedObjects = </Root/lightbulb_tex_v01>
-                token info:id = "TapGesture"
+                token info:id = "SceneTransition"
             }
 
             def Preliminary_Action "Action"
             {
                 rel affectedObjects = </Root>
-                rel animationLibraryKey = </Root/Dragon>
-                rel animationLibraryKeyOverrideKey = </Root/lightbulb_tex_v01/OnTap/Trigger>
+                rel animationLibraryKey = </Root/BulbTapped>
+                rel animationLibraryKeyOverrideKey = </Root/lightbulb_tex_v01/OnAddedToScene/Trigger>
                 token info:id = "PlayTimeline"
                 int loops = 0
                 int performCount = 1
@@ -127,7 +127,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.9783823, -0.1689678, -0.020292314, -0.1174996)
         float3 xformOp:scale = (0.8, 0.8, 0.8)
-        float3 xformOp:translate = (0.11879301, 0.9248144, -0.6968537)
+        float3 xformOp:translate = (0.11879301, 0.8730847, -0.6968537)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         over "Materials"
@@ -152,7 +152,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.14536753, 0.96175885, -1.6192367)
+        float3 xformOp:translate = (-0.14536753, 0.9100292, -1.6192367)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -163,7 +163,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.25426307, 0.9615891, -1.0436317)
+        float3 xformOp:translate = (-0.25426307, 0.9098594, -1.0436317)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -176,7 +176,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.99998176, 0.0034788663, 0.0035032397, 0.0034788663)
         float3 xformOp:scale = (0.39555463, 0.39555466, 0.39555463)
-        float3 xformOp:translate = (-0.10184945, 0.9571943, -1.2058274)
+        float3 xformOp:translate = (-0.10184945, 0.90546465, -1.2058274)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -186,7 +186,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.6, 0.6, 0.6)
-        float3 xformOp:translate = (0.31137964, 0.9567636, -1.3672968)
+        float3 xformOp:translate = (0.31137964, 0.90503395, -1.3672968)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -197,7 +197,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.0016879439, 0.9612769, -0.9232943)
+        float3 xformOp:translate = (0.054959565, 0.9095472, -0.946887)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 
@@ -211,7 +211,7 @@ def Xform "Root"
         )
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.0059894025, 0.0059894025, 0.0059894025)
-        float3 xformOp:translate = (-0.23775662, 0.9654597, -1.2181262)
+        float3 xformOp:translate = (-0.23775662, 0.91373, -1.2181262)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "AnimationLibrary"
@@ -276,7 +276,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (-0.32, 0.2, -0.2)
+        float3 xformOp:translate = (0.32, 1.3, -1.8296247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "AnimationLibrary"
@@ -416,7 +416,7 @@ def Xform "Root"
             {
                 string actionKind = "show"
                 int blendLayer = 300
-                double duration = 0.27073423901873483
+                double duration = 0.14505735770577005
                 uniform token info:id = "43ECF17C-E432-4F80-8481-6AE7E7877CE2"
                 double startTime = 0
                 rel target = </Root/dragon_anim_v03>
@@ -492,7 +492,7 @@ def Xform "Root"
 
     def Xform "DirectionalLight"
     {
-        float3 xformOp:translate = (1.6128147, 1.6, 0)
+        float3 xformOp:translate = (1.6128147, 1.5482703, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "DirectionalLight"
@@ -530,7 +530,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.25217763, 0.25217763, 0.25217763)
-        float3 xformOp:translate = (-0.3445847, 1.1951175, -1.504911)
+        float3 xformOp:translate = (-0.3445847, 1.1433878, -1.504911)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "VFXEmitter"
@@ -649,7 +649,7 @@ def Xform "Root"
         int ui:nodegraph:node:stackingOrder = 1
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.25217763, 0.25217763, 0.25217763)
-        float3 xformOp:translate = (-0.0038692579, 1.0243692, -1.2980523)
+        float3 xformOp:translate = (-0.0038692579, 0.97263956, -1.2980523)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "VFXEmitter"
@@ -768,7 +768,7 @@ def Xform "Root"
         int ui:nodegraph:node:stackingOrder = 1
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.25217763, 0.25217763, 0.25217763)
-        float3 xformOp:translate = (0.32912624, 1.3217517, -1.1017945)
+        float3 xformOp:translate = (0.32912624, 1.270022, -1.1017945)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "VFXEmitter"
@@ -887,7 +887,7 @@ def Xform "Root"
         int ui:nodegraph:node:stackingOrder = 2
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.25217763, 0.25217763, 0.25217763)
-        float3 xformOp:translate = (-0.1697112, 1.1005406, -1.4015298)
+        float3 xformOp:translate = (-0.1697112, 1.048811, -1.4015298)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "VFXEmitter"
@@ -1006,7 +1006,7 @@ def Xform "Root"
         int ui:nodegraph:node:stackingOrder = 3
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (0.25217763, 0.25217763, 0.25217763)
-        float3 xformOp:translate = (0.18709359, 1.1763415, -1.1791434)
+        float3 xformOp:translate = (0.18709359, 1.1246119, -1.1791434)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "VFXEmitter"
@@ -1116,6 +1116,53 @@ def Xform "Root"
         def RealityKitComponent "RCP_BehaviorsContainer"
         {
             uniform token info:id = "RCP.BehaviorsContainer"
+        }
+    }
+
+    def RealityKitTimeline "BulbTapped"
+    {
+        reorder nameChildren = ["Track", "Track2"]
+        def RealityKitTrack "Track"
+        {
+            reorder nameChildren = ["Transform_By", "Transform_By2", "Transform_By_1", "Transform_By2_1"]
+            def RealityKitAction "Transform_By"
+            {
+                string actionKind = "moveBy"
+                int blendLayer = 300
+                double duration = 0.1715298694779116
+                uniform token info:id = "8A9C5C34-3FAE-4DF5-94A4-03710BC4C6BE"
+                float3 scale = (1.1, 1.1, 1.1)
+                double startTime = 0
+                rel target = </Root/lightbulb_tex_v01>
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+
+            def RealityKitAction "Transform_By2"
+            {
+                string actionKind = "moveBy"
+                int blendLayer = 300
+                double duration = 0.1722750377506022
+                uniform token info:id = "8A9C5C34-3FAE-4DF5-94A4-03710BC4C6BE"
+                float3 scale = (0.9, 0.9, 0.9)
+                double startTime = 0.1715298695779115
+                rel target = </Root/lightbulb_tex_v01>
+                float2 ui:nodegraph:node:pos = (20, 20)
+                int ui:nodegraph:node:stackingOrder = 1
+
+                def RealityKitStruct "timingFunction"
+                {
+                }
+            }
+        }
+    }
+
+    def RealityKitTimeline "ObjectAppear"
+    {
+        def RealityKitTrack "Track"
+        {
         }
     }
 }
