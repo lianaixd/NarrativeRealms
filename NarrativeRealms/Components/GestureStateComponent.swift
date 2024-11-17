@@ -6,11 +6,23 @@
 //
 import RealityKit
 
-class GestureStateComponent: Component {
+class GestureStateComponent {
+    /// The entity currently being dragged if a gesture is in progress
     var targetedEntity: Entity?
-    var initialPosition: SIMD3<Float>?
-    var dragOffset: SIMD3<Float>?
-    var isDragging: Bool = false
     
-    static let componentName = "GestureStateComponent"
+    /// The starting position
+    var dragStartPosition: SIMD3<Float> = .zero
+    
+    /// Marks whether the app is currently handling a drag gesture
+    var isDragging = false
+    
+    /// When rotateOnDrag is true, this entity acts as the pivot point for the drag
+    var pivotEntity: Entity?
+    
+    var initialOrientation: simd_quatf?
+    
+    /// Singleton accessor
+    static let shared = GestureStateComponent()
+    
+    private init() {}
 }

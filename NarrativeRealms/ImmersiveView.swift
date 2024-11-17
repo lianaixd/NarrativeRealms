@@ -135,23 +135,21 @@ struct ImmersiveView: View {
                 updateSceneForTutorialStep(scene: scene, step: newValue)
             }
         }
+        .gesture(DragGesture()
+            .targetedToAnyEntity()
+            .onChanged { value in
+                handleDrag(value: value)
+            }
+            .onEnded { value in
+                handleDragEnd(value: value)
+            })
         .gesture(
-                DragGesture()
-                    .targetedToAnyEntity()
-                    .onChanged { value in
-                        handleDrag(value: value)
-                    }
-                    .onEnded { value in
-                        handleDragEnd(value: value)
-                    }
-            )
-            .gesture(
-                TapGesture()
-                    .targetedToAnyEntity()
-                    .onEnded { value in
-                        handleEntityTap(value.entity)
-                    }
-            )
+            TapGesture()
+                .targetedToAnyEntity()
+                .onEnded { value in
+                    handleEntityTap(value.entity)
+                }
+        )
     }
     
     private func findEntity(named: String, in entity: Entity) -> Entity? {
@@ -344,7 +342,8 @@ struct ImmersiveView: View {
                 
                 // Find and setup the draggable entity
                 if let draggableEntity = findEntity(named: "TestAnimation", in: scene) {
-                    setupCustomDrag(draggableEntity)
+                    print("✅ Found Tag!")
+                    setupGestures(for: draggableEntity)
                 }
                 print("✅ FantasyScene loaded successfully.")
             } catch {
@@ -353,71 +352,64 @@ struct ImmersiveView: View {
         }
     }
     
-    private func setupCustomDrag(_ entity: Entity) {
-        // Add our gesture state component
-        entity.components[GestureStateComponent.self] = GestureStateComponent()
+    private func setupGestures(for entity: Entity) {
+        // Add gesture component
+        var gestureComponent = GestureComponent()
+        gestureComponent.canDrag = true
+        entity.components[GestureComponent.self] = gestureComponent
         
-        // Add collision component if needed
+        // Add collision component
         if entity.components[CollisionComponent.self] == nil {
-            let bounds = entity.visualBounds(recursive: true, relativeTo: nil)  // nil means world space
+            let bounds = entity.visualBounds(recursive: true, relativeTo: nil)
             let size = SIMD3<Float>(
                 bounds.max.x - bounds.min.x,
                 bounds.max.y - bounds.min.y,
                 bounds.max.z - bounds.min.z
             )
-            
             entity.components[CollisionComponent.self] = CollisionComponent(
                 shapes: [.generateBox(size: size)]
             )
+        }
+        
+        // Add input target component if needed
+        if entity.components[InputTargetComponent.self] == nil {
+            entity.components[InputTargetComponent.self] = InputTargetComponent()
         }
     }
     
     private func handleDrag(value: EntityTargetValue<DragGesture.Value>) {
         let entity = value.entity
-        
-        // Get or create state component
-        var state: GestureStateComponent = entity.components[GestureStateComponent.self] ?? GestureStateComponent()
-        
+        guard let gestureComponent = entity.components[GestureComponent.self],
+              gestureComponent.canDrag else { return }
+            
+        let state = GestureStateComponent.shared
+            
         // First time initialization
         if state.targetedEntity == nil {
             state.targetedEntity = entity
-            state.initialPosition = entity.position
+            state.dragStartPosition = entity.position
             state.isDragging = true
-            
-            // Calculate initial offset
-            state.dragOffset = SIMD3<Float>(
-                Float(value.gestureValue.location3D.x),
-                Float(value.gestureValue.location3D.y),
-                Float(value.gestureValue.location3D.z)
-            ) - entity.position
+            state.initialOrientation = entity.orientation(relativeTo: nil)
         }
-        
-        // Update position during drag
-        if state.isDragging, let dragOffset = state.dragOffset {
-            let newPosition = SIMD3<Float>(
-                Float(value.gestureValue.location3D.x),
-                Float(value.gestureValue.location3D.y),
-                Float(value.gestureValue.location3D.z)
-            ) - dragOffset
             
-            entity.position = newPosition
-        }
-        
-        // Update the state component
-        entity.components[GestureStateComponent.self] = state
+        guard state.isDragging else { return }
+            
+        // Calculate new position
+        let translation = value.gestureValue.translation3D
+        let newPosition = state.dragStartPosition + SIMD3<Float>(
+            Float(translation.x) * 0.001, // Dampening factor
+            -Float(translation.y) * 0.001, // Inverted Y
+            Float(translation.z) * 0.001
+        )
+            
+        entity.position = newPosition
     }
-
+        
     private func handleDragEnd(value: EntityTargetValue<DragGesture.Value>) {
-        let entity = value.entity
-        
-        // Reset state
-        var state: GestureStateComponent = entity.components[GestureStateComponent.self] ?? GestureStateComponent()
+        let state = GestureStateComponent.shared
         state.targetedEntity = nil
-        state.initialPosition = nil
-        state.dragOffset = nil
         state.isDragging = false
-        
-        entity.components[GestureStateComponent.self] = state
+        state.initialOrientation = nil
     }
 }
 
