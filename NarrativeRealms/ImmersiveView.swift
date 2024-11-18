@@ -398,10 +398,12 @@ struct ImmersiveView: View {
            
            // Calculate new position
            let translation = value.gestureValue.translation3D
+            let dampening: Float = 0.001  // Reduce this value to slow down movement (0.01 = 1%, 0.001 = 0.1%)
+
            let newPosition = state.dragStartPosition + SIMD3<Float>(
-               Float(translation.x) * 0.01,
-               -Float(translation.y) * 0.01,
-               Float(translation.z) * 0.01
+               Float(translation.x) * dampening,
+               -Float(translation.y) * dampening,
+               Float(translation.z) * dampening
            )
            
            // Check for snapping
