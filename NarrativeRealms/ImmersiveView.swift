@@ -213,6 +213,9 @@ struct ImmersiveView: View {
             findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = true
         case 22:
             findEntity(named: "lightbulb_tex_v01", in: scene)?.isEnabled = true
+            if let lightbulb = findEntity(named: "lightbulb_tex_v01", in: scene) as? ModelEntity {
+                            makeEntityInteractive(lightbulb)
+                        }
         case 23:
             findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = true
         case 24:
@@ -297,7 +300,31 @@ struct ImmersiveView: View {
             currentEntity = current.parent
             print("👆 Checking parent entity: \(currentEntity?.name ?? "none")")
         }
+        
+        // Now check for lightbulb tap
+                currentEntity = entity
+                while let current = currentEntity {
+                    if current.name == "lightbulb_tex_v01" {
+                        handleLightbulbTap()
+                        break
+                    }
+                    currentEntity = current.parent
+                }
     }
+    
+    private func handleLightbulbTap() {
+           // Handle lightbulb tap based on current tutorial step
+           switch tutorialStep {
+           case 22:
+               // Move to next step when lightbulb is tapped in step 22
+               tutorialStep = 23
+           case 25:
+               // Move to next step when lightbulb is tapped in step 25
+               tutorialStep = 26
+           default:
+               break
+           }
+       }
     
     private func findMicrophoneGroup(in entity: Entity) -> Entity? {
         if entity.name == "microphone_tex_v01" {

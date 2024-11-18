@@ -4,22 +4,23 @@ struct TagTutorialView: View {
     @Binding var tutorialStep: Int
     var onRestart: () -> Void
     private let textWidth: CGFloat = 280 // Fixed width for text wrapping
-
+    @State private var isNextEnabled = true
+    
     var body: some View {
         VStack {
             Spacer()
-
+            
             Image(tutorialStep == 28 ? "lianaImg" : "tagImg")
                 .resizable()
                 .scaledToFill()
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
-
+            
             // Conditionally change the header text based on the tutorial step
             Text(tutorialStep == 28 ? "Tag's Adventure" : "Tag")
                 .font(.headline)
                 .padding(.top, 8)
-
+            
             // Display text based on the tutorial step
             Group {
                 if tutorialStep == 1 {
@@ -28,20 +29,20 @@ struct TagTutorialView: View {
                     Text("In Narrative Realms, we get to create a world and tell a story in real-time.")
                 } else if tutorialStep == 3 {
                     (Text("The ")
-                        + Text("Genre").bold()
-                        + Text(" button here lets us pick a storytelling style. For now, select Fantasy, and let’s see what happens!"))
-                        .onAppear {
-                            //       openWindow(value: PaletteWindowID(id: 1).id)
-                        }
+                     + Text("Genre").bold()
+                     + Text(" button here lets us pick a storytelling style. For now, select Fantasy, and let’s see what happens!"))
+                    .onAppear {
+                        //       openWindow(value: PaletteWindowID(id: 1).id)
+                    }
                 } else if tutorialStep == 4 {
                     Text("As we build our story, more and more parts of this fantasy world will come to life on it.")
                 } else if tutorialStep == 5 {
                     (Text("The ")
-                        + Text("Story Path").bold()
-                        + Text(" button here offers different paths for different kinds of tales. Each path has ups and downs, just like any great story!"))
-                        .onAppear {
-                            //       openWindow(value: PaletteWindowID(id: 1).id)
-                        }
+                     + Text("Story Path").bold()
+                     + Text(" button here offers different paths for different kinds of tales. Each path has ups and downs, just like any great story!"))
+                    .onAppear {
+                        //       openWindow(value: PaletteWindowID(id: 1).id)
+                    }
                 } else if tutorialStep == 6 {
                     Text("See how this path has high points and low points? Each part of the path represents good and bad moments in the story.")
                 } else if tutorialStep == 7 {
@@ -97,10 +98,10 @@ struct TagTutorialView: View {
             .multilineTextAlignment(.center)
             .frame(width: textWidth) // Set a fixed width for text wrapping
             .padding(.horizontal, 8)
-
+            
             Divider()
                 .padding(.vertical, 8)
-
+            
             // Button layout for Back and Next
             HStack {
                 if tutorialStep > 1 {
@@ -110,9 +111,9 @@ struct TagTutorialView: View {
                     .buttonStyle(.plain)
                     .padding(.vertical, 8)
                 }
-
+                
                 Spacer()
-
+                
                 if tutorialStep == 29 {
                     Button("Restart") {
                         onRestart()
@@ -125,13 +126,35 @@ struct TagTutorialView: View {
                     }
                     .padding(.vertical, 8)
                     .buttonStyle(.borderedProminent)
-                    .disabled(tutorialStep == 3 || tutorialStep == 5 || tutorialStep == 27)
+                    .disabled(!isNextEnabled || (tutorialStep == 3 || tutorialStep == 5 || tutorialStep == 27))
                 }
             }
-
+            
             Spacer()
         }
         .padding()
         .fixedSize(horizontal: true, vertical: false) // Ensure window fits content width
     }
+    
+    init(tutorialStep: Binding<Int>, onRestart: @escaping () -> Void) {
+        self._tutorialStep = tutorialStep
+        self.onRestart = onRestart
+        
+        // Setup notification observer for Next button state
+        NotificationCenter.default.addObserver(
+            forName: .updateNextButtonState,
+            object: nil,
+            queue: .main
+        ) { notification in
+            if let isEnabled = notification.userInfo?["isEnabled"] as? Bool {
+                self.isNextEnabled = isEnabled
+            }
+        }
+    }
+
+}
+
+// Add notification name
+extension Notification.Name {
+    static let updateNextButtonState = Notification.Name("updateNextButtonState")
 }
