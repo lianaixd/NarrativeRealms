@@ -1,12 +1,12 @@
 //
-//  GestureStateComponent.swift
+//  EntityGestureState.swift
 //  NarrativeRealms
 //
 //  Created by Marc O'Cleirigh on 11/17/24.
 //
 import RealityKit
 
-class GestureStateComponent {
+class EntityGestureState {
     var targetedEntity: Entity?
     var dragStartPosition: SIMD3<Float> = .zero
     var isDragging = false
@@ -17,6 +17,6 @@ class GestureStateComponent {
     var indicators: [Entity] = []
     var currentSnappedIndicator: Entity?
 
-    static let shared = GestureStateComponent()
+    static let shared = EntityGestureState()
     private init() {}
 }
