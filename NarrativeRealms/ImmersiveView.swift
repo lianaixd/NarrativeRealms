@@ -8,6 +8,7 @@ struct TranscriptionPanel: Component {
 }
 
 extension ImmersiveView {
+    
     private func createTextPanel(withText text: String) -> ModelEntity {
         let panel = ModelEntity(
             mesh: .generatePlane(width: 0.3, height: 0.2),
@@ -106,6 +107,23 @@ struct ImmersiveView: View {
     @State private var currentPanel: ModelEntity?
     @State private var cancellable: AnyCancellable?
     @StateObject private var recordingManager = AudioRecordingManager()
+    private let allModelNames = [
+        "_010_table_tex_v01",
+        "storypath_tex_v01",
+        "signpost_forest_tex_v01",
+        "cottage_teapot_tex_v01",
+        "lightbulb_tex_v01",
+        "treasure_tex_v01",
+        "signopost_snow_tex_v01",
+        "dragon_anim_v03",
+        "signpost_desert_tex_v01",
+        "microphone_tex_v01",
+        "Indicator8",
+        "Indicator14",
+        "Indicator17",
+        "Indicator21",
+        "Indicator24"
+    ]
     
     var body: some View {
         RealityView { content in
@@ -118,33 +136,30 @@ struct ImmersiveView: View {
                 }
                 content.add(scene)
                   
-                // Update visibility based on tutorial step
-                updateSceneForTutorialStep(scene: scene, step: tutorialStep)
+                handleInitialState(scene: scene)
             }
         }
         update: { content in
-                    // This is where we can access scene-level features
-                    if let scene = content.entities.first {
-                        // Setup collision subscriptions
-                        content.subscribe(to: CollisionEvents.Began.self) { event in
-                            if let (draggable, indicator) = identifyDraggableAndIndicator(event.entityA, event.entityB) {
-                                handleSnapToIndicator(draggable: draggable, indicator: indicator)
-                            }
-                        }
-                        
-                        content.subscribe(to: CollisionEvents.Ended.self) { event in
-                            if let (draggable, _) = identifyDraggableAndIndicator(event.entityA, event.entityB) {
-                                handleUnsnap(draggable: draggable)
-                            }
-                        }
+            // This is where we can access scene-level features
+            if let scene = content.entities.first {
+                // Setup collision subscriptions
+                content.subscribe(to: CollisionEvents.Began.self) { event in
+                    if let (draggable, indicator) = identifyDraggableAndIndicator(event.entityA, event.entityB) {
+                        handleSnapToIndicator(draggable: draggable, indicator: indicator)
                     }
                 }
+                        
+                content.subscribe(to: CollisionEvents.Ended.self) { event in
+                    if let (draggable, _) = identifyDraggableAndIndicator(event.entityA, event.entityB) {
+                        handleUnsnap(draggable: draggable)
+                    }
+                }
+            }
+        }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
+            setupNotifications()
             loadFantasyScene()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                exploreScene() // Give the scene time to load
-            }
         }
         .onChange(of: tutorialStep) { _, newValue in
             // Update scene when tutorial step changes
@@ -169,6 +184,32 @@ struct ImmersiveView: View {
         )
     }
     
+    private func handleInitialState(scene: Entity) {
+           let modelsToHide = [
+               "_010_table_tex_v01",
+               "storypath_tex_v01",
+               "signpost_forest_tex_v01",
+               "cottage_teapot_tex_v01",
+               "lightbulb_tex_v01",
+               "treasure_tex_v01",
+               "signopost_snow_tex_v01",
+               "dragon_anim_v03",
+               "signpost_desert_tex_v01",
+               "microphone_tex_v01",
+               "Indicator8", // First one
+               "Indicator14", // Third (oh god liana why)
+               "Indicator17", // Fifth
+               "Indicator21", // Second
+               "Indicator24" // Fourth
+           ]
+           
+           NotificationCenter.default.post(
+               name: .hideModels,
+               object: nil,
+               userInfo: ["modelNames": modelsToHide]
+           )
+       }
+    
     private func findEntity(named: String, in entity: Entity) -> Entity? {
         if entity.name == named {
             return entity
@@ -181,11 +222,88 @@ struct ImmersiveView: View {
         return nil
     }
     
+    private func setupNotifications() {
+          // Add observers for model visibility notifications
+          NotificationCenter.default.addObserver(
+              forName: .showModel,
+              object: nil,
+              queue: .main
+          ) { notification in
+              if let modelName = notification.userInfo?["modelName"] as? String,
+                 let scene = sceneEntity {
+                  findEntity(named: modelName, in: scene)?.isEnabled = true
+                  
+                  // Special handling for interactive models
+                  if modelName == "lightbulb_tex_v01" {
+                      if let lightbulb = findEntity(named: modelName, in: scene) {
+                          makeLightbulbInteractive(lightbulb)
+                      }
+                  } else if modelName == "microphone_tex_v01" {
+                      if let microphone = findEntity(named: modelName, in: scene) {
+                          makeAllMicrophonePartsInteractive(microphone)
+                      }
+                  }
+              }
+          }
+
+          NotificationCenter.default.addObserver(
+              forName: .hideModel,
+              object: nil,
+              queue: .main
+          ) { notification in
+              if let modelName = notification.userInfo?["modelName"] as? String,
+                 let scene = sceneEntity {
+                  findEntity(named: modelName, in: scene)?.isEnabled = false
+              }
+          }
+
+        NotificationCenter.default.addObserver(
+               forName: .showModels,
+               object: nil,
+               queue: .main
+           ) { notification in
+               if let modelsToShow = notification.userInfo?["modelNames"] as? [String],
+                  let scene = sceneEntity {
+                   print("🎭 Showing only models: \(modelsToShow)")
+                   
+                   // First, hide all models
+                   allModelNames.forEach { modelName in
+                       if let entity = findEntity(named: modelName, in: scene) {
+                           entity.isEnabled = false
+                       }
+                   }
+                   
+                   // Then, show only the specified models
+                   modelsToShow.forEach { modelName in
+                       if let entity = findEntity(named: modelName, in: scene) {
+                           entity.isEnabled = true
+                           
+                           // Special handling for interactive models
+                           if modelName == "lightbulb_tex_v01" {
+                               makeLightbulbInteractive(entity)
+                           } else if modelName == "microphone_tex_v01" {
+                               makeAllMicrophonePartsInteractive(entity)
+                           }
+                       }
+                   }
+               }
+           }
+
+          NotificationCenter.default.addObserver(
+              forName: .hideModels,
+              object: nil,
+              queue: .main
+          ) { notification in
+              if let modelNames = notification.userInfo?["modelNames"] as? [String],
+                 let scene = sceneEntity {
+                  modelNames.forEach { modelName in
+                      findEntity(named: modelName, in: scene)?.isEnabled = false
+                  }
+              }
+          }
+      }
+    
     private func updateSceneForTutorialStep(scene: Entity, step: Int) {
-        // Helper function to recursively find entities by name
-        print("updateSceneForTutorialStep")
-        
-        // Example: Show/hide entities based on tutorial step
         switch step {
         case 1:
             print("updateSceneForTutorialStep: step 0")
@@ -199,6 +317,11 @@ struct ImmersiveView: View {
             findEntity(named: "dragon_anim_v03", in: scene)?.isEnabled = false
             findEntity(named: "signpost_desert_tex_v01", in: scene)?.isEnabled = false
             findEntity(named: "microphone_tex_v01", in: scene)?.isEnabled = false
+            findEntity(named: "Indicator8", in: scene)?.isEnabled = false
+            findEntity(named: "Indicator14", in: scene)?.isEnabled = false
+            findEntity(named: "Indicator17", in: scene)?.isEnabled = false
+            findEntity(named: "Indicator21", in: scene)?.isEnabled = false
+            findEntity(named: "Indicator24", in: scene)?.isEnabled = false
         case 4:
             findEntity(named: "_010_table_tex_v01", in: scene)?.isEnabled = true
         case 6:
@@ -212,10 +335,11 @@ struct ImmersiveView: View {
         case 20:
             findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = true
         case 22:
-            findEntity(named: "lightbulb_tex_v01", in: scene)?.isEnabled = true
-            if let lightbulb = findEntity(named: "lightbulb_tex_v01", in: scene) as? ModelEntity {
-                            makeEntityInteractive(lightbulb)
-                        }
+            if let lightbulb = findEntity(named: "lightbulb_tex_v01", in: scene) {
+                       lightbulb.isEnabled = true
+                       print("Found lightbulb, making it interactive")
+                       makeLightbulbInteractive(lightbulb)
+                   }
         case 23:
             findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = true
         case 24:
@@ -228,8 +352,60 @@ struct ImmersiveView: View {
         }
     }
     
+    private func makeLightbulbInteractive(_ groupEntity: Entity) {
+        print("🎯 Setting up lightbulb interaction. Entity type: \(type(of: groupEntity))")
+        
+        if groupEntity.children.contains(where: { $0.name == "lightbulb_hitbox" }) {
+                print("📦 Lightbulb hit box already exists, skipping creation")
+                return
+            }
+        
+        // Calculate the overall bounds of the lightbulb group
+        let bounds = groupEntity.visualBounds(relativeTo: groupEntity)
+        
+        // Create a slightly larger invisible collision box
+        let padding: Float = 0.05  // Adjust padding as needed
+        let hitBoxSize = SIMD3<Float>(
+            bounds.max.x - bounds.min.x + padding * 2,
+            bounds.max.y - bounds.min.y + padding * 2,
+            bounds.max.z - bounds.min.z + padding * 2
+        )
+        
+        var material = PhysicallyBasedMaterial()
+        material.blending = .transparent(opacity: .init(floatLiteral: 0.0001))
+        
+        // Create an invisible ModelEntity for collision
+        let hitBox = ModelEntity(
+            mesh: .generateBox(size: hitBoxSize),
+            materials: [material]
+        )
+        
+        // Position the hit box to center it on the lightbulb
+        hitBox.position = SIMD3<Float>(
+            (bounds.min.x + bounds.max.x) / 2,
+            (bounds.min.y + bounds.max.y) / 2,
+            (bounds.min.z + bounds.max.z) / 2
+        )
+        
+        // Make the hit box interactive
+        hitBox.collision = CollisionComponent(shapes: [ShapeResource.generateBox(size: hitBoxSize)])
+        hitBox.components.set(InputTargetComponent())
+        hitBox.name = "lightbulb_hitbox"
+        
+        // Add the hit box as a child of the lightbulb group
+        groupEntity.addChild(hitBox)
+        
+        print("📦 Created invisible hit box for lightbulb: \(hitBoxSize)")
+    }
+    
     private func makeAllMicrophonePartsInteractive(_ groupEntity: Entity) {
         print("🎯 Setting up microphone interaction. Entity type: \(type(of: groupEntity))")
+        
+        // Check if hit box already exists
+           if groupEntity.children.contains(where: { $0.name == "microphone_hitbox" }) {
+               print("📦 Microphone hit box already exists, skipping creation")
+               return
+           }
         
         // Calculate the overall bounds of the microphone group
         let bounds = groupEntity.visualBounds(relativeTo: groupEntity)
@@ -301,30 +477,34 @@ struct ImmersiveView: View {
             print("👆 Checking parent entity: \(currentEntity?.name ?? "none")")
         }
         
-        // Now check for lightbulb tap
-                currentEntity = entity
-                while let current = currentEntity {
-                    if current.name == "lightbulb_tex_v01" {
-                        handleLightbulbTap()
-                        break
-                    }
-                    currentEntity = current.parent
+        // Check for lightbulb tap
+            currentEntity = entity
+            while let current = currentEntity {
+                // Check for both the lightbulb entity and its hitbox
+                if current.name == "lightbulb_tex_v01" || current.name == "lightbulb_hitbox" {
+                    print("👆 Lightbulb tapped!")
+                    handleLightbulbTap()
+                    break
                 }
+                currentEntity = current.parent
+                print("👆 Checking parent entity: \(currentEntity?.name ?? "none")")
+            }
     }
     
     private func handleLightbulbTap() {
-           // Handle lightbulb tap based on current tutorial step
-           switch tutorialStep {
-           case 22:
-               // Move to next step when lightbulb is tapped in step 22
-               tutorialStep = 23
-           case 25:
-               // Move to next step when lightbulb is tapped in step 25
-               tutorialStep = 26
-           default:
-               break
-           }
-       }
+        // Handle lightbulb tap based on current tutorial step
+        switch tutorialStep {
+        case 22:
+            print("✨ Lightbulb tapped in step 22, advancing to step 23")
+            tutorialStep = 23
+        case 25:
+            print("✨ Lightbulb tapped in step 25, advancing to step 26")
+            tutorialStep = 26
+        default:
+            print("✨ Lightbulb tapped in step \(tutorialStep) - no action needed")
+            break
+        }
+    }
     
     private func findMicrophoneGroup(in entity: Entity) -> Entity? {
         if entity.name == "microphone_tex_v01" {
@@ -379,116 +559,116 @@ struct ImmersiveView: View {
     }
     
     private func loadFantasyScene() {
-            Task {
-                do {
-                    let scene = try await Entity.load(named: "FantasyScene", in: realityKitContentBundle)
-                    sceneEntity = scene
+        Task {
+            do {
+                let scene = try await Entity.load(named: "FantasyScene", in: realityKitContentBundle)
+                sceneEntity = scene
                     
-                    // Find and setup the draggable entity
-                    if let draggableEntity = findEntity(named: "TestAnimation", in: scene) {
-                        setupGestures(for: draggableEntity)
-                    }
-                    
-                    // Find and setup all indicators
-                    let indicatorNames = ["Indicator8", "Indicator14", "Indicator17", "Indicator21", "Indicator24"]
-                    for name in indicatorNames {
-                        if let indicator = findEntity(named: name, in: scene) {
-                            EntityGestureState.shared.indicators.append(indicator)
-                            setupIndicator(indicator)
-                        }
-                    }
-                
-                    
-                    print("✅ FantasyScene loaded successfully.")
-                } catch {
-                    print("❌ Error loading FantasyScene: \(error.localizedDescription)")
+                // Find and setup the draggable entity
+                if let draggableEntity = findEntity(named: "TestAnimation", in: scene) {
+                    setupGestures(for: draggableEntity)
                 }
+                    
+                // Find and setup all indicators
+                let indicatorNames = ["Indicator8", "Indicator14", "Indicator17", "Indicator21", "Indicator24"]
+                for name in indicatorNames {
+                    if let indicator = findEntity(named: name, in: scene) {
+                        EntityGestureState.shared.indicators.append(indicator)
+                        setupIndicator(indicator)
+                    }
+                }
+                
+                print("✅ FantasyScene loaded successfully.")
+            } catch {
+                print("❌ Error loading FantasyScene: \(error.localizedDescription)")
             }
         }
+    }
     
     private func handleDrag(value: EntityTargetValue<DragGesture.Value>) {
-           let entity = value.entity
-           guard let gestureComponent = entity.components[GestureComponent.self],
-                 gestureComponent.canDrag else { return }
+        let entity = value.entity
+        guard let gestureComponent = entity.components[GestureComponent.self],
+              gestureComponent.canDrag else { return }
            
-           let state = EntityGestureState.shared
+        let state = EntityGestureState.shared
            
-           // First time initialization
-           if state.targetedEntity == nil {
-               state.targetedEntity = entity
-               state.dragStartPosition = entity.position
-               state.isDragging = true
-               state.initialOrientation = entity.orientation(relativeTo: nil)
-           }
+        // First time initialization
+        if state.targetedEntity == nil {
+            state.targetedEntity = entity
+            state.dragStartPosition = entity.position
+            state.isDragging = true
+            state.initialOrientation = entity.orientation(relativeTo: nil)
+        }
            
-           guard state.isDragging else { return }
+        guard state.isDragging else { return }
            
-           // Calculate new position
-           let translation = value.gestureValue.translation3D
-            let dampening: Float = 0.001  // Reduce this value to slow down movement (0.01 = 1%, 0.001 = 0.1%)
+        // Calculate new position
+        let translation = value.gestureValue.translation3D
+        let dampening: Float = 0.001 // Reduce this value to slow down movement (0.01 = 1%, 0.001 = 0.1%)
 
-           let newPosition = state.dragStartPosition + SIMD3<Float>(
-               Float(translation.x) * dampening,
-               -Float(translation.y) * dampening,
-               Float(translation.z) * dampening
-           )
+        let newPosition = state.dragStartPosition + SIMD3<Float>(
+            Float(translation.x) * dampening,
+            -Float(translation.y) * dampening,
+            Float(translation.z) * dampening
+        )
            
-           // Check for snapping
-           if let (shouldSnap, snapPosition, indicator) = checkForSnapping(entity: entity, currentPosition: newPosition) {
-               if shouldSnap {
-                   entity.position = snapPosition
-                   state.currentSnappedIndicator = indicator
-                   if var gestureComp = entity.components[GestureComponent.self] {
-                       gestureComp.isSnapped = true
-                       entity.components[GestureComponent.self] = gestureComp
-                   }
-                   return
-               }
-           }
+        // Check for snapping
+        if let (shouldSnap, snapPosition, indicator) = checkForSnapping(entity: entity, currentPosition: newPosition) {
+            if shouldSnap {
+                entity.position = snapPosition
+                state.currentSnappedIndicator = indicator
+                if var gestureComp = entity.components[GestureComponent.self] {
+                    gestureComp.isSnapped = true
+                    entity.components[GestureComponent.self] = gestureComp
+                }
+                return
+            }
+        }
            
-           // If we're not snapping, update position normally
-           entity.position = newPosition
-           state.currentSnappedIndicator = nil
-           if var gestureComp = entity.components[GestureComponent.self] {
-               gestureComp.isSnapped = false
-               entity.components[GestureComponent.self] = gestureComp
-           }
-       }
+        // If we're not snapping, update position normally
+        entity.position = newPosition
+        state.currentSnappedIndicator = nil
+        if var gestureComp = entity.components[GestureComponent.self] {
+            gestureComp.isSnapped = false
+            entity.components[GestureComponent.self] = gestureComp
+        }
+    }
     
     private func checkForSnapping(entity: Entity, currentPosition: SIMD3<Float>) -> (shouldSnap: Bool, position: SIMD3<Float>, indicator: Entity)? {
-           guard let gestureComponent = entity.components[GestureComponent.self],
-                 gestureComponent.isSnappable else { return nil }
+        guard let gestureComponent = entity.components[GestureComponent.self],
+              gestureComponent.isSnappable else { return nil }
            
-           let state = EntityGestureState.shared
+        let state = EntityGestureState.shared
            
-           for indicator in state.indicators {
-               let indicatorPosition = indicator.position
+        for indicator in state.indicators {
+            let indicatorPosition = indicator.position
                
-               // Calculate distance between entity and indicator
-               let distance = length(currentPosition - indicatorPosition)
+            // Calculate distance between entity and indicator
+            let distance = length(currentPosition - indicatorPosition)
                
-               // If within snap radius, snap to indicator position
-               if distance < gestureComponent.snapRadius {
-                   return (true, indicatorPosition, indicator)
-               }
-           }
+            // If within snap radius, snap to indicator position
+            if distance < gestureComponent.snapRadius {
+                return (true, indicatorPosition, indicator)
+            }
+        }
            
-           return nil
-       }
+        return nil
+    }
         
     private func handleDragEnd(value: EntityTargetValue<DragGesture.Value>) {
-            let state = EntityGestureState.shared
+        let state = EntityGestureState.shared
             
-            // If we ended on a snap point, make sure we're exactly on it
-            if let snapIndicator = state.currentSnappedIndicator,
-               let entity = state.targetedEntity {
-                entity.position = snapIndicator.position
-            }
-            
-            state.targetedEntity = nil
-            state.isDragging = false
-            state.initialOrientation = nil
+        // If we ended on a snap point, make sure we're exactly on it
+        if let snapIndicator = state.currentSnappedIndicator,
+           let entity = state.targetedEntity
+        {
+            entity.position = snapIndicator.position
         }
+            
+        state.targetedEntity = nil
+        state.isDragging = false
+        state.initialOrientation = nil
+    }
     
     private func setupGestures(for entity: Entity) {
         // Setup gesture component
@@ -523,7 +703,6 @@ struct ImmersiveView: View {
         entity.components[InputTargetComponent.self] = inputTarget
     }
     
-    
     private func setupIndicator(_ entity: Entity) {
         // Setup indicator as a trigger volume
         let indicatorBounds = entity.visualBounds(recursive: true, relativeTo: nil)
@@ -540,7 +719,7 @@ struct ImmersiveView: View {
         let triggerShape = ShapeResource.generateBox(size: triggerSize)
         entity.components[CollisionComponent.self] = CollisionComponent(
             shapes: [triggerShape],
-            mode: .trigger,  // This makes it a trigger volume
+            mode: .trigger, // This makes it a trigger volume
             filter: .init(group: .default, mask: .all)
         )
     }
@@ -579,13 +758,15 @@ struct ImmersiveView: View {
             draggable.components[GestureComponent.self] = gestureComp
         }
     }
-
-    
 }
 
 // Add notification name
 extension Notification.Name {
     static let createTranscriptionWindow = Notification.Name("createTranscriptionWindow")
+    static let showModel = Notification.Name("showModel")
+    static let hideModel = Notification.Name("hideModel")
+    static let showModels = Notification.Name("showModels")
+    static let hideModels = Notification.Name("hideModels")
 }
 
 // Helper extension to print entity hierarchy
