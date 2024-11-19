@@ -88,7 +88,7 @@ class TutorialContent {
         ),
         TutorialStep(
             id: 10,
-            message: "See this microphone? When you pick it up, it'll capture whatever you say to add to the story.",
+            message: "See this microphone? When you tap it, it'll capture whatever you say to add to the story.",
             actions: [.showModels(["_010_table_tex_v01", "storypath_tex_v01", "microphone_tex_v01"])]
         ),
         TutorialStep(
@@ -145,7 +145,7 @@ class TutorialContent {
             message: "But wait! We're missing something… How did I get into that mess in the middle? Place me over there.",
             actions: [.showModels(["_010_table_tex_v01", "storypath_tex_v01", "microphone_tex_v01",
                                    "signpost_forest_tex_v01", "dragon_anim_v03", "cottage_teapot_tex_v01",
-                                   "Indicator14"])]
+                                   "Indicator21"])]
         ),
         TutorialStep(
             id: 22,
@@ -166,7 +166,7 @@ class TutorialContent {
             message: "Let's jump to a spot between the dragon scene and the ending. Place me there, and let's wrap up our story with a twist!",
             actions: [.showModels(["_010_table_tex_v01", "storypath_tex_v01", "microphone_tex_v01",
                                    "signpost_forest_tex_v01", "dragon_anim_v03", "cottage_teapot_tex_v01",
-                                   "lightbulb_tex_v01", "treasure_tex_v01", "signopost_snow_tex_v01", "Indicator21"])]
+                                   "lightbulb_tex_v01", "treasure_tex_v01", "signopost_snow_tex_v01", "Indicator24"])]
         ),
         TutorialStep(
             id: 25,
