@@ -122,6 +122,23 @@ struct ImmersiveView: View {
                 updateSceneForTutorialStep(scene: scene, step: tutorialStep)
             }
         }
+        update: { content in
+                    // This is where we can access scene-level features
+                    if let scene = content.entities.first {
+                        // Setup collision subscriptions
+                        content.subscribe(to: CollisionEvents.Began.self) { event in
+                            if let (draggable, indicator) = identifyDraggableAndIndicator(event.entityA, event.entityB) {
+                                handleSnapToIndicator(draggable: draggable, indicator: indicator)
+                            }
+                        }
+                        
+                        content.subscribe(to: CollisionEvents.Ended.self) { event in
+                            if let (draggable, _) = identifyDraggableAndIndicator(event.entityA, event.entityB) {
+                                handleUnsnap(draggable: draggable)
+                            }
+                        }
+                    }
+                }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
             loadFantasyScene()
@@ -135,6 +152,14 @@ struct ImmersiveView: View {
                 updateSceneForTutorialStep(scene: scene, step: newValue)
             }
         }
+        .gesture(DragGesture()
+            .targetedToAnyEntity()
+            .onChanged { value in
+                handleDrag(value: value)
+            }
+            .onEnded { value in
+                handleDragEnd(value: value)
+            })
         .gesture(
             TapGesture()
                 .targetedToAnyEntity()
@@ -144,21 +169,22 @@ struct ImmersiveView: View {
         )
     }
     
+    private func findEntity(named: String, in entity: Entity) -> Entity? {
+        if entity.name == named {
+            return entity
+        }
+        for child in entity.children {
+            if let found = findEntity(named: named, in: child) {
+                return found
+            }
+        }
+        return nil
+    }
+    
     private func updateSceneForTutorialStep(scene: Entity, step: Int) {
         // Helper function to recursively find entities by name
         print("updateSceneForTutorialStep")
-        func findEntity(named: String, in entity: Entity) -> Entity? {
-            if entity.name == named {
-                return entity
-            }
-            for child in entity.children {
-                if let found = findEntity(named: named, in: child) {
-                    return found
-                }
-            }
-            return nil
-        }
-            
+        
         // Example: Show/hide entities based on tutorial step
         switch step {
         case 1:
@@ -326,16 +352,208 @@ struct ImmersiveView: View {
     }
     
     private func loadFantasyScene() {
-        Task {
-            do {
-                let scene = try await Entity.load(named: "FantasyScene", in: realityKitContentBundle)
-                sceneEntity = scene
-                print("✅ FantasyScene loaded successfully.")
-            } catch {
-                print("❌ Error loading FantasyScene: \(error.localizedDescription)")
+            Task {
+                do {
+                    let scene = try await Entity.load(named: "FantasyScene", in: realityKitContentBundle)
+                    sceneEntity = scene
+                    
+                    // Find and setup the draggable entity
+                    if let draggableEntity = findEntity(named: "TestAnimation", in: scene) {
+                        setupGestures(for: draggableEntity)
+                    }
+                    
+                    // Find and setup all indicators
+                    let indicatorNames = ["Indicator8", "Indicator14", "Indicator17", "Indicator21", "Indicator24"]
+                    for name in indicatorNames {
+                        if let indicator = findEntity(named: name, in: scene) {
+                            EntityGestureState.shared.indicators.append(indicator)
+                            setupIndicator(indicator)
+                        }
+                    }
+                
+                    
+                    print("✅ FantasyScene loaded successfully.")
+                } catch {
+                    print("❌ Error loading FantasyScene: \(error.localizedDescription)")
+                }
             }
         }
+    
+    private func handleDrag(value: EntityTargetValue<DragGesture.Value>) {
+           let entity = value.entity
+           guard let gestureComponent = entity.components[GestureComponent.self],
+                 gestureComponent.canDrag else { return }
+           
+           let state = EntityGestureState.shared
+           
+           // First time initialization
+           if state.targetedEntity == nil {
+               state.targetedEntity = entity
+               state.dragStartPosition = entity.position
+               state.isDragging = true
+               state.initialOrientation = entity.orientation(relativeTo: nil)
+           }
+           
+           guard state.isDragging else { return }
+           
+           // Calculate new position
+           let translation = value.gestureValue.translation3D
+            let dampening: Float = 0.001  // Reduce this value to slow down movement (0.01 = 1%, 0.001 = 0.1%)
+
+           let newPosition = state.dragStartPosition + SIMD3<Float>(
+               Float(translation.x) * dampening,
+               -Float(translation.y) * dampening,
+               Float(translation.z) * dampening
+           )
+           
+           // Check for snapping
+           if let (shouldSnap, snapPosition, indicator) = checkForSnapping(entity: entity, currentPosition: newPosition) {
+               if shouldSnap {
+                   entity.position = snapPosition
+                   state.currentSnappedIndicator = indicator
+                   if var gestureComp = entity.components[GestureComponent.self] {
+                       gestureComp.isSnapped = true
+                       entity.components[GestureComponent.self] = gestureComp
+                   }
+                   return
+               }
+           }
+           
+           // If we're not snapping, update position normally
+           entity.position = newPosition
+           state.currentSnappedIndicator = nil
+           if var gestureComp = entity.components[GestureComponent.self] {
+               gestureComp.isSnapped = false
+               entity.components[GestureComponent.self] = gestureComp
+           }
+       }
+    
+    private func checkForSnapping(entity: Entity, currentPosition: SIMD3<Float>) -> (shouldSnap: Bool, position: SIMD3<Float>, indicator: Entity)? {
+           guard let gestureComponent = entity.components[GestureComponent.self],
+                 gestureComponent.isSnappable else { return nil }
+           
+           let state = EntityGestureState.shared
+           
+           for indicator in state.indicators {
+               let indicatorPosition = indicator.position
+               
+               // Calculate distance between entity and indicator
+               let distance = length(currentPosition - indicatorPosition)
+               
+               // If within snap radius, snap to indicator position
+               if distance < gestureComponent.snapRadius {
+                   return (true, indicatorPosition, indicator)
+               }
+           }
+           
+           return nil
+       }
+        
+    private func handleDragEnd(value: EntityTargetValue<DragGesture.Value>) {
+            let state = EntityGestureState.shared
+            
+            // If we ended on a snap point, make sure we're exactly on it
+            if let snapIndicator = state.currentSnappedIndicator,
+               let entity = state.targetedEntity {
+                entity.position = snapIndicator.position
+            }
+            
+            state.targetedEntity = nil
+            state.isDragging = false
+            state.initialOrientation = nil
+        }
+    
+    private func setupGestures(for entity: Entity) {
+        // Setup gesture component
+        var gestureComponent = GestureComponent()
+        gestureComponent.canDrag = true
+        entity.components[GestureComponent.self] = gestureComponent
+        
+        // Add collision component
+        let bounds = entity.visualBounds(recursive: true, relativeTo: nil)
+        let size = SIMD3<Float>(
+            bounds.max.x - bounds.min.x,
+            bounds.max.y - bounds.min.y,
+            bounds.max.z - bounds.min.z
+        )
+        
+        // Make collision shape slightly larger for better interaction
+        let padding: Float = 0.2
+        let interactionSize = size + SIMD3<Float>(padding, padding, padding)
+        
+        // Create collision component with proper shapes
+        let collisionShape = ShapeResource.generateBox(size: interactionSize)
+        entity.components[CollisionComponent.self] = CollisionComponent(
+            shapes: [collisionShape],
+            mode: .default,
+            filter: .init(group: .default, mask: .all)
+        )
+        
+        // Add input target component
+        var inputTarget = InputTargetComponent()
+        inputTarget.allowedInputTypes = .all
+        inputTarget.isEnabled = true
+        entity.components[InputTargetComponent.self] = inputTarget
     }
+    
+    
+    private func setupIndicator(_ entity: Entity) {
+        // Setup indicator as a trigger volume
+        let indicatorBounds = entity.visualBounds(recursive: true, relativeTo: nil)
+        let indicatorSize = SIMD3<Float>(
+            indicatorBounds.max.x - indicatorBounds.min.x,
+            indicatorBounds.max.y - indicatorBounds.min.y,
+            indicatorBounds.max.z - indicatorBounds.min.z
+        )
+        
+        // Make trigger volume slightly larger than visual bounds
+        let padding: Float = 0.2
+        let triggerSize = indicatorSize + SIMD3<Float>(padding, padding, padding)
+        
+        let triggerShape = ShapeResource.generateBox(size: triggerSize)
+        entity.components[CollisionComponent.self] = CollisionComponent(
+            shapes: [triggerShape],
+            mode: .trigger,  // This makes it a trigger volume
+            filter: .init(group: .default, mask: .all)
+        )
+    }
+
+    private func identifyDraggableAndIndicator(_ entityA: Entity, _ entityB: Entity) -> (draggable: Entity, indicator: Entity)? {
+        let state = EntityGestureState.shared
+        
+        if state.indicators.contains(entityA) && entityB.components[GestureComponent.self] != nil {
+            return (entityB, entityA)
+        } else if state.indicators.contains(entityB) && entityA.components[GestureComponent.self] != nil {
+            return (entityA, entityB)
+        }
+        
+        return nil
+    }
+
+    private func handleSnapToIndicator(draggable: Entity, indicator: Entity) {
+        let state = EntityGestureState.shared
+        state.currentSnappedIndicator = indicator
+        
+        // Snap to indicator position
+        draggable.position = indicator.position
+        
+        if var gestureComp = draggable.components[GestureComponent.self] {
+            gestureComp.isSnapped = true
+            draggable.components[GestureComponent.self] = gestureComp
+        }
+    }
+
+    private func handleUnsnap(draggable: Entity) {
+        let state = EntityGestureState.shared
+        state.currentSnappedIndicator = nil
+        
+        if var gestureComp = draggable.components[GestureComponent.self] {
+            gestureComp.isSnapped = false
+            draggable.components[GestureComponent.self] = gestureComp
+        }
+    }
+
+    
 }
 
 // Add notification name

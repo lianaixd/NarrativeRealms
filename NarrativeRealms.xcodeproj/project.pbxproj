@@ -35,6 +35,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3602C4602CE68FD900354D08 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
 		3602C4612CE68FDD00354D08 /* Services */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Services; sourceTree = "<group>"; };
+		36B36D9A2CEA78C400400D32 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +71,7 @@
 		63EC6AE22C0CF80700EEB191 /* NarrativeRealms */ = {
 			isa = PBXGroup;
 			children = (
+				36B36D9A2CEA78C400400D32 /* Components */,
 				3602C4612CE68FDD00354D08 /* Services */,
 				3602C4602CE68FD900354D08 /* Views */,
 				63EC6AE72C0CF80700EEB191 /* NarrativeRealmsApp.swift */,
@@ -118,6 +120,7 @@
 			fileSystemSynchronizedGroups = (
 				3602C4602CE68FD900354D08 /* Views */,
 				3602C4612CE68FDD00354D08 /* Services */,
+				36B36D9A2CEA78C400400D32 /* Components */,
 			);
 			name = NarrativeRealms;
 			packageProductDependencies = (
