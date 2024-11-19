@@ -161,12 +161,6 @@ struct ImmersiveView: View {
             setupNotifications()
             loadFantasyScene()
         }
-        .onChange(of: tutorialStep) { _, newValue in
-            // Update scene when tutorial step changes
-            if let scene = sceneEntity {
-                updateSceneForTutorialStep(scene: scene, step: newValue)
-            }
-        }
         .gesture(DragGesture()
             .targetedToAnyEntity()
             .onChanged { value in
@@ -302,55 +296,6 @@ struct ImmersiveView: View {
               }
           }
       }
-    
-    private func updateSceneForTutorialStep(scene: Entity, step: Int) {
-        switch step {
-        case 1:
-            print("updateSceneForTutorialStep: step 0")
-            findEntity(named: "_010_table_tex_v01", in: scene)?.isEnabled = false
-            findEntity(named: "storypath_tex_v01", in: scene)?.isEnabled = false
-            findEntity(named: "signpost_forest_tex_v01", in: scene)?.isEnabled = false
-            findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = false
-            findEntity(named: "lightbulb_tex_v01", in: scene)?.isEnabled = false
-            findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = false
-            findEntity(named: "signopost_snow_tex_v01", in: scene)?.isEnabled = false
-            findEntity(named: "dragon_anim_v03", in: scene)?.isEnabled = false
-            findEntity(named: "signpost_desert_tex_v01", in: scene)?.isEnabled = false
-            findEntity(named: "microphone_tex_v01", in: scene)?.isEnabled = false
-            findEntity(named: "Indicator8", in: scene)?.isEnabled = false
-            findEntity(named: "Indicator14", in: scene)?.isEnabled = false
-            findEntity(named: "Indicator17", in: scene)?.isEnabled = false
-            findEntity(named: "Indicator21", in: scene)?.isEnabled = false
-            findEntity(named: "Indicator24", in: scene)?.isEnabled = false
-        case 4:
-            findEntity(named: "_010_table_tex_v01", in: scene)?.isEnabled = true
-        case 6:
-            findEntity(named: "storypath_tex_v01", in: scene)?.isEnabled = true
-        case 10:
-            findEntity(named: "microphone_tex_v01", in: scene)?.isEnabled = true
-        case 13:
-            findEntity(named: "signpost_forest_tex_v01", in: scene)?.isEnabled = true
-        case 17:
-            findEntity(named: "dragon_anim_v03", in: scene)?.isEnabled = true
-        case 20:
-            findEntity(named: "cottage_teapot_tex_v01", in: scene)?.isEnabled = true
-        case 22:
-            if let lightbulb = findEntity(named: "lightbulb_tex_v01", in: scene) {
-                       lightbulb.isEnabled = true
-                       print("Found lightbulb, making it interactive")
-                       makeLightbulbInteractive(lightbulb)
-                   }
-        case 23:
-            findEntity(named: "treasure_tex_v01", in: scene)?.isEnabled = true
-        case 24:
-            findEntity(named: "signopost_snow_tex_v01", in: scene)?.isEnabled = true
-        case 27:
-            findEntity(named: "signpost_desert_tex_v01", in: scene)?.isEnabled = true
-        default:
-            // Final state or reset state
-            break
-        }
-    }
     
     private func makeLightbulbInteractive(_ groupEntity: Entity) {
         print("🎯 Setting up lightbulb interaction. Entity type: \(type(of: groupEntity))")
