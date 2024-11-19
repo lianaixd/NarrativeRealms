@@ -128,14 +128,7 @@ struct ImmersiveView: View {
     var body: some View {
         RealityView { content in
             if let scene = sceneEntity {
-                if let microphoneGroup = findMicrophoneGroup(in: scene) {
-                    print("🎤 Found microphone group: \(microphoneGroup.name)")
-                    makeAllMicrophonePartsInteractive(microphoneGroup)
-                } else {
-                    print("❌ Microphone group not found")
-                }
                 content.add(scene)
-                  
                 handleInitialState(scene: scene)
             }
         }
@@ -226,17 +219,6 @@ struct ImmersiveView: View {
               if let modelName = notification.userInfo?["modelName"] as? String,
                  let scene = sceneEntity {
                   findEntity(named: modelName, in: scene)?.isEnabled = true
-                  
-                  // Special handling for interactive models
-                  if modelName == "lightbulb_tex_v01" {
-                      if let lightbulb = findEntity(named: modelName, in: scene) {
-                          makeLightbulbInteractive(lightbulb)
-                      }
-                  } else if modelName == "microphone_tex_v01" {
-                      if let microphone = findEntity(named: modelName, in: scene) {
-                          makeAllMicrophonePartsInteractive(microphone)
-                      }
-                  }
               }
           }
 
@@ -271,13 +253,6 @@ struct ImmersiveView: View {
                    modelsToShow.forEach { modelName in
                        if let entity = findEntity(named: modelName, in: scene) {
                            entity.isEnabled = true
-                           
-                           // Special handling for interactive models
-                           if modelName == "lightbulb_tex_v01" {
-                               makeLightbulbInteractive(entity)
-                           } else if modelName == "microphone_tex_v01" {
-                               makeAllMicrophonePartsInteractive(entity)
-                           }
                        }
                    }
                }
@@ -296,143 +271,30 @@ struct ImmersiveView: View {
               }
           }
       }
-    
-    private func makeLightbulbInteractive(_ groupEntity: Entity) {
-        print("🎯 Setting up lightbulb interaction. Entity type: \(type(of: groupEntity))")
-        
-        if groupEntity.children.contains(where: { $0.name == "lightbulb_hitbox" }) {
-                print("📦 Lightbulb hit box already exists, skipping creation")
-                return
-            }
-        
-        // Calculate the overall bounds of the lightbulb group
-        let bounds = groupEntity.visualBounds(relativeTo: groupEntity)
-        
-        // Create a slightly larger invisible collision box
-        let padding: Float = 0.05  // Adjust padding as needed
-        let hitBoxSize = SIMD3<Float>(
-            bounds.max.x - bounds.min.x + padding * 2,
-            bounds.max.y - bounds.min.y + padding * 2,
-            bounds.max.z - bounds.min.z + padding * 2
-        )
-        
-        var material = PhysicallyBasedMaterial()
-        material.blending = .transparent(opacity: .init(floatLiteral: 0.0001))
-        
-        // Create an invisible ModelEntity for collision
-        let hitBox = ModelEntity(
-            mesh: .generateBox(size: hitBoxSize),
-            materials: [material]
-        )
-        
-        // Position the hit box to center it on the lightbulb
-        hitBox.position = SIMD3<Float>(
-            (bounds.min.x + bounds.max.x) / 2,
-            (bounds.min.y + bounds.max.y) / 2,
-            (bounds.min.z + bounds.max.z) / 2
-        )
-        
-        // Make the hit box interactive
-        hitBox.collision = CollisionComponent(shapes: [ShapeResource.generateBox(size: hitBoxSize)])
-        hitBox.components.set(InputTargetComponent())
-        hitBox.name = "lightbulb_hitbox"
-        
-        // Add the hit box as a child of the lightbulb group
-        groupEntity.addChild(hitBox)
-        
-        print("📦 Created invisible hit box for lightbulb: \(hitBoxSize)")
-    }
-    
-    private func makeAllMicrophonePartsInteractive(_ groupEntity: Entity) {
-        print("🎯 Setting up microphone interaction. Entity type: \(type(of: groupEntity))")
-        
-        // Check if hit box already exists
-           if groupEntity.children.contains(where: { $0.name == "microphone_hitbox" }) {
-               print("📦 Microphone hit box already exists, skipping creation")
-               return
-           }
-        
-        // Calculate the overall bounds of the microphone group
-        let bounds = groupEntity.visualBounds(relativeTo: groupEntity)
-        
-        // Create a slightly larger invisible collision box
-        let padding: Float = 0.05 // Adjust this value to make the hit box bigger
-        let hitBoxSize = SIMD3<Float>(
-            bounds.max.x - bounds.min.x + padding * 2,
-            bounds.max.y - bounds.min.y + padding * 2,
-            bounds.max.z - bounds.min.z + padding * 2
-        )
-        
-        var material = PhysicallyBasedMaterial()
-        material.blending = .transparent(opacity: .init(floatLiteral: 0.0001))
-        
-        // Create an invisible ModelEntity for collision
-        let hitBox = ModelEntity(
-            mesh: .generateBox(size: hitBoxSize),
-            materials: [material]
-        )
-        
-        // Position the hit box to center it on the microphone
-        hitBox.position = SIMD3<Float>(
-            (bounds.min.x + bounds.max.x) / 2,
-            (bounds.min.y + bounds.max.y) / 2,
-            (bounds.min.z + bounds.max.z) / 2
-        )
-        
-        // Make the hit box interactive
-        hitBox.collision = CollisionComponent(shapes: [ShapeResource.generateBox(size: hitBoxSize)])
-        hitBox.components.set(InputTargetComponent())
-        hitBox.name = "microphone_hitbox"
-        
-        // Add the hit box as a child of the microphone group
-        groupEntity.addChild(hitBox)
-        
-        print("📦 Created invisible hit box: \(hitBoxSize)")
-    }
-    
-    private func makeEntityInteractive(_ entity: ModelEntity) {
-        print("📦 Making entity interactive: \(entity.name)")
-        let bounds = entity.visualBounds(relativeTo: entity)
-        let boxShape = ShapeResource.generateBox(size: [
-            max(0.001, bounds.max.x - bounds.min.x), // Ensure non-zero size
-            max(0.001, bounds.max.y - bounds.min.y),
-            max(0.001, bounds.max.z - bounds.min.z)
-        ])
-        entity.collision = CollisionComponent(shapes: [boxShape])
-        entity.components.set(InputTargetComponent())
-    }
 
     private func handleEntityTap(_ entity: Entity) {
         print("🔹 Tap detected on entity: \(entity.name)")
-        printEntityDetails(entity, depth: 0) // Print details of tapped entity
         
-        // Check if this entity or any of its parents is the microphone group
-        var currentEntity: Entity? = entity
-        while let current = currentEntity {
-            if current.name == "microphone_tex_v01" {
-                toggleRecording()
-                if isRecording {
-                    startNewPanel()
-                } else {
-                    finalizePanel()
+        // handle microphone tap
+        if let scene = sceneEntity,
+               let microphoneEntity = findEntity(named: "MicrophoneInteractive", in: scene) {
+                // Check if tapped entity is the microphone or its descendant
+                if entity == microphoneEntity || entity.parent?.id == microphoneEntity.id {
+                    toggleRecording()
+                    if isRecording {
+                        startNewPanel()
+                    } else {
+                        finalizePanel()
+                    }
                 }
-                break
             }
-            currentEntity = current.parent
-            print("👆 Checking parent entity: \(currentEntity?.name ?? "none")")
-        }
-        
-        // Check for lightbulb tap
-            currentEntity = entity
-            while let current = currentEntity {
-                // Check for both the lightbulb entity and its hitbox
-                if current.name == "lightbulb_tex_v01" || current.name == "lightbulb_hitbox" {
-                    print("👆 Lightbulb tapped!")
+    
+        if let scene = sceneEntity,
+               let lightbulbEntity = findEntity(named: "LightbulbInteractive", in: scene) {
+                // Check if tapped entity is the lightbulb or its descendant
+                if entity == lightbulbEntity || entity.parent?.id == lightbulbEntity.id {
                     handleLightbulbTap()
-                    break
                 }
-                currentEntity = current.parent
-                print("👆 Checking parent entity: \(currentEntity?.name ?? "none")")
             }
     }
     
@@ -450,21 +312,7 @@ struct ImmersiveView: View {
             break
         }
     }
-    
-    private func findMicrophoneGroup(in entity: Entity) -> Entity? {
-        if entity.name == "microphone_tex_v01" {
-            return entity
-        }
-           
-        for child in entity.children {
-            if let found = findMicrophoneGroup(in: child) {
-                return found
-            }
-        }
-           
-        return nil
-    }
-    
+
     private func toggleRecording() {
         isRecording.toggle()
         print("🎤 \(isRecording ? "Started" : "Stopped") recording")
@@ -473,33 +321,19 @@ struct ImmersiveView: View {
             try? recordingManager.startRecording()
         } else {
             recordingManager.stopRecording()
-        }
-    }
-    
-    private func updateMicrophoneVisuals(_ groupEntity: Entity, isRecording: Bool) {
-        // Update all microphone parts
-        for child in groupEntity.children {
-            for modelPart in child.children {
-                if let modelEntity = modelPart as? ModelEntity {
-                    var material = SimpleMaterial()
-                       
-                    if isRecording {
-                        // Bright red with emissive glow
-                        material.color = SimpleMaterial.BaseColor(tint: .red)
-                        material.roughness = 0.0
-                        material.metallic = 1.0
-                        modelEntity.components.set(EmissiveMaterialComponent())
-                    } else {
-                        // Reset to normal appearance
-                        material.color = SimpleMaterial.BaseColor(tint: .white)
-                        material.roughness = 0.5
-                        material.metallic = 0.0
-                        modelEntity.components.remove(EmissiveMaterialComponent.self)
-                    }
-                       
-                    modelEntity.model?.materials = [material]
+                // Handle microphone recording based on current tutorial step
+                switch tutorialStep {
+                case 12:
+                    print("✨ Microphone used in step 12, advancing to step 13")
+                    tutorialStep = 13
+                case 19:
+                    print("✨ Microphone used in step 25, advancing to step 26")
+                    tutorialStep = 20
+                default:
+                    print("✨ Microphone used in step \(tutorialStep) - no action needed")
+                    break
                 }
-            }
+
         }
     }
     

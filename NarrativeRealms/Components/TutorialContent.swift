@@ -97,7 +97,8 @@ class TutorialContent {
         ),
         TutorialStep(
             id: 12,
-            message: "*Recording*"
+            message: "*Tap on the microphone to record something*",
+            actions: [.disableNextButton]
         ),
         TutorialStep(
             id: 13,
@@ -132,7 +133,8 @@ class TutorialContent {
         ),
         TutorialStep(
             id: 19,
-            message: "*Recording*"
+            message: "*Tap on the microphone to record something*",
+            actions: [.disableNextButton]
         ),
         TutorialStep(
             id: 20,
