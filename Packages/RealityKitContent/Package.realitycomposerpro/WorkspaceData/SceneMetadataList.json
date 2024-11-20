@@ -81,6 +81,34 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
+        "StorylineStep3"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "StorylineStep2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "StorylineStep3",
+        "VisualEffects"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
         "Dragon"
       ],
       {
@@ -167,6 +195,15 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
+        "LightbulbInteractive"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
         "microphone_tex_v01",
         "microphone_002"
       ],
@@ -178,7 +215,27 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
+        "StorylineStep2",
+        "VisualEffects"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
         "DragonInvisible"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "StorylineStep4",
+        "VisualEffects"
       ],
       {
         "isExpanded" : true,
@@ -207,7 +264,8 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "TestAnimation"
+        "StorylineStep1",
+        "VisualEffects"
       ],
       {
         "isExpanded" : true,
@@ -251,6 +309,15 @@
       {
         "isExpanded" : false,
         "isLocked" : true
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "StorylineStep4"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       },
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
@@ -333,16 +400,6 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "TestAnimation",
-        "dude_org_anim_v02"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
         "microphone_tex_v01",
         "microphone_004"
       ],
@@ -354,8 +411,36 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
+        "StorylineStep5"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "StorylineStep1"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
         "BulbTapped",
         "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "StorylineStep5",
+        "VisualEffects"
       ],
       {
         "isExpanded" : true,

@@ -76,19 +76,19 @@ struct NarrativeRealmsApp: App {
 
     // Handle tutorial step changes
     func handleTutorialStepChange(newStep: Int) {
-            if newStep == 3 && !paletteWindowOpened {
-                paletteWindowOpened = true
-                openWindow(value: PaletteWindowID(id: 1))
-            }
-            
-            // Post notification to disable/enable Next button based on step
-            let shouldDisableNext = newStep == 22 || newStep == 25
-            NotificationCenter.default.post(
-                name: .updateNextButtonState,
-                object: nil,
-                userInfo: ["isEnabled": !shouldDisableNext]
-            )
+        if newStep == 3 && !paletteWindowOpened {
+            paletteWindowOpened = true
+            openWindow(value: PaletteWindowID(id: 1))
         }
+
+        // Post notification to disable/enable Next button based on step
+        let shouldDisableNext = newStep == 22 || newStep == 25
+        NotificationCenter.default.post(
+            name: .updateNextButtonState,
+            object: nil,
+            userInfo: ["isEnabled": !shouldDisableNext]
+        )
+    }
 
     func resetToNewStory() {
         Task {
