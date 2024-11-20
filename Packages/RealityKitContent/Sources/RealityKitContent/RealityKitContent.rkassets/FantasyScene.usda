@@ -653,7 +653,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
@@ -772,7 +772,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
@@ -891,7 +891,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
@@ -1010,7 +1010,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
@@ -1129,7 +1129,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
