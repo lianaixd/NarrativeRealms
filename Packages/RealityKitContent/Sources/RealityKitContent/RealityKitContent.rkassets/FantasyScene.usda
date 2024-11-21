@@ -115,6 +115,20 @@ def Xform "Root"
                 token type = "serial"
             }
         }
+
+        over "Materials"
+        {
+            over "Lightbulb_MTL"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "PreviewSurface"
+                {
+                    delete float inputs:opacity.connect = </Root/lightbulb_tex_v01/Materials/Lightbulb_MTL/baseColorTextureShader.outputs:a>
+                }
+            }
+        }
     }
 
     def "signpost_forest_tex_v01" (
@@ -248,7 +262,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.27355623, 1.2887162, -1.8296247)
+        float3 xformOp:translate = (0.32741648, 1.2887162, -1.8296247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "AnimationLibrary"
@@ -260,6 +274,12 @@ def Xform "Root"
                 uniform string[] clipNames = ["Appear", "Idle", "IdleToRight", "rightToIdle", "IdleToLeft", "LeftToIdle", "DefaultToArmour", "ArmourIdle", "ArmourToRight", "RightToArmour", "ArmourToLeft", "LeftToArmour", "ArmourDisappear"]
                 uniform string sourceAnimationName = "default subtree animation"
                 uniform double[] startTimes = [0, 1.2177512764750378, 2.688025954992436, 3.724204009433962, 4.487815120545073, 5.269592898322851, 5.864259564989518, 7.098310571473553, 8.62200389641058, 9.557648453878407, 10.285648453878407, 11.245648453878406, 11.837981787211739]
+            }
+
+            def RealityKitAnimationFile "Appear"
+            {
+                uniform bool looping = 1
+                uniform string name = "Appear"
             }
         }
 
@@ -286,10 +306,7 @@ def Xform "Root"
 
         def RealityKitComponent "RCP_BehaviorsContainer"
         {
-            rel behaviors = [
-                </Root/TestAnimation/OnAddedToScene>,
-                </Root/TestAnimation/OnTap>,
-            ]
+            rel behaviors = </Root/TestAnimation/OnAddedToScene>
             uniform token info:id = "RCP.BehaviorsContainer"
         }
 
@@ -310,30 +327,6 @@ def Xform "Root"
                 rel affectedObjects = </Root>
                 rel animationLibraryKey = </Root/Tag>
                 rel animationLibraryKeyOverrideKey = </Root/TestAnimation/OnAddedToScene/Trigger>
-                token info:id = "PlayTimeline"
-                int loops = 0
-                int performCount = 1
-                token type = "serial"
-            }
-        }
-
-        def Preliminary_Behavior "OnTap"
-        {
-            rel actions = </Root/TestAnimation/OnTap/Action>
-            uniform bool exclusive
-            rel triggers = </Root/TestAnimation/OnTap/Trigger>
-
-            def Preliminary_Trigger "Trigger"
-            {
-                rel affectedObjects = </Root/TestAnimation>
-                token info:id = "TapGesture"
-            }
-
-            def Preliminary_Action "Action"
-            {
-                rel affectedObjects = </Root>
-                rel animationLibraryKey = </Root/Armour>
-                rel animationLibraryKeyOverrideKey = </Root/TestAnimation/OnTap/Trigger>
                 token info:id = "PlayTimeline"
                 int loops = 0
                 int performCount = 1
@@ -376,10 +369,24 @@ def Xform "Root"
                 uniform token info:id = "C58348A6-4193-418C-AF6E-48AFEBFC1152"
                 double loopCount = 0
                 bool separateAnimatedValue = 1
-                double startTime = 1.5631596649858646
+                double startTime = 1.7628749028382085
                 rel target = </Root/dragon_anim_v03>
 
                 def RealityKitStruct "handoffType"
+                {
+                }
+            }
+
+            def RealityKitAction "Show"
+            {
+                string actionKind = "show"
+                int blendLayer = 300
+                double duration = 0.19602584513693413
+                uniform token info:id = "636458CC-A637-4283-98A0-8D72450A11DF"
+                double startTime = 0
+                rel target = </Root/dragon_anim_v03>
+
+                def RealityKitStruct "timingFunction"
                 {
                 }
             }
@@ -392,27 +399,10 @@ def Xform "Root"
                 double duration = 1.5631596648858652
                 uniform token info:id = "E07E0D35-C706-4A7B-979A-1F187CE81BA5"
                 bool separateAnimatedValue = 1
-                double startTime = 0
+                double startTime = 0.19971523785234388
                 rel target = </Root/dragon_anim_v03>
 
                 def RealityKitStruct "handoffType"
-                {
-                }
-            }
-        }
-
-        def RealityKitTrack "Track2"
-        {
-            def RealityKitAction "Show"
-            {
-                string actionKind = "show"
-                int blendLayer = 300
-                double duration = 0.14505735770577005
-                uniform token info:id = "43ECF17C-E432-4F80-8481-6AE7E7877CE2"
-                double startTime = 0
-                rel target = </Root/dragon_anim_v03>
-
-                def RealityKitStruct "timingFunction"
                 {
                 }
             }
@@ -431,6 +421,22 @@ def Xform "Root"
                 double duration = 1.4702746785173981
                 uniform token info:id = "0A5E467B-4DF8-42CC-8679-6AF54D065EE2"
                 double loopCount = 0
+                bool separateAnimatedValue = 1
+                double startTime = 1.2177512765750376
+                rel target = </Root/TestAnimation>
+
+                def RealityKitStruct "handoffType"
+                {
+                }
+            }
+
+            def RealityKitAction "Animation2"
+            {
+                string actionKind = "animation"
+                string animation = "Appear"
+                int blendLayer = 500
+                double duration = 1.2177512764750378
+                uniform token info:id = "519BBB4E-1EFF-4E89-9037-7B078058C756"
                 bool separateAnimatedValue = 1
                 double startTime = 0
                 rel target = </Root/TestAnimation>
@@ -619,7 +625,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
@@ -738,7 +744,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
@@ -857,7 +863,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
@@ -976,7 +982,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
@@ -1095,7 +1101,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0, 0, 0)
-                float radius = 0.1
+                float radius = 0.07
                 token shapeType = "Sphere"
 
                 def RealityKitStruct "pose"
