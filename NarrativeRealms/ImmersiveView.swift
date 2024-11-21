@@ -9,73 +9,169 @@ struct TranscriptionPanel: Component {
 
 extension ImmersiveView {
     private func createTextPanel(withText text: String) -> ModelEntity {
-        let panel = ModelEntity(
-            mesh: .generatePlane(width: 0.3, height: 0.2),
-            materials: [SimpleMaterial(color: .white.withAlphaComponent(0.8), isMetallic: false)]
-        )
-        
-        updateTextInPanel(panel: panel, text: text)
-        panel.components[TranscriptionPanel.self] = TranscriptionPanel(text: text)
-        
-        return panel
-    }
+           // Reduce panel size
+           let panel = ModelEntity(
+               mesh: .generatePlane(width: 0.2, height: 0.15),  // Reduced from 0.3, 0.2
+               materials: [SimpleMaterial(color: .white.withAlphaComponent(0.8), isMetallic: false)]
+           )
+           
+           updateTextInPanel(panel: panel, text: text)
+           panel.components[TranscriptionPanel.self] = TranscriptionPanel(text: text)
+           
+           return panel
+       }
     
     private func updateTextInPanel(panel: ModelEntity, text: String) {
-        panel.children.forEach { $0.removeFromParent() }
-        
-        let textEntity = ModelEntity()
-        let textMesh = MeshResource.generateText(
-            // Change this line to use a default message if text is empty
-            text.isEmpty ? "Start speaking to record..." : text,
-            extrusionDepth: 0.001,
-            font: .systemFont(ofSize: 0.02),
-            containerFrame: CGRect(x: -0.13, y: -0.08, width: 0.26, height: 0.16),
-            alignment: .left,
-            lineBreakMode: .byWordWrapping
-        )
-        textEntity.model = ModelComponent(mesh: textMesh, materials: [SimpleMaterial(color: .black, isMetallic: false)])
-        panel.addChild(textEntity)
-    }
+        print("updateTextInPanel")
+            panel.children.forEach { $0.removeFromParent() }
+            
+            let textEntity = ModelEntity()
+            let textMesh = MeshResource.generateText(
+                text.isEmpty ? "Start speaking to record..." : text,
+                extrusionDepth: 0.001,
+                font: .systemFont(ofSize: 0.015),  // Reduced from 0.02
+                containerFrame: CGRect(x: -0.09, y: -0.06, width: 0.18, height: 0.12),  // Adjusted proportionally
+                alignment: .left,
+                lineBreakMode: .byWordWrapping
+            )
+            textEntity.model = ModelComponent(mesh: textMesh, materials: [SimpleMaterial(color: .black, isMetallic: false)])
+            panel.addChild(textEntity)
+        }
+    
+    private func positionPanelAboveIndicator(panel: ModelEntity, indicator: Entity?) {
+        print("positionPanelAboveIndicator")
+            guard let indicator = indicator ?? EntityGestureState.shared.currentSnappedIndicator else {
+                print("positionPanelAboveIndicator -> no indicator, placing in default position")
+                // Default position if no indicator
+                panel.position = SIMD3<Float>(0.3, 1.5, -1.0)
+                return
+            }
+            
+            // Initialize PanelInfo for this indicator if it doesn't exist
+            if storyPanels[indicator] == nil {
+                print("positionPanelAboveIndicator -> initializing panel indicator")
+                storyPanels[indicator] = PanelInfo()
+            }
+            
+            // Get the indicator's world position
+            let indicatorPosition = indicator.position(relativeTo: nil)
+        print("positionPanelAboveIndicator -> indicatorPosition: \(indicatorPosition)")
+            // Calculate vertical offset based on existing panels
+            var panelInfo = storyPanels[indicator]!
+            let verticalOffset = panelInfo.nextPosition
+            
+            // Position the panel above the indicator
+            panel.position = SIMD3<Float>(
+                indicatorPosition.x,
+                indicatorPosition.y + verticalOffset,
+                indicatorPosition.z - 0.1  // Slight offset forward
+            )
+            
+            // Update tracking
+            panelInfo.panels.append(panel)
+            panelInfo.nextPosition += 0.2  // Increment for next panel
+            storyPanels[indicator] = panelInfo
+        }
     
     private func startNewPanel() {
-        guard let scene = sceneEntity else { return }
-               
-        // Create a new panel with a default message
-        let panel = createTextPanel(withText: "Start speaking to record...")
-        panel.position = SIMD3<Float>(0.3, 1.5, -1.0) // Fixed position for live panel
-               
-        scene.addChild(panel)
-        currentPanel = panel
-               
-        // Reset the transcribed text in the recording manager
-        recordingManager.transcribedText = "" // Add this line if you have this property
-               
-        cancellable = recordingManager.$transcribedText
-            .receive(on: RunLoop.main)
-            .sink { text in
-                if let panel = currentPanel {
-                    updateTextInPanel(panel: panel, text: text)
+        print("startNewPanel")
+            guard let scene = sceneEntity else { return }
+            
+            // Create a new panel with a default message
+            let panel = createTextPanel(withText: "Start speaking to record...")
+            
+            // Position above current indicator if one exists
+            positionPanelAboveIndicator(panel: panel, indicator: nil)
+            
+            scene.addChild(panel)
+            currentPanel = panel
+            
+            // Reset the transcribed text
+            recordingManager.transcribedText = ""
+            
+            cancellable = recordingManager.$transcribedText
+                .receive(on: RunLoop.main)
+                .sink { text in
+                    if let panel = currentPanel {
+                        updateTextInPanel(panel: panel, text: text)
+                    }
                 }
-            }
-    }
+        }
     
     private func finalizePanel() {
+        print("🎬 Finalizing panel")
         cancellable?.cancel()
+        
         if let panel = currentPanel {
-            // Remove the 3D panel
-            panel.removeFromParent()
+            // First try getting the indicator from EntityGestureState
+            var indicator = EntityGestureState.shared.currentSnappedIndicator
+            
+            if indicator == nil {
+                print("🔍 Trying to find current indicator manually")
+                indicator = getCurrentSnappedIndicator()
+            }
+            
+            if let foundIndicator = indicator {
+                print("📌 Positioning panel above indicator: \(foundIndicator.name)")
+                positionPanelAboveIndicator(panel: panel, indicator: foundIndicator)
+            } else {
+                print("⚠️ No indicator found - using default position")
+                // Use a default position if no indicator is found
+                panel.position = SIMD3<Float>(0.3, 1.5, -1.0)
+            }
+            
             currentPanel = nil
-                
-            // Create a window with the final text
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .createTranscriptionWindow,
-                    object: nil,
-                    userInfo: ["text": recordingManager.transcribedText]
-                )
-                print("📨 Posted transcription notification")
+        } else {
+            print("⚠️ No current panel to finalize")
+        }
+    }
+    
+    // Add this to your ImmersiveView extension
+    private func getCurrentSnappedIndicator() -> Entity? {
+        guard let scene = sceneEntity,
+              let tag = findEntity(named: "TestAnimation", in: scene) else {
+            print("⚠️ Could not find Tag entity")
+            return nil
+        }
+
+        // Get Tag's current position
+        let tagPosition = tag.position(relativeTo: nil)
+        print("📍 Tag position: \(tagPosition)")
+
+        // Check if Tag has a gesture component and is snapped
+        guard let gestureComp = tag.components[GestureComponent.self],
+              gestureComp.isSnapped else {
+            print("⚠️ Tag is not currently snapped")
+            return nil
+        }
+
+        // Find the closest enabled indicator
+        let state = EntityGestureState.shared
+        var closestIndicator: Entity?
+        var closestDistance: Float = .infinity
+
+        for indicator in state.indicators where indicator.isEnabled {
+            // Get the CollisionVolume child
+            guard let collisionVolume = indicator.children.first(where: { $0.name.contains("CollisionVolume") }) else {
+                continue
+            }
+
+            let indicatorPosition = collisionVolume.position(relativeTo: nil)
+            let distance = length(tagPosition - indicatorPosition)
+
+            if distance < closestDistance {
+                closestDistance = distance
+                closestIndicator = indicator
             }
         }
+
+        if let indicator = closestIndicator {
+            print("✅ Found snapped indicator: \(indicator.name)")
+        } else {
+            print("⚠️ No close indicator found")
+        }
+
+        return closestIndicator
     }
     
     private func exploreScene() {
@@ -129,6 +225,28 @@ struct ImmersiveView: View {
         "StorylineStep4",
         "StorylineStep5"
     ]
+    // Track panels associated with each indicator
+    private struct PanelInfo {
+        var panels: [ModelEntity] = []
+        var nextPosition: Float = 0.2  // Initial height offset
+    }
+    
+    @State private var storyPanels: [Entity: PanelInfo] = [:]
+    
+    private var tagAnimationController: AnimationManager? {
+            guard let scene = sceneEntity,
+                  let tagEntity = findEntity(named: "TestAnimation", in: scene) else {
+                return nil
+            }
+            return AnimationManager(entity: tagEntity)
+        }
+    private var dragonAnimationController: AnimationManager? {
+            guard let scene = sceneEntity,
+                  let dragonEntity = findEntity(named: "dragon_anim_v03", in: scene) else {
+                return nil
+            }
+            return AnimationManager(entity: dragonEntity)
+        }
     
     var body: some View {
         RealityView { content in
@@ -264,15 +382,6 @@ struct ImmersiveView: View {
                let scene = sceneEntity
             {
                 print("🎭 Showing only models: \(modelsToShow)")
-                   
-                // First, hide all models
-                for modelName in allModelNames {
-                    if let entity = findEntity(named: modelName, in: scene) {
-                        entity.isEnabled = false
-                        handleModelVisibility(modelName: modelName, isVisible: false)
-                    }
-                }
-                   
                 // Then, show only the specified models
                 for modelName in modelsToShow {
                     if let entity = findEntity(named: modelName, in: scene) {
@@ -303,9 +412,11 @@ struct ImmersiveView: View {
                 queue: .main
             ) { notification in
                 if let entityName = notification.userInfo?["entityName"] as? String,
+                   let animationName = notification.userInfo?["animationName"] as? String,
                    let scene = sceneEntity,
                    let entity = findEntity(named: entityName, in: scene) {
-                    playAnimation(for: entity)
+                    print("🎭 Playing animation for model: \(entityName)")
+                    playAnimation(for: entity, animationName: animationName)
                 }
             }
     }
@@ -441,7 +552,7 @@ struct ImmersiveView: View {
             Float(translation.z) * dampening
         )
         
-        print("🔄 Calculated new position: \(newPosition)")
+        // print("🔄 Calculated new position: \(newPosition)")
            
         // Check for snapping
         if let (shouldSnap, snapPosition, indicator) = checkForSnapping(entity: entity, currentPosition: newPosition) {
@@ -458,7 +569,7 @@ struct ImmersiveView: View {
         }
            
         // If we're not snapping, update position normally
-        print("📱 Setting position to: \(newPosition)")
+        // print("📱 Setting position to: \(newPosition)")
         entity.position = newPosition
         state.currentSnappedIndicator = nil
         if var gestureComp = entity.components[GestureComponent.self] {
@@ -631,6 +742,7 @@ struct ImmersiveView: View {
         if var gestureComp = draggable.components[GestureComponent.self] {
             gestureComp.isSnapped = true
             draggable.components[GestureComponent.self] = gestureComp
+            print("✅ Updated gesture component isSnapped to true")
         }
     }
 
@@ -736,32 +848,20 @@ struct ImmersiveView: View {
     }
     
     // Function to play animation
-    private func playAnimation(for entity: Entity, animationName: String? = nil) {
+    private func playAnimation(for entity: Entity, animationName: String) {
         let animations = entity.availableAnimations
         print("🎬 Looking for animations for \(entity.name)")
         
-        if !animations.isEmpty {
-            if let animationName = animationName {
-                // Try to play specific named animation
-                let controller = entity.playAnimation(
-                    named: animationName,
-                    transitionDuration: 0.5,
-                    startsPaused: false,
-                    recursive: true
-                )
-            } else {
-                // Play the first available animation
-                let controller = entity.playAnimation(
-                    animations[0],
-                    transitionDuration: 0.5,
-                    startsPaused: false
-                )
-            }
-            print("▶️ Started animation for \(entity.name)")
+        if entity.name == "TestAnimation" {
+            tagAnimationController?.playAnimation(named: animationName)
+            print("▶️ Started Tag animation")
+        } else if entity.name == "dragon_anim_v03" {
+            dragonAnimationController?.playAnimation(named: animationName)
         } else {
-            print("❌ No animations found for \(entity.name)")
+            print("Animation was not for Tag or Dragon")
         }
     }
+    
 }
 
 // Add notification name

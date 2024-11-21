@@ -128,6 +128,11 @@ struct TagTutorialView: View {
     private func handleStepAction() {
         guard let step = currentStep else { return }
         
+        
+        // Update model visibility based on step requirements
+        ModelVisibilityManager.shared.updateVisibility(models: step.models)
+        
+        
         for action in step.actions {
             switch action {
             case .openPalette:
@@ -142,11 +147,11 @@ struct TagTutorialView: View {
                     object: nil,
                     userInfo: ["modelName": modelName]
                 )
-            case .playAnimation(let entityName):
+            case .playAnimation(let modelName, let animationName):
                         NotificationCenter.default.post(
                             name: .playAnimation,
                             object: nil,
-                            userInfo: ["entityName": entityName]
+                            userInfo: ["entityName": modelName, "animationName": animationName]
                         )
             case .requireSnapTo(let target):
                 print("📍 Setting required snap target: \(target)")

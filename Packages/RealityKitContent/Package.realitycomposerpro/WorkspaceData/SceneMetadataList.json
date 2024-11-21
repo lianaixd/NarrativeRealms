@@ -274,6 +274,15 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
+        "TestAnimation"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
         "dude_org_anim_v03_noBlendShapes",
         "mtl"
       ],
@@ -309,6 +318,15 @@
       {
         "isExpanded" : false,
         "isLocked" : true
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "dragon_anim_v03"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       },
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
@@ -441,6 +459,16 @@
         "Root",
         "StorylineStep5",
         "VisualEffects"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "TestAnimation",
+        "dude_org_anim_v02"
       ],
       {
         "isExpanded" : true,
