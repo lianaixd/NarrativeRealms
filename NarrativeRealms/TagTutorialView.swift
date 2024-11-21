@@ -6,6 +6,15 @@ struct TagTutorialView: View {
     private let textWidth: CGFloat = 280
     @State private var isNextEnabled = true
     @Environment(\.openWindow) private var openWindow
+    @State private var requiredSnapTarget: String?
+    
+    private var stateDebug: String {
+        """
+        Step: \(tutorialStep)
+        Next Enabled: \(isNextEnabled)
+        Required Target: \(requiredSnapTarget ?? "none")
+        """
+    }
     
     private var currentStep: TutorialStep? {
         TutorialContent.getStep(tutorialStep)
@@ -50,6 +59,39 @@ struct TagTutorialView: View {
                 isNextEnabled = isEnabled
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .tagSnappedToIndicator)) { notification in
+            print("📱 Received tagSnappedToIndicator notification")
+            print("Notification Names Match: \(Notification.Name.tagSnappedToIndicator.rawValue)")
+            print("Current required target: \(requiredSnapTarget ?? "none")")
+            if let snappedTo = notification.userInfo?["indicator"] as? String {
+                print("Snapped to: \(snappedTo)")
+                if snappedTo == requiredSnapTarget {
+                    print("✅ Match found! Enabling next button")
+                    isNextEnabled = true
+                    requiredSnapTarget = nil
+                } else {
+                    print("❌ No match: \(snappedTo) != \(requiredSnapTarget ?? "none")")
+                }
+            }
+        }
+        .onAppear {
+            print("🎯 TagTutorialView appeared, current step: \(tutorialStep), required target: \(requiredSnapTarget ?? "none")")
+            NotificationCenter.default.addObserver(
+                forName: .tagSnappedToIndicator,
+                object: nil,
+                queue: .main
+            ) { notification in
+                print("📱 Received tagSnappedToIndicator notification")
+                if let snappedTo = notification.userInfo?["indicator"] as? String {
+                    print("Snapped to: \(snappedTo), Required: \(requiredSnapTarget ?? "none")")
+                    if snappedTo == requiredSnapTarget {
+                        print("✅ Match found! Enabling next button")
+                        isNextEnabled = true
+                        requiredSnapTarget = nil
+                    }
+                }
+            }
+        }
     }
     
     @ViewBuilder
@@ -78,7 +120,7 @@ struct TagTutorialView: View {
                 .padding(.vertical, 8)
                 .buttonStyle(.borderedProminent)
                 .disabled(!isNextEnabled ||
-                          (currentStep?.isSpecialStep ?? false))
+                    (currentStep?.isSpecialStep ?? false))
             }
         }
     }
@@ -100,6 +142,18 @@ struct TagTutorialView: View {
                     object: nil,
                     userInfo: ["modelName": modelName]
                 )
+            case .playAnimation(let entityName):
+                        NotificationCenter.default.post(
+                            name: .playAnimation,
+                            object: nil,
+                            userInfo: ["entityName": entityName]
+                        )
+            case .requireSnapTo(let target):
+                print("📍 Setting required snap target: \(target)")
+                requiredSnapTarget = target
+                isNextEnabled = false
+                print("Current state after requireSnapTo:")
+                print(stateDebug)
             case .hideModel(let modelName):
                 NotificationCenter.default.post(
                     name: .hideModel,
@@ -128,4 +182,7 @@ struct TagTutorialView: View {
 // Add notification name if not already defined elsewhere
 extension Notification.Name {
     static let updateNextButtonState = Notification.Name("updateNextButtonState")
+    static let tagSnappedToIndicator = Notification.Name("tagSnappedToIndicator")
 }
+
+
