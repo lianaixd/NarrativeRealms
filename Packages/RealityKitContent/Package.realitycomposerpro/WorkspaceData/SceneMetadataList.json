@@ -11,36 +11,20 @@
       }
     ]
   },
-  "2388C4B3-5436-4637-87A4-E534FA0C2767" : {
-    "objectMetadataList" : [
-      [
-        "2388C4B3-5436-4637-87A4-E534FA0C2767",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      }
-    ]
-  },
   "2E31150D-17B5-4793-9DBF-18EB3BADA431" : {
     "objectMetadataList" : [
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "microphone_tex_v01",
-        "microphone_005"
+        "Dragon"
       ],
       {
-        "disallowsFraming" : false,
-        "isExpanded" : false,
+        "isExpanded" : true,
         "isLocked" : false
       },
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "storypath_tex_v01",
-        "Materials"
+        "Model1"
       ],
       {
         "isExpanded" : true,
@@ -49,7 +33,7 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "Model10",
+        "signopost_snow_tex_v01",
         "Materials",
         "Signpost_snow_MTL"
       ],
@@ -60,18 +44,16 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "microphone_tex_v01",
-        "microphone"
+        "ObjectAppear"
       ],
       {
-        "disallowsFraming" : false,
-        "isExpanded" : false,
+        "isExpanded" : true,
         "isLocked" : false
       },
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "ObjectAppear",
+        "BulbTapped",
         "Track"
       ],
       {
@@ -81,7 +63,8 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "StorylineStep3"
+        "dude_org_anim_v02_1",
+        "mtl"
       ],
       {
         "isExpanded" : true,
@@ -90,26 +73,7 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "StorylineStep2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "StorylineStep3",
-        "VisualEffects"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Dragon"
+        "lightbulb_tex_v01"
       ],
       {
         "isExpanded" : true,
@@ -128,181 +92,8 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "BulbTapped"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "dragon_anim_v03",
-        "mtl"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Tag",
+        "ObjectAppear",
         "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "dude_normal_tex_v01"
-      ],
-      {
-        "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "microphone_tex_v01",
-        "microphone_003"
-      ],
-      {
-        "disallowsFraming" : false,
-        "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "dude_org_anim_v02_1",
-        "mtl"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "LightbulbInteractive"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "microphone_tex_v01",
-        "microphone_002"
-      ],
-      {
-        "disallowsFraming" : false,
-        "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "StorylineStep2",
-        "VisualEffects"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "DragonInvisible"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "StorylineStep4",
-        "VisualEffects"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Model1"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "microphone_tex_v01",
-        "microphone",
-        "microphone"
-      ],
-      {
-        "disallowsFraming" : false,
-        "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "StorylineStep1",
-        "VisualEffects"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "TestAnimation"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "dude_org_anim_v03_noBlendShapes",
-        "mtl"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "ObjectAppear"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "MicrophoneInteractive"
       ],
       {
         "isExpanded" : true,
@@ -322,7 +113,8 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "dragon_anim_v03"
+        "dude_org_anim_v03_noBlendShapes",
+        "mtl"
       ],
       {
         "isExpanded" : true,
@@ -331,7 +123,15 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "StorylineStep4"
+        "BulbTapped"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -340,18 +140,7 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "microphone_tex_v01",
-        "microphone_001"
-      ],
-      {
-        "disallowsFraming" : false,
-        "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "Tag"
+        "DragonInvisible"
       ],
       {
         "isExpanded" : true,
@@ -380,6 +169,16 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
+        "Tag",
+        "Track"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
         "Armour"
       ],
       {
@@ -389,23 +188,32 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "Dragon",
-        "Track2"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "signopost_snow_tex_v01",
+        "Model10",
         "Materials",
         "Signpost_snow_MTL"
       ],
       {
         "isExpanded" : false,
         "isLocked" : true
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "dude_normal_tex_v01"
+      ],
+      {
+        "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
+        "Root",
+        "storypath_tex_v01",
+        "Materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       },
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
@@ -418,18 +226,8 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "microphone_tex_v01",
-        "microphone_004"
-      ],
-      {
-        "disallowsFraming" : false,
-        "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "StorylineStep5"
+        "dragon_anim_v03",
+        "mtl"
       ],
       {
         "isExpanded" : true,
@@ -438,37 +236,19 @@
       [
         "2E31150D-17B5-4793-9DBF-18EB3BADA431",
         "Root",
-        "StorylineStep1"
+        "Tag"
       ],
       {
         "isExpanded" : true,
         "isLocked" : false
-      },
+      }
+    ]
+  },
+  "6CF94453-80D0-436A-9377-843D1877013B" : {
+    "objectMetadataList" : [
       [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "BulbTapped",
-        "Track"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "StorylineStep5",
-        "VisualEffects"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "2E31150D-17B5-4793-9DBF-18EB3BADA431",
-        "Root",
-        "TestAnimation",
-        "dude_org_anim_v02"
+        "6CF94453-80D0-436A-9377-843D1877013B",
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -488,10 +268,10 @@
       }
     ]
   },
-  "66168B71-AB05-424E-8B6C-D33D6E61B08F" : {
+  "2388C4B3-5436-4637-87A4-E534FA0C2767" : {
     "objectMetadataList" : [
       [
-        "66168B71-AB05-424E-8B6C-D33D6E61B08F",
+        "2388C4B3-5436-4637-87A4-E534FA0C2767",
         "Root"
       ],
       {
@@ -500,10 +280,10 @@
       }
     ]
   },
-  "6CF94453-80D0-436A-9377-843D1877013B" : {
+  "66168B71-AB05-424E-8B6C-D33D6E61B08F" : {
     "objectMetadataList" : [
       [
-        "6CF94453-80D0-436A-9377-843D1877013B",
+        "66168B71-AB05-424E-8B6C-D33D6E61B08F",
         "Root"
       ],
       {
@@ -528,15 +308,6 @@
     "objectMetadataList" : [
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
-        "Root",
-        "Sphere_Left"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root"
       ],
       {
@@ -547,6 +318,15 @@
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
         "Sphere_Right"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "Sphere_Left"
       ],
       {
         "isExpanded" : true,
@@ -575,6 +355,11 @@
       }
     ]
   },
+  "D560BB77-AAF3-4BDE-B7C4-989332A4688B" : {
+    "objectMetadataList" : [
+
+    ]
+  },
   "D5588EC1-EE1A-4737-9A34-90182F54C7FE" : {
     "objectMetadataList" : [
       [
@@ -585,11 +370,6 @@
         "isExpanded" : true,
         "isLocked" : false
       }
-    ]
-  },
-  "D560BB77-AAF3-4BDE-B7C4-989332A4688B" : {
-    "objectMetadataList" : [
-
     ]
   },
   "D66134B1-3681-4A8E-AFE5-29F257229F3B" : {

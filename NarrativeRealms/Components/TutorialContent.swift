@@ -123,7 +123,7 @@ class TutorialContent {
         TutorialStep(
             id: 16,
             message: "*Tag explored a cave and found a dragon! He ran out as fast as he could!*", // Italic text
-            actions: [.playAnimation("TestAnimation", "ArmourSequence"), .playAnimation("dragon_anim_v03", "DragonSequence")]
+            actions: [ .playAnimation("dragon_anim_v03", "DragonSequence")]
         ),
         TutorialStep(
             id: 17,
@@ -173,7 +173,7 @@ class TutorialContent {
         TutorialStep(
             id: 26,
             message: "This is awesome! Now, you tell the next part of the story.",
-            actions: []
+            actions: [.playAnimation("TestAnimation", "ArmourSequence")]
         ),
         TutorialStep(
             id: 27,
