@@ -477,8 +477,12 @@ struct ImmersiveView: View {
                 print("✨ Microphone used in step 12, advancing to step 13")
                 tutorialStep = 13
             case 19:
-                print("✨ Microphone used in step 25, advancing to step 26")
+                print("✨ Microphone used in step 19, advancing to step 20")
                 tutorialStep = 20
+            case 26:
+                print("✨ Microphone used in step 26, advancing to step 27")
+                tutorialStep = 27
+                
             default:
                 print("✨ Microphone used in step \(tutorialStep) - no action needed")
             }
