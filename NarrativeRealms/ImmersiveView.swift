@@ -473,11 +473,11 @@ struct ImmersiveView: View {
             recordingManager.stopRecording()
             // Handle microphone recording based on current tutorial step
             switch tutorialStep {
-            case 12:
-                print("✨ Microphone used in step 12, advancing to step 13")
+            case 11:
+                print("✨ Microphone used in step 11, advancing to step 13")
                 tutorialStep = 13
-            case 19:
-                print("✨ Microphone used in step 19, advancing to step 20")
+            case 18:
+                print("✨ Microphone used in step 18, advancing to step 20")
                 tutorialStep = 20
             case 26:
                 print("✨ Microphone used in step 26, advancing to step 27")

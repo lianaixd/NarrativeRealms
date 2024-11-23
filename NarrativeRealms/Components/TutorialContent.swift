@@ -97,8 +97,8 @@ class TutorialContent {
         ),
         TutorialStep(
             id: 11,
-            message: "Why not start with something classic? Try saying, 'Once upon a time there was a curious villager named Tag'.",
-            actions: []
+            message: "Why not start with something classic? Tap the microphone and try saying, 'Once upon a time there was a curious villager named Tag'. Tap it again to stop recording.",
+            actions: [.disableNextButton]
         ),
         TutorialStep(
             id: 12,
@@ -117,7 +117,7 @@ class TutorialContent {
         ),
         TutorialStep(
             id: 15,
-            message: "Yikes, I'm feeling uneasy here! T, his is where bad things usually happen, the lowest point of the story.",
+            message: "Yikes, I'm feeling uneasy here! This is where bad things usually happen, the lowest point of the story.",
             actions: []
         ),
         TutorialStep(
