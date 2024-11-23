@@ -83,7 +83,7 @@ class TutorialContent {
         TutorialStep(
             id: 8,
             message: "Let's make a story about me, Tag! Place me at the beginning of the story path.",
-            actions: [.requireSnapTo("StorylineStep1")]
+            actions: [.requireSnapTo("StorylineStep1"), .disableNextButton]
         ),
         TutorialStep(
             id: 9,
@@ -92,13 +92,13 @@ class TutorialContent {
         ),
         TutorialStep(
             id: 10,
-            message: "See this microphone? When you pick it up, it'll capture whatever you say to add to the story.",
+            message: "See this microphone? When you tap it, it'll capture whatever you say to add to the story.",
             actions: []
         ),
         TutorialStep(
             id: 11,
-            message: "Why not start with something classic? Try saying, 'Once upon a time there was a curious villager named Tag'.",
-            actions: []
+            message: "Why not start with something classic? Tap the microphone and try saying, 'Once upon a time there was a curious villager named Tag'. Tap it again to stop recording.",
+            actions: [.disableNextButton]
         ),
         TutorialStep(
             id: 12,
@@ -113,7 +113,7 @@ class TutorialContent {
         TutorialStep(
             id: 14,
             message: "Now, let's move to the middle of the story, where things get a little… dicey. Put me over there, right in the middle.",
-            actions: [ .requireSnapTo("StorylineStep3")]
+            actions: [ .requireSnapTo("StorylineStep3"), .disableNextButton]
         ),
         TutorialStep(
             id: 15,
@@ -128,7 +128,7 @@ class TutorialContent {
         TutorialStep(
             id: 17,
             message: "Okay, let's wrap this up on a high note! Place me at the end of the story path.",
-            actions: []
+            actions: [.requireSnapTo("StorylineStep5"), .disableNextButton]
         ),
         TutorialStep(
             id: 18,
@@ -148,7 +148,7 @@ class TutorialContent {
         TutorialStep(
             id: 21,
             message: "But wait! We're missing something… How did I get into that mess in the middle? Place me over there.",
-            actions: [ .requireSnapTo("StorylineStep2")]
+            actions: [ .requireSnapTo("StorylineStep2"), .disableNextButton]
         ),
         TutorialStep(
             id: 22,
@@ -163,7 +163,7 @@ class TutorialContent {
         TutorialStep(
             id: 24,
             message: "Let's jump to a spot between the dragon scene and the ending. Place me there, and let's wrap up our story with a twist!",
-            actions: [.requireSnapTo("StorylineStep4")]
+            actions: [.requireSnapTo("StorylineStep4"), .disableNextButton]
         ),
         TutorialStep(
             id: 25,
@@ -173,7 +173,7 @@ class TutorialContent {
         TutorialStep(
             id: 26,
             message: "This is awesome! Now, you tell the next part of the story.",
-            actions: [.playAnimation("TestAnimation", "ArmourSequence")]
+            actions: [.playAnimation("TestAnimation", "ArmourSequence"), .disableNextButton]
         ),
         TutorialStep(
             id: 27,
