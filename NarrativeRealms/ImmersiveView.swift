@@ -492,20 +492,26 @@ struct ImmersiveView: View {
     private func loadFantasyScene() {
         Task {
             do {
+                // Load the FantasyScene from the RealityKit content bundle
                 let scene = try await Entity.load(named: "FantasyScene", in: realityKitContentBundle)
                 sceneEntity = scene
-                    
+
+                // Adjust render order for transparent entities
+                adjustRenderOrder(for: scene)
+                
                 // Find and setup the draggable entity
                 if let draggableEntity = findEntity(named: "TestAnimation", in: scene) {
                     setupGestures(for: draggableEntity)
                 }
-                    
+                
                 // Find and setup all indicators
-                let indicatorNames = ["StorylineStep1",
-                                      "StorylineStep2",
-                                      "StorylineStep3",
-                                      "StorylineStep4",
-                                      "StorylineStep5"]
+                let indicatorNames = [
+                    "StorylineStep1",
+                    "StorylineStep2",
+                    "StorylineStep3",
+                    "StorylineStep4",
+                    "StorylineStep5"
+                ]
                 for name in indicatorNames {
                     if let indicator = findEntity(named: name, in: scene) {
                         EntityGestureState.shared.indicators.append(indicator)
@@ -513,7 +519,7 @@ struct ImmersiveView: View {
                     }
                 }
                 
-                print("✅ FantasyScene loaded successfully.")
+                print("✅ FantasyScene loaded successfully with adjusted render order.")
             } catch {
                 print("❌ Error loading FantasyScene: \(error.localizedDescription)")
             }
@@ -885,6 +891,43 @@ extension Entity {
         print("\(indent)📦 Entity: \(name)")
         for child in children {
             child.printEntityHierarchy(depth: depth + 1)
+        }
+    }
+}
+
+fileprivate func setEntityDrawOrder(_ entity: Entity, _ sortOrder: Int32, _ sortGroup: ModelSortGroup) {
+    // Check if the entity has a ModelComponent and apply sort order
+    if entity.components[ModelComponent.self] != nil {
+        print("Setting sort order of \(sortOrder) for entity: \(entity.name)")
+        let component = ModelSortGroupComponent(group: sortGroup, order: sortOrder)
+        entity.components.set(component)
+    }
+    
+    // Recursively apply the sort order to all children
+    for child in entity.children {
+        setEntityDrawOrder(child, sortOrder, sortGroup)
+    }
+}
+
+func adjustRenderOrder(for scene: Entity) {
+    let group = ModelSortGroup()
+    
+    // Ensure storypath_tex_v01 renders behind
+    if let storyPathEntity = scene.findEntity(named: "storypath_tex_v01") {
+        setEntityDrawOrder(storyPathEntity, 0, group) // Lowest order
+    }
+    
+    // Set render order for StorylineStep entities
+    let storylineSteps = [
+        "StorylineStep1",
+        "StorylineStep2",
+        "StorylineStep3",
+        "StorylineStep4",
+        "StorylineStep5"
+    ]
+    for (index, stepName) in storylineSteps.enumerated() {
+        if let entity = scene.findEntity(named: stepName) {
+            setEntityDrawOrder(entity, Int32(index + 1), group) // Higher order for steps
         }
     }
 }
