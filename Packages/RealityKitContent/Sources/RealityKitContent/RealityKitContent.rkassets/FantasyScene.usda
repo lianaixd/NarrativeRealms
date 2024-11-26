@@ -74,6 +74,11 @@ def Xform "Root"
         float3 xformOp:scale = (1, 1, 1)
         float3 xformOp:translate = (-2.1187589e-8, 0.83733517, -1.3045777)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "MeshSorting"
+        {
+            uniform token info:id = "RealityKit.MeshSorting"
+        }
     }
 
     def "signpost_forest_tex_v01" (
@@ -207,7 +212,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (1, 0, 0, 0)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0.37, 1.2887162, -1.8296247)
+        float3 xformOp:translate = (0.43179834, 1.2887162, -1.704615)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "AnimationLibrary"
@@ -1403,6 +1408,11 @@ def Xform "Root"
                     uniform token info:id = "RCP.BehaviorsContainer"
                 }
             }
+        }
+
+        def RealityKitComponent "MeshSorting"
+        {
+            uniform token info:id = "RealityKit.MeshSorting"
         }
     }
 }

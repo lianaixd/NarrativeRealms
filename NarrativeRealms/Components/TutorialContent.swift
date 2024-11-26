@@ -133,7 +133,7 @@ class TutorialContent {
         TutorialStep(
             id: 18,
             message: "A happy ending! How about we finish with something like, 'And they all lived happily ever after'?",
-            actions: []
+            actions: [.disableNextButton]
         ),
         TutorialStep(
             id: 19,
@@ -172,7 +172,7 @@ class TutorialContent {
         ),
         TutorialStep(
             id: 26,
-            message: "This is awesome! Now, you tell the next part of the story.",
+            message: "This is awesome! Now, you tell the next part of the story.Use my new outfit as inspiration.",
             actions: [.playAnimation("TestAnimation", "ArmourSequence"), .disableNextButton]
         ),
         TutorialStep(
