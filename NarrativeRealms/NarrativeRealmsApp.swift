@@ -43,7 +43,7 @@ struct NarrativeRealmsApp: App {
         }
 
         // TagTutorialView WindowGroup
-        WindowGroup("Tag Tutorial") {
+        WindowGroup( id: "tagTutorialWindow") {
             TagTutorialView(tutorialStep: $tutorialStep, onRestart: resetToNewStory)
                 .frame(width: 300, height: 400)
         }
@@ -56,6 +56,11 @@ struct NarrativeRealmsApp: App {
         }
         .defaultSize(width: 640, height: 400)
         .windowResizability(.contentSize)
+        .defaultWindowPlacement { content, context in
+            guard let contentWindow = context.windows.first(where: { $0.id == "tagTutorialWindow" }) else { return WindowPlacement(nil)
+            }
+            return WindowPlacement(.trailing(contentWindow))
+        }
 
         // Immersive Space
         ImmersiveSpace(id: "FantasyScene") {
